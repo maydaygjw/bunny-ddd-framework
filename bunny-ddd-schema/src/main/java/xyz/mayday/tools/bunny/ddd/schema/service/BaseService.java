@@ -11,7 +11,13 @@ public interface BaseService<ID, DOMAIN> {
 
     Optional<DOMAIN> findItemById(ID id);
 
+    List<DOMAIN> findItemsByIds(List<ID> id);
+
+    List<DOMAIN> findHistoriesById(ID id);
+
     PageableData<DOMAIN> findItems(DOMAIN example, CommonQueryParam queryParam);
+
+    Long countItems(DOMAIN example);
 
     List<DOMAIN> findAll(DOMAIN example);
 
@@ -23,7 +29,11 @@ public interface BaseService<ID, DOMAIN> {
 
     DOMAIN save(DOMAIN domain);
 
-    DOMAIN delete(DOMAIN domain);
+    DOMAIN delete(ID id);
+
+    List<DOMAIN> bulkDeleteById(List<ID> ids);
+
+    List<DOMAIN> deleteAll();
 
     Class<DOMAIN> getDomainClass();
 

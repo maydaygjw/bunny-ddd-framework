@@ -8,4 +8,6 @@ public class QueryComparator {
     String compareWith;
 
     SearchOperation operation;
+
+    SearchConjunction conjunction;
 }

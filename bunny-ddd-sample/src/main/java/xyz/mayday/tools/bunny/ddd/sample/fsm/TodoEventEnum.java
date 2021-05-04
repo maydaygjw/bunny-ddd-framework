@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public enum TodoEvent {
+public enum TodoEventEnum {
 
     START,
     ABORT,

@@ -60,7 +60,7 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-        <!--Spock -->
+        <!--Test -->
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>

@@ -1,5 +1,6 @@
 package xyz.mayday.tools.bunny.ddd.core.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.CollectionUtils;
@@ -14,7 +15,11 @@ import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author gejunwen
+ */
 @RequiredArgsConstructor
+@AllArgsConstructor
 public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> implements BaseController<ID, VO, QUERY, DTO> {
 
     @Inject

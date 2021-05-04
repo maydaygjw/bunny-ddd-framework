@@ -1,0 +1,4 @@
+spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+spring.datasource.url: jdbc:postgresql://localhost:5432/bunny
+spring.datasource.username: postgres
+spring.datasource.password: example

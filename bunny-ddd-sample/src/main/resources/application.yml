@@ -1,13 +1,9 @@
 server.port: 8083
 application.name: bunny-ddd-sample
 
-spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto: update
-
-spring.datasource.url: jdbc:postgresql://localhost:5432/bunny
-spring.datasource.username: postgres
-spring.datasource.password: example
 
 bunny.ddd.enabled: true
 
-
+logging.level.org.hibernate.SQL: DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE

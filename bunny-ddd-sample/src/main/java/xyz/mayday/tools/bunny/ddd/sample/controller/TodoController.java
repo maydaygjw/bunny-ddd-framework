@@ -8,7 +8,7 @@ import xyz.mayday.tools.bunny.ddd.sample.query.TodoQuery;
 import xyz.mayday.tools.bunny.ddd.sample.service.TodoService;
 import xyz.mayday.tools.bunny.ddd.sample.vo.TodoVO;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-import xyz.mayday.tools.bunny.ddd.schema.query.page.PageableData;
+import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 
 import java.util.List;

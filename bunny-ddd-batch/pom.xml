@@ -15,7 +15,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
 
-    <name>Bunny DDD - Context</name>
+    <name>Bunny DDD - Batch</name>
 
     <dependencies>
         <dependency>

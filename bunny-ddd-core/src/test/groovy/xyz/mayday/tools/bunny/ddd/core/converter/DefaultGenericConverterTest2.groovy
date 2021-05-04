@@ -18,11 +18,20 @@ class DefaultGenericConverterTest2 extends Specification {
             query.name == "Bill"
     }
 
+    def "conversion for sub entity"() {
+        given:
+            def mapper = new ObjectMapper()
+            mapper.configure DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false
+
+    }
+
     static class UserVO {
         String id
         String name
         Integer version
         Integer revision
+
+        List<UserSubVO> subs;
 
         UserVO(String id, String name, Integer version, Integer revision) {
             this.id = id
@@ -32,9 +41,18 @@ class DefaultGenericConverterTest2 extends Specification {
         }
     }
 
+    static class UserSubVO {
+        String name;
+    }
+
     static class UserQuery {
         String name
         Long id
         String desc
+        List<UserQuerySubQuery> subs;
+    }
+
+    static class UserQuerySubQuery {
+        String name;
     }
 }

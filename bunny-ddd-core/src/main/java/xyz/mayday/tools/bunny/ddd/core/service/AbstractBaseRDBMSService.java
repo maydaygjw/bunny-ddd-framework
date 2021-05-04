@@ -1,7 +1,6 @@
 package xyz.mayday.tools.bunny.ddd.core.service;
 
 import lombok.NoArgsConstructor;
-import org.hibernate.internal.AbstractSessionImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.history.Revisions;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
@@ -12,18 +11,16 @@ import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-import xyz.mayday.tools.bunny.ddd.schema.query.page.PageInfo;
-import xyz.mayday.tools.bunny.ddd.schema.query.page.PageableData;
+import xyz.mayday.tools.bunny.ddd.schema.page.PageInfo;
+import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 import javax.inject.Inject;
-import javax.persistence.metamodel.Attribute;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

@@ -1,7 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.schema.service;
 
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-import xyz.mayday.tools.bunny.ddd.schema.query.page.PageableData;
+import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 
 import java.util.List;
 import java.util.Optional;

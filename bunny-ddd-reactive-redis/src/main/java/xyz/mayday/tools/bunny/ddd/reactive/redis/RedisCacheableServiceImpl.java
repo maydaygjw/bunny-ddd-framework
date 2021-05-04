@@ -7,7 +7,7 @@ import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseRDBMSService;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-import xyz.mayday.tools.bunny.ddd.schema.query.page.PageableData;
+import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 
 import java.util.List;

@@ -7,8 +7,9 @@ import org.springframework.util.CollectionUtils;
 import xyz.mayday.tools.bunny.ddd.schema.controller.BaseController;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
+import xyz.mayday.tools.bunny.ddd.schema.page.PagingConfigure;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-import xyz.mayday.tools.bunny.ddd.schema.query.page.PageableData;
+import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 import javax.inject.Inject;
@@ -24,6 +25,9 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
 
     @Inject
     GenericConverter converter;
+
+    @Inject
+    PagingConfigure pagingConfigure;
 
     @Override
     public PageableData<VO> queryItems(QUERY query, CommonQueryParam commonQueryParam) {
@@ -43,12 +47,11 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
             commonQueryParam.setSortField(Collections.singletonList("updatedDate"));
             commonQueryParam.setSortOrder(Collections.singletonList(Sort.Direction.DESC.name()));
         }
-        if (Objects.isNull(commonQueryParam.getPageSize())) {
-            commonQueryParam.setPageSize(20);
-        }
-        if (Objects.isNull(commonQueryParam.getCurrentPage())) {
-            commonQueryParam.setCurrentPage(1);
-        }
+
+        if (Objects.isNull(commonQueryParam.getPageSize())) commonQueryParam.setPageSize(pagingConfigure.getDefaultPageSize());
+        if (Objects.isNull(commonQueryParam.getCurrentPage())) commonQueryParam.setCurrentPage(1);
+        if(commonQueryParam.getPageSize() > pagingConfigure.getPageSizeLimit()) commonQueryParam.setPageSize(pagingConfigure.getPageSizeLimit());
+
         return commonQueryParam;
     }
 

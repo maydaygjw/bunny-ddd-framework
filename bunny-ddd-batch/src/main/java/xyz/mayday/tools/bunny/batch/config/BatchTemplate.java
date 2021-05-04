@@ -8,6 +8,8 @@ import org.springframework.batch.item.ItemWriter;
 
 public interface BatchTemplate<I, O> {
 
+    String getJobCategory();
+
     String getJobName();
 
     int getConcurrency();

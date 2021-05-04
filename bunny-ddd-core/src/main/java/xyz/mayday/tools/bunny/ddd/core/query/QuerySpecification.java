@@ -16,14 +16,15 @@ import java.util.stream.Collectors;
 /**
  * @author gejunwen
  */
-public class QuerySpecification extends QueryCondition implements Specification<BaseDAO<?>> {
+public class QuerySpecification <DAO extends BaseDAO<?>> extends QueryCondition implements Specification<DAO> {
 
     public QuerySpecification(List<SearchCriteria<?>> searchCriteriaList) {
         super(searchCriteriaList);
     }
 
+
     @Override
-    public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder builder) {
+    public Predicate toPredicate(Root<DAO> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
         return query.where(getSearchCriteriaList().stream().map(searchCriteria -> {
             if (searchCriteria.getSearchOperation().equals(SearchOperation.EQUALS)) {

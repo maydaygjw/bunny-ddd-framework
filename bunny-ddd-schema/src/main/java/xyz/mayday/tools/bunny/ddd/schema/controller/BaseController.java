@@ -2,7 +2,7 @@ package xyz.mayday.tools.bunny.ddd.schema.controller;
 
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-import xyz.mayday.tools.bunny.ddd.schema.query.page.PageableData;
+import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 
 import java.util.List;

@@ -1,0 +1,3 @@
+bunny.ddd.paging:
+  page-size-default: 20
+  page-size-limit: 10000

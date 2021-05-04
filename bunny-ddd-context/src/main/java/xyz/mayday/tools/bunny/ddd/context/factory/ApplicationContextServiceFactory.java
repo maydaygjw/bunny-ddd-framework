@@ -1,4 +1,4 @@
-package xyz.mayday.tools.bunny.ddd.context.service;
+package xyz.mayday.tools.bunny.ddd.context.factory;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

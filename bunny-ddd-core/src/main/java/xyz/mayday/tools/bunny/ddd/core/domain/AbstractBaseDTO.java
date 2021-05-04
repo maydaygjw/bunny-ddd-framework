@@ -17,12 +17,10 @@ public abstract class AbstractBaseDTO<ID> extends AbstractBaseDAO<ID> implements
 
     String operationType;
 
-    @Override
     public void addQueryComparator(QueryComparator queryComparator) {
 
     }
 
-    @Override
     public void addMultiValues(String key, List<?> values) {
 
     }

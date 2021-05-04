@@ -1,4 +1,4 @@
-package xyz.mayday.tools.bunny.ddd.schema.query.page;
+package xyz.mayday.tools.bunny.ddd.schema.page;
 
 import lombok.Builder;
 import lombok.Data;

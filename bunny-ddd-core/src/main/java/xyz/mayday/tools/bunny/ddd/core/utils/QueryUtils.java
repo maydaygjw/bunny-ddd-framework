@@ -18,13 +18,13 @@ import java.util.Objects;
 
 public class QueryUtils {
     
-    public static <ID, DTO extends BaseDomain<ID>, DAO extends BaseDAO<ID>> Specification buildSpecification(DTO dto) {
+    public static <ID, DTO extends BaseDomain<ID>, DAO extends BaseDAO<ID>> Specification<DAO> buildSpecification(DTO dto) {
         List<SearchCriteria<?>> fieldSearchCriteriaList = buildFieldCriteria(dto);
         List<SearchCriteria<?>> multipleValuesSearchCriteria = buildMultipleValuesCriteria(dto);
 
         fieldSearchCriteriaList.addAll(multipleValuesSearchCriteria);
         
-        return new QuerySpecification(fieldSearchCriteriaList);
+        return new QuerySpecification<>(fieldSearchCriteriaList);
     }
 
 
@@ -37,7 +37,7 @@ public class QueryUtils {
         List<SearchCriteria<?>> searchCriteria = new ArrayList<>();
 
         ReflectionUtils.doWithFields(dto.getClass(),
-                field -> searchCriteria.add(new SearchCriteria(Collections.singletonList(field.getName()), Collections.singletonList(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)))),
+                field -> searchCriteria.add(new SearchCriteria<>(Collections.singletonList(field.getName()), Collections.singletonList(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)))),
                 field -> Objects.nonNull(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)));
 
         return searchCriteria;

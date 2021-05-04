@@ -15,29 +15,11 @@ import xyz.mayday.tools.bunny.ddd.sample.service.TodoTagService;
  * @author gejunwen
  */
 @SpringBootApplication
-@EnableJpaRepositories
 @Slf4j
-public class BunnyDDDSampleApplication implements CommandLineRunner {
-
-    @Autowired
-    TodoService todoService;
-
-    @Autowired
-    TodoTagService todoTagService;
+public class BunnyDDDSampleApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BunnyDDDSampleApplication.class);
     }
 
-
-    @Override
-    public void run(String... args) throws Exception {
-
-        todoService.deleteAll();
-        todoTagService.deleteAll();
-
-        TodoDO todoDo = todoService.insert(new TodoDO().withName("todo1").withDescription("d1"));
-        todoTagService.insert(new TodoTagDO().withTodoId(todoDo.getId()).withTagName("Men"));
-        todoTagService.insert(new TodoTagDO().withTodoId(todoDo.getId()).withTagName("Woman"));
-    }
 }

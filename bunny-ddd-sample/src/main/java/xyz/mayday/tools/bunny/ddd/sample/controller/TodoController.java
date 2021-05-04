@@ -7,12 +7,10 @@ import xyz.mayday.tools.bunny.ddd.sample.domain.TodoDO;
 import xyz.mayday.tools.bunny.ddd.sample.query.TodoQuery;
 import xyz.mayday.tools.bunny.ddd.sample.service.TodoService;
 import xyz.mayday.tools.bunny.ddd.sample.vo.TodoVO;
-import xyz.mayday.tools.bunny.ddd.schema.http.Response;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.query.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,14 +77,6 @@ public class TodoController extends BaseControllerImpl<Long, TodoVO, TodoQuery, 
     @Override
     public TodoVO create(@RequestBody TodoVO vo) {
         return super.create(vo);
-    }
-
-    @GetMapping("/getAuthData")
-    public List<TodoDO> getAuthData() {
-
-        return todoService.findWithAuthorization(null);
-
-
     }
 }
 

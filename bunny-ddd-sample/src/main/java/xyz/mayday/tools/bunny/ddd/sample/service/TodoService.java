@@ -14,20 +14,4 @@ import java.util.List;
  */
 @Service
 public class TodoService extends AbstractBaseRDBMSService<Long, TodoDO, TodoDO> {
-
-    public List<TodoDO> findWithAuthorization(TodoDO todoDO) {
-
-        return getRepository().findAll(new Specification<TodoDO>() {
-            @Override
-            public Predicate toPredicate(Root<TodoDO> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-
-                Subquery<TodoTagDO> subquery = query.subquery(TodoTagDO.class);
-                Root<TodoTagDO> todoTagRoot = subquery.from(TodoTagDO.class);
-                subquery.select(todoTagRoot.get("todoId"));
-                subquery.where(builder.equal(todoTagRoot.get("tagName"), "Men"));
-
-                return builder.in(root.get("id")).value(subquery);
-            }
-        });
-    }
 }

@@ -3,7 +3,7 @@
 
     <groupId>xyz.mayday.tools</groupId>
     <artifactId>bunny-ddd-framework</artifactId>
-    <version>0.0.1.RELEASE</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Bunny DDD Framework</name>
@@ -90,7 +90,7 @@
 
     <scm>
         <connection>scm:git:https://gitee.com/maydaygjw/bunny-ddd-framework</connection>
-      <tag>v0.0.1.RELEASE</tag>
+      <tag>HEAD</tag>
   </scm>
 
 </project>

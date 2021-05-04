@@ -4,7 +4,7 @@
     <parent>
         <groupId>xyz.mayday.tools</groupId>
         <artifactId>bunny-ddd-framework</artifactId>
-        <version>0.0.1.RELEASE</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>bunny-ddd-core</artifactId>

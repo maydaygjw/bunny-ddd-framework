@@ -12,17 +12,12 @@ class DefaultGenericConverterTest2 extends Specification {
             mapper.configure DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false
             def converter = new DefaultGenericConverter(mapper)
             def userVO = new UserVO("1", "Bill", 1, 1)
+            userVO.subs = [new UserSubVO("Gates")]
         when:
             def query = converter.convert userVO, UserQuery.class
         then:
             query.name == "Bill"
-    }
-
-    def "conversion for sub entity"() {
-        given:
-            def mapper = new ObjectMapper()
-            mapper.configure DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false
-
+            query.subs[0].name == "Gates"
     }
 
     static class UserVO {
@@ -43,6 +38,10 @@ class DefaultGenericConverterTest2 extends Specification {
 
     static class UserSubVO {
         String name;
+
+        UserSubVO(String name) {
+            this.name = name
+        }
     }
 
     static class UserQuery {

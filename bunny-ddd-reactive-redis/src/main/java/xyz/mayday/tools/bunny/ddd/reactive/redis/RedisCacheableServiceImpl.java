@@ -1,25 +1,30 @@
 package xyz.mayday.tools.bunny.ddd.reactive.redis;
 
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
-import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseRDBMSService;
+import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
-import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
+import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@RequiredArgsConstructor
-public class RedisCacheableServiceImpl<ID, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> implements CacheableService<ID, DTO> {
+@NoArgsConstructor
+public abstract class RedisCacheableServiceImpl<ID, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> implements CacheableService<ID, DTO> {
 
-    final AbstractBaseRDBMSService<ID, DTO, DAO> baseService;
+    @Inject
+    ReactiveRedisOperations<String, DAO> redisOperations;
 
-    final ReactiveRedisOperations<String, DAO> redisOperations;
+    public RedisCacheableServiceImpl(GenericConverter converter, ReactiveRedisOperations<String, DAO> redisOperations) {
+        super(converter);
+        this.redisOperations = redisOperations;
+    }
 
     @Override
     public Optional<DTO> findItemById(ID id) {

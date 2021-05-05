@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
 
-class DefaultGenericConverterTest2 extends Specification {
+class DefaultGenericConverterTest extends Specification {
 
     def "basic conversion"() {
         given:

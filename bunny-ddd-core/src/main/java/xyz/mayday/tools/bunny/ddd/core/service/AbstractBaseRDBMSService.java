@@ -1,12 +1,16 @@
 package xyz.mayday.tools.bunny.ddd.core.service;
 
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.history.Revisions;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.utils.QueryUtils;
+import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
@@ -20,6 +24,7 @@ import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,20 +32,24 @@ import java.util.stream.Stream;
 /**
  * @author gejunwen
  */
+
 @NoArgsConstructor
 public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> {
 
-    @Inject
+    @Autowired(required = false)
     PersistenceServiceFactory serviceFactory;
 
-    @Inject
+    @Autowired(required = false)
     IdGenerator<String> idGenerator;
 
-    @Inject
+    @Autowired(required = false)
     GenericConverter genericConverter;
 
-    public AbstractBaseRDBMSService(PersistenceServiceFactory serviceFactory) {
+    public AbstractBaseRDBMSService(GenericConverter converter, PrincipalService principalService, PersistenceServiceFactory serviceFactory, IdGenerator<String> idGenerator, GenericConverter genericConverter) {
+        super(converter, principalService);
         this.serviceFactory = serviceFactory;
+        this.idGenerator = idGenerator;
+        this.genericConverter = genericConverter;
     }
 
     @Override
@@ -97,9 +106,18 @@ public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<I
         return convertToDto(getRepository().save(dao));
     }
 
+    @Transactional
     @Override
     public DTO update(DTO dto) {
-        return null;
+        if(Objects.isNull(dto.getId())) {
+            throw new BusinessException();
+        }
+        DAO inputOne = convertToDao(dto);
+        DAO dbOne = getRepository().findById(dto.getId()).orElseThrow(BusinessException::new);
+        BeanUtils.copyProperties(inputOne, dbOne);
+        dbOne.setVersion(dbOne.getVersion() + 1);
+        DAO saved = getRepository().save(dbOne);
+        return convertToDto(saved);
     }
 
     @Override

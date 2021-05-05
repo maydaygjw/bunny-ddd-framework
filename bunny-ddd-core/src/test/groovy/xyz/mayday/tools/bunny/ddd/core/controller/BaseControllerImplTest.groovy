@@ -1,6 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.core.controller
 
 import spock.lang.Specification
+import spock.lang.Subject
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter
 import xyz.mayday.tools.bunny.ddd.schema.page.PagingConfigure
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam
@@ -10,10 +11,10 @@ class BaseControllerImplTest extends Specification {
 
     def "test for applyQueryRestriction"() {
         given:
-            def genericConverter = Mock(GenericConverter.class)
-            def pagingConfigure = Mock(PagingConfigure.class)
+            def genericConverter = Mock(GenericConverter)
+            def pagingConfigure = Mock(PagingConfigure)
 
-            pagingConfigure.defaultPageSize >> 20
+            pagingConfigure.defaultPageSize >> 30
             pagingConfigure.pageSizeLimit >> 10000
 
             def controller = new TestBaseControllerImpl(genericConverter, pagingConfigure)
@@ -22,7 +23,7 @@ class BaseControllerImplTest extends Specification {
             controller.applyQueryRestriction(commonQueryParam)
         then:
             commonQueryParam.currentPage == 1
-            commonQueryParam.pageSize == 20
+            commonQueryParam.pageSize == 30
             commonQueryParam.sortField == ["updatedDate"]
             commonQueryParam.sortOrder == ["DESC"]
     }

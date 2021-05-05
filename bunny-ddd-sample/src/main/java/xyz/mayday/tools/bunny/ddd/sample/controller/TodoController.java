@@ -45,8 +45,8 @@ public class TodoController extends BaseControllerImpl<Long, TodoVO, TodoQuery, 
 
     @GetMapping(COUNT)
     @Override
-    public Long countItems(TodoVO vo) {
-        return super.countItems(vo);
+    public Long countItems(TodoQuery query) {
+        return super.countItems(query);
     }
 
     @Override

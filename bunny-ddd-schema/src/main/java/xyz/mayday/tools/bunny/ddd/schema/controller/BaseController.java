@@ -26,7 +26,7 @@ public interface BaseController<ID, VO extends BaseVO<ID>, QUERY, DOMAIN> {
 
     List<VO> findHistories(ID id);
 
-    Long countItems(VO vo);
+    Long countItems(QUERY query);
 
     BaseService<ID, DOMAIN> getService();
 

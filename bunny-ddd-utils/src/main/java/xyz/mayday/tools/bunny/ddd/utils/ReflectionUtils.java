@@ -1,5 +1,8 @@
 package xyz.mayday.tools.bunny.ddd.utils;
 
+import lombok.SneakyThrows;
+import org.apache.commons.beanutils.BeanUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -11,13 +14,10 @@ import java.lang.reflect.Type;
 @SuppressWarnings("unchecked")
 public class ReflectionUtils {
 
+    @SneakyThrows
     public static <T> T getValue(Field f, Object instance) {
-        try {
-            f.setAccessible(true);
-            return (T) f.get(instance);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        f.setAccessible(true);
+        return (T) f.get(instance);
     }
 
     public static <T> Class<T> getGenericTypeOfSuperClass(Object instance, int index) {
@@ -25,11 +25,9 @@ public class ReflectionUtils {
         return (Class<T>)((ParameterizedType)t).getActualTypeArguments()[index];
     }
 
+    @SneakyThrows
     public static <T> T newInstance(Class<T> cls) {
-        try {
-            return cls.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return cls.newInstance();
     }
+
 }

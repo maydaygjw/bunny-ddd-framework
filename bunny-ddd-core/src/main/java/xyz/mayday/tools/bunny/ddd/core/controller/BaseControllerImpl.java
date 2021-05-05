@@ -1,33 +1,39 @@
 package xyz.mayday.tools.bunny.ddd.core.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.CollectionUtils;
 import xyz.mayday.tools.bunny.ddd.schema.controller.BaseController;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
+import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.page.PagingConfigure;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
-import javax.inject.Inject;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * @author gejunwen
  */
 @RequiredArgsConstructor
-@AllArgsConstructor
 public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> implements BaseController<ID, VO, QUERY, DTO> {
 
-    @Inject
+    @Autowired(required = false)
     GenericConverter converter;
 
-    @Inject
+    @Autowired(required = false)
     PagingConfigure pagingConfigure;
+
+    public BaseControllerImpl(GenericConverter converter, PagingConfigure pagingConfigure) {
+        this.converter = converter;
+        this.pagingConfigure = pagingConfigure;
+    }
 
     @Override
     public PageableData<VO> queryItems(QUERY query, CommonQueryParam commonQueryParam) {
@@ -37,12 +43,14 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
     }
 
     @Override
-    public Long countItems(VO vo) {
-        return getService().countItems(convertVoToDto(vo));
+    public Long countItems(QUERY query) {
+        return getService().countItems(convertQueryToDto(query));
     }
 
     CommonQueryParam applyQueryRestriction(CommonQueryParam commonQueryParam) {
+
         commonQueryParam = Optional.ofNullable(commonQueryParam).orElse(new CommonQueryParam());
+
         if(CollectionUtils.isEmpty(commonQueryParam.getSortField())) {
             commonQueryParam.setSortField(Collections.singletonList("updatedDate"));
             commonQueryParam.setSortOrder(Collections.singletonList(Sort.Direction.DESC.name()));
@@ -67,7 +75,7 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
 
     @Override
     public VO update(VO vo) {
-        return null;
+        return convertDtoToVo(getService().update(convertVoToDto(vo)));
     }
 
     @Override
@@ -77,7 +85,7 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
 
     @Override
     public Optional<VO> queryById(ID id) {
-        return Optional.empty();
+        return getService().findItemById(id).map(this::convertDtoToVo);
     }
 
     @Override

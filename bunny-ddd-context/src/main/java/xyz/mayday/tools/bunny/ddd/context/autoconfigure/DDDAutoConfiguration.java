@@ -8,12 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
-import xyz.mayday.tools.bunny.ddd.context.PagingProperties;
 import xyz.mayday.tools.bunny.ddd.context.factory.ApplicationContextServiceFactory;
 import xyz.mayday.tools.bunny.ddd.core.converter.DefaultGenericConverter;
 import xyz.mayday.tools.bunny.ddd.core.service.LeafIdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
-import xyz.mayday.tools.bunny.ddd.schema.page.PagingConfigure;
+import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory;
 
@@ -21,7 +20,7 @@ import javax.persistence.EntityManager;
 
 @Configuration
 @ConditionalOnProperty(value = "bunny.ddd.enabled", havingValue = "true")
-@Import(PagingProperties.class)
+@Import(xyz.mayday.tools.bunny.ddd.context.PagingProperties.class)
 public class DDDAutoConfiguration {
 
     @Bean
@@ -40,9 +39,9 @@ public class DDDAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(PagingConfigure.class)
-    PagingConfigure pagingConfigure(PagingProperties pagingProperties) {
-        return new PagingConfigure() {
+    @ConditionalOnMissingBean(PagingParameters.class)
+    PagingParameters pagingConfigure(xyz.mayday.tools.bunny.ddd.context.PagingProperties pagingProperties) {
+        return new PagingParameters() {
             @Override
             public Integer getDefaultPageSize() {
                 return pagingProperties.getPageSizeDefault();

@@ -16,12 +16,39 @@ import java.util.stream.Stream
 class AbstractBaseServiceTest extends Specification {
 
     @Shared
-    def userBaseService
+    AbstractBaseService userBaseService
 
     def setup() {
         PrincipalService principalService = Mock()
         principalService.getCurrentUserId() >> "ddd-user1"
         userBaseService = new UserBaseService(new DefaultGenericConverter(new ObjectMapper()), principalService)
+    }
+
+    def "test for auditWhenInsert"() {
+        given:
+            def user = new Domain.UserDAO("Bob", 12)
+        when:
+            userBaseService.auditWhenInsert(user)
+        then:
+            user.createdBy == "ddd-user1"
+            user.updatedBy == "ddd-user1"
+            user.createdDate != null
+            user.updatedDate != null
+
+    }
+
+    def "test for auditWhenUpdate"() {
+        given:
+            def user = new Domain.UserDAO("Bob", 12)
+            user.createdDate = new Date()
+            user.createdBy = "ddd-user0"
+        when:
+            userBaseService.auditWhenUpdate(user)
+        then:
+            user.createdBy == "ddd-user0"
+            user.updatedBy == "ddd-user1"
+            user.createdDate != null
+            user.updatedDate != null
     }
 
     def "test for get DAO class"() {
@@ -88,7 +115,17 @@ class AbstractBaseServiceTest extends Specification {
         }
 
         @Override
+        List<Domain.UserDTO> bulkInsert(List<Domain.UserDTO> userDTOS) {
+            return null
+        }
+
+        @Override
         Domain.UserDTO update(Domain.UserDTO userDTO) {
+            return null
+        }
+
+        @Override
+        List<Domain.UserDTO> bulkUpdate(List<Domain.UserDTO> userDTOS) {
             return null
         }
 

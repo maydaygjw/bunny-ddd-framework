@@ -1,6 +1,6 @@
 package xyz.mayday.tools.bunny.ddd.schema.page;
 
-public interface PagingConfigure {
+public interface PagingParameters {
 
     Integer getDefaultPageSize();
 

@@ -2,7 +2,16 @@ package xyz.mayday.tools.bunny.ddd.fsm.action;
 
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMContext;
 
-public interface Action<S, E, DOMAIN> {
+import java.util.Set;
 
-    void process(S from, S to, E event, FSMContext<DOMAIN> context);
+public interface Action<S, E, DOMAIN, C extends FSMContext<DOMAIN>> {
+
+    void doAction(S from, S to, E event, FSMContext<DOMAIN> context);
+
+    int order();
+
+    ActionType getActionType();
+
+    Set<ActionCondition<S, E>> getMatchedConditions();
+
 }

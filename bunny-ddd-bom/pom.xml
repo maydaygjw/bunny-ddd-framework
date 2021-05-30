@@ -10,6 +10,7 @@
 
     <properties>
         <spring.boot.version>2.4.3</spring.boot.version>
+        <spring.cloud.version>2020.0.0</spring.cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -20,6 +21,14 @@
                 <version>${spring.boot.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <!-- Provide the latest stable Spring Cloud release train version (e.g. 2020.0.0) -->
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>

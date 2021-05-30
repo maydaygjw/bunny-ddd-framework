@@ -8,7 +8,7 @@ import xyz.mayday.tools.bunny.ddd.schema.controller.BaseController;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
-import xyz.mayday.tools.bunny.ddd.schema.page.PagingConfigure;
+import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
@@ -28,9 +28,9 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
     GenericConverter converter;
 
     @Autowired(required = false)
-    PagingConfigure pagingConfigure;
+    PagingParameters pagingConfigure;
 
-    public BaseControllerImpl(GenericConverter converter, PagingConfigure pagingConfigure) {
+    public BaseControllerImpl(GenericConverter converter, PagingParameters pagingConfigure) {
         this.converter = converter;
         this.pagingConfigure = pagingConfigure;
     }

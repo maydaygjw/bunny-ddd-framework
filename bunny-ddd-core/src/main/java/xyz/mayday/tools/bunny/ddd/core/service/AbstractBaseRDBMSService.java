@@ -106,6 +106,11 @@ public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<I
         return convertToDto(getRepository().save(dao));
     }
 
+    @Override
+    public List<DTO> bulkInsert(List<DTO> dtos) {
+        return null;
+    }
+
     @Transactional
     @Override
     public DTO update(DTO dto) {
@@ -118,6 +123,11 @@ public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<I
         dbOne.setVersion(dbOne.getVersion() + 1);
         DAO saved = getRepository().save(dbOne);
         return convertToDto(saved);
+    }
+
+    @Override
+    public List<DTO> bulkUpdate(List<DTO> dtos) {
+        return null;
     }
 
     @Override

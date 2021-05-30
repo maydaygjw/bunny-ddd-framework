@@ -25,7 +25,11 @@ public interface BaseService<ID, DOMAIN> {
 
     DOMAIN insert(DOMAIN domain);
 
+    List<DOMAIN> bulkInsert(List<DOMAIN> domains);
+
     DOMAIN update(DOMAIN domain);
+
+    List<DOMAIN> bulkUpdate(List<DOMAIN> domains);
 
     DOMAIN save(DOMAIN domain);
 

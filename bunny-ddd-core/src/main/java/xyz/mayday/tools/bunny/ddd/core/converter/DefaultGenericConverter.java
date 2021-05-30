@@ -14,4 +14,9 @@ public class DefaultGenericConverter implements GenericConverter {
     public <S, D> D convert(S s, Class<D> dClass) {
         return objectMapper.convertValue(s, dClass);
     }
+
+    @Override
+    public <S> S clone(S s) {
+        return convert(s, (Class<S>)s.getClass());
+    }
 }

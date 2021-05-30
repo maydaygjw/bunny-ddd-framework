@@ -1,9 +1,8 @@
 package xyz.mayday.tools.bunny.ddd.core.controller
 
 import spock.lang.Specification
-import spock.lang.Subject
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter
-import xyz.mayday.tools.bunny.ddd.schema.page.PagingConfigure
+import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService
 
@@ -12,7 +11,7 @@ class BaseControllerImplTest extends Specification {
     def "test for applyQueryRestriction"() {
         given:
             def genericConverter = Mock(GenericConverter)
-            def pagingConfigure = Mock(PagingConfigure)
+            def pagingConfigure = Mock(PagingParameters)
 
             pagingConfigure.defaultPageSize >> 30
             pagingConfigure.pageSizeLimit >> 10000
@@ -30,7 +29,7 @@ class BaseControllerImplTest extends Specification {
 
     static class TestBaseControllerImpl extends BaseControllerImpl {
 
-        TestBaseControllerImpl(GenericConverter converter, PagingConfigure pagingConfigure) {
+        TestBaseControllerImpl(GenericConverter converter, PagingParameters pagingConfigure) {
             super(converter, pagingConfigure)
         }
 

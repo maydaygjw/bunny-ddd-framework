@@ -58,7 +58,7 @@ public abstract class AbstractBaseService<ID, DTO, DAO extends BaseDAO<ID>> impl
         dao.setUpdatedDate(now);
     }
 
-    protected void auditWhenUpdated(DAO dao) {
+    protected void auditWhenUpdate(DAO dao) {
         Date now = new Date();
         dao.setUpdatedBy(principalService.getCurrentUserId());
         dao.setUpdatedDate(now);

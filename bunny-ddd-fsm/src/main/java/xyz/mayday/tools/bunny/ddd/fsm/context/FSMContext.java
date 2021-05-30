@@ -1,13 +1,18 @@
 package xyz.mayday.tools.bunny.ddd.fsm.context;
 
+import lombok.Data;
+
 /**
  * @author gejunwen
  */
-public class FSMContext<T> {
 
-    T result;
+@Data
+public abstract class FSMContext<T> {
 
-    T getResult() {
-        return result;
-    }
+    String key;
+
+    T payload;
+
+    Throwable throwable;
+
 }

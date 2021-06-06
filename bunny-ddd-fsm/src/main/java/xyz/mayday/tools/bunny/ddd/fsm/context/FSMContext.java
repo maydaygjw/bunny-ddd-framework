@@ -9,11 +9,20 @@ import lombok.Data;
 @Data
 public abstract class FSMContext<T> {
 
+    public FSMContext(String key, T payload) {
+        this.key = key;
+        this.payload = payload;
+    }
+
+    public FSMContext(T payload) {
+        this.payload = payload;
+    }
+
     String key;
 
     T payload;
 
-    T oldPayload;
+    T current;
 
     Throwable throwable;
 

@@ -5,6 +5,12 @@ import lombok.EqualsAndHashCode;
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMContext;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class TodoContext extends FSMContext<TodoDTO> {
+
+    public TodoContext(String key, TodoDTO payload) {
+        super(key, payload);
+    }
+
+
+
 }

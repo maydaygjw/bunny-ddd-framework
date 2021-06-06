@@ -1,21 +1,45 @@
 package xyz.mayday.tools.bunny.ddd.fsm.impl
 
+import com.google.common.collect.ImmutableMap
+import org.springframework.context.ApplicationContext
+import spock.lang.Shared
 import spock.lang.Specification
 import xyz.mayday.tools.bunny.ddd.fsm.TodoContext
 import xyz.mayday.tools.bunny.ddd.fsm.TodoDTO
 import xyz.mayday.tools.bunny.ddd.fsm.TodoEvent
 import xyz.mayday.tools.bunny.ddd.fsm.TodoState
 import xyz.mayday.tools.bunny.ddd.fsm.TodoStateMachine
+import xyz.mayday.tools.bunny.ddd.fsm.action.Action
 import xyz.mayday.tools.bunny.ddd.fsm.config.FSMDefinition
+import xyz.mayday.tools.bunny.ddd.schema.service.ServiceFactory
 
 class StateMachineBuilderWrapperTest extends Specification {
 
+    @Shared
+    def wrapper
+
+    def setup() {
+        def ctx = Stub(ApplicationContext.class)
+        ctx.getBeansOfType(Action.class) >> ImmutableMap.of()
+        wrapper = new StateMachineBuilderWrapper(
+                new FSMDefinition<TodoStateMachine, TodoDTO, TodoState, TodoEvent, TodoContext>(TodoStateMachine.class, TodoEvent.class, TodoState.class, TodoContext.class),
+                Mock(ServiceFactory.class),
+                ctx
+        )
+    }
+
     def "GenerateStateMachineDefinition"() {
-        given:
-            def wrapper = new StateMachineBuilderWrapper(new FSMDefinition<TodoStateMachine, TodoDTO, TodoState, TodoEvent, TodoContext>(TodoStateMachine.class, TodoEvent.class, TodoState.class, TodoContext.class))
         when:
             wrapper.generateStateMachineDefinition()
         then:
-            wrapper.transitionDefinitions.size() == 3
+            wrapper.transitionDefinitions.size() == 4
+    }
+
+    def "GetStateMachineInstance"() {
+        when:
+            def instance = wrapper.getStateMachineInstance(TodoState.DOING)
+        then:
+            instance.getInitialState() == TodoState.DOING
+
     }
 }

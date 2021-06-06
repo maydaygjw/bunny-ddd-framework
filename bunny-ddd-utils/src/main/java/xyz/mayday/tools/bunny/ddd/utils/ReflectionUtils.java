@@ -6,6 +6,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 
 /**
  * @author gejunwen
@@ -30,4 +31,8 @@ public class ReflectionUtils {
         return cls.newInstance();
     }
 
+    @SneakyThrows
+    public static <T> boolean hasProperty(T o, String fieldName) {
+        return Arrays.stream(o.getClass().getDeclaredFields()).filter(field -> field.getName().equals(fieldName)).findAny().isPresent();
+    }
 }

@@ -1,9 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.fsm;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMSupport;
 
@@ -11,6 +9,8 @@ import xyz.mayday.tools.bunny.ddd.fsm.context.FSMSupport;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@With
+@Builder
 public class TodoDTO extends AbstractBaseDTO<String> implements FSMSupport<TodoState> {
 
     TodoState todoState;

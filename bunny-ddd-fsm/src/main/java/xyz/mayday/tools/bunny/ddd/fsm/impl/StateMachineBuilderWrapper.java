@@ -1,15 +1,19 @@
 package xyz.mayday.tools.bunny.ddd.fsm.impl;
 
 import lombok.Getter;
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.squirrelframework.foundation.fsm.StateMachineBuilder;
 import org.squirrelframework.foundation.fsm.StateMachineBuilderFactory;
+import org.squirrelframework.foundation.fsm.builder.On;
 import xyz.mayday.tools.bunny.ddd.fsm.annotation.Transit;
 import xyz.mayday.tools.bunny.ddd.fsm.config.FSMDefinition;
 import xyz.mayday.tools.bunny.ddd.fsm.config.TransitDefinition;
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMContext;
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMSupport;
+import xyz.mayday.tools.bunny.ddd.schema.service.ServiceFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,16 +32,32 @@ public class StateMachineBuilderWrapper<DOMAIN extends FSMSupport<S>, T extends 
 
     List<TransitDefinition> transitionDefinitions;
 
-    public StateMachineBuilderWrapper(FSMDefinition<T, DOMAIN, S, E, C> smDefinition) {
+    ServiceFactory serviceFactory;
+
+    ApplicationContext ctx;
+
+    public StateMachineBuilderWrapper(FSMDefinition<T, DOMAIN, S, E, C> smDefinition, ServiceFactory serviceFactory, ApplicationContext ctx) {
+        this.ctx = ctx;
         this.stateMachineDefinition = smDefinition;
-        this.builder = StateMachineBuilderFactory.create(smDefinition.getStateMachineClass(), smDefinition.getStateClass(), smDefinition.getEventClass(), smDefinition.getContextClass());
+        this.serviceFactory = serviceFactory;
+        this.builder = StateMachineBuilderFactory.create(smDefinition.getStateMachineClass(), smDefinition.getStateClass(), smDefinition.getEventClass(), smDefinition.getContextClass(), ApplicationContext.class, ServiceFactory.class);
 
         generateStateMachineDefinition();
+        defineStateMachine();
+    }
+
+    void defineStateMachine() {
+        getTransitionDefinitions().forEach(def -> {
+            On<T, S, E, C> on = builder.externalTransition().from(EnumUtils.getEnum(stateMachineDefinition.getStateClass(), def.getFrom())).to(EnumUtils.getEnum(stateMachineDefinition.getStateClass(), def.getTo())).on(EnumUtils.getEnum(stateMachineDefinition.getEventClass(), def.getOn()));
+            if(StringUtils.isNotBlank(def.getWhenMvel())) {
+                on.whenMvel(def.getWhenMvel());
+            }
+        });
     }
 
 
     public T getStateMachineInstance(S initialState) {
-        return builder.newStateMachine(initialState);
+        return builder.newStateMachine(initialState, ctx, serviceFactory);
     }
 
     void generateStateMachineDefinition() {

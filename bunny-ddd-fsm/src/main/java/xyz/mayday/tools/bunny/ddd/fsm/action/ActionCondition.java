@@ -15,4 +15,8 @@ public class ActionCondition<S, E> {
 
     E event;
 
+    public static <S, E> ActionCondition<S, E> of(S fromState, E event) {
+        return new ActionCondition<>(fromState, event);
+    }
+
 }

@@ -1,5 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.fsm.impl;
 
+import lombok.Setter;
+import org.springframework.context.ApplicationContext;
 import org.squirrelframework.foundation.fsm.impl.AbstractStateMachine;
 import xyz.mayday.tools.bunny.ddd.fsm.action.ActionFactory;
 import xyz.mayday.tools.bunny.ddd.fsm.action.ActionType;
@@ -13,13 +15,14 @@ import xyz.mayday.tools.bunny.ddd.schema.service.ServiceFactory;
 /**
  * @author gejunwen
  */
+@Setter
 public class BaseStateMachine<DOMAIN extends FSMSupport<S>, T extends BaseStateMachine<DOMAIN, T, S, E, C>, S extends Enum<S>, E extends Enum<E>, C extends FSMContext<DOMAIN>> extends AbstractStateMachine<T, S, E, C> {
 
     DistributedLock lock;
 
-    ActionFactory<S, E, DOMAIN, C> actionFactory;
-
     ServiceFactory serviceFactory;
+
+    ActionFactory<S, E, DOMAIN, C> actionFactory;
 
     public S syncFire(S fromState, E event, C input) {
         if(super.canAccept(event)) {
@@ -54,12 +57,12 @@ public class BaseStateMachine<DOMAIN extends FSMSupport<S>, T extends BaseStateM
     private void doCheckAndFire(S fromState, E event, C context) {
         // executing the PREPARE actions
         actionFactory.fetchActions(fromState, event, ActionType.PREPARE).forEach(action -> {
-            action.doAction(fromState, null, event, context);
+            if(action.predict(fromState, null, event, context)) action.doAction(fromState, null, event, context);
         });
         if(!super.canAccept(event)) {
             doAfterTransitionDeclined(getInitialState(), event, context);
         }
-        this.fire(event);
+        this.fire(event, context);
     }
 
     @Override
@@ -77,5 +80,11 @@ public class BaseStateMachine<DOMAIN extends FSMSupport<S>, T extends BaseStateM
 
     protected void rollingNextState(S to, C context) {
         context.getPayload().setState(to);
+    }
+
+    //Squirrel framework hook to inject parameters
+    void postConstruct(ApplicationContext ctx, ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+        actionFactory = new ActionFactory<>(ctx);
     }
 }

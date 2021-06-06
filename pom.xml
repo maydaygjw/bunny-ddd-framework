@@ -17,7 +17,7 @@
         <module>bunny-ddd-fsm</module>
         <module>bunny-ddd-reactive-redis</module>
         <module>bunny-ddd-batch</module>
-        <module>bunny-ddd-sample</module>
+<!--        <module>bunny-ddd-sample</module>-->
     </modules>
 
     <properties>
@@ -81,8 +81,27 @@
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/test/java</source>
+                                <source>src/test/groovy</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-        <testSourceDirectory>src/test/groovy</testSourceDirectory>
     </build>
 
     <repositories>

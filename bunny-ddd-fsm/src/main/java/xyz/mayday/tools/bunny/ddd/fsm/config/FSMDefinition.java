@@ -17,4 +17,12 @@ public class FSMDefinition<T extends BaseStateMachine<DOMAIN, T, S, E, C>, DOMAI
     Class<S> stateClass;
 
     Class<C> contextClass;
+
+    public FSMDefinition(Class<T> stateMachineClass, Class<E> eventClass, Class<S> stateClass, Class<C> contextClass) {
+        this.machineId = stateMachineClass.getSimpleName();
+        this.stateMachineClass = stateMachineClass;
+        this.eventClass = eventClass;
+        this.stateClass = stateClass;
+        this.contextClass = contextClass;
+    }
 }

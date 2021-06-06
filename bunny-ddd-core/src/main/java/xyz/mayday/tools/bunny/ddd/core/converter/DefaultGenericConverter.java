@@ -15,6 +15,7 @@ public class DefaultGenericConverter implements GenericConverter {
         return objectMapper.convertValue(s, dClass);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <S> S clone(S s) {
         return convert(s, (Class<S>)s.getClass());

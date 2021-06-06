@@ -20,7 +20,7 @@ public @interface Transit {
 
     String comment() default "";
 
-    boolean active() default true;
+    boolean enabled() default true;
 
     boolean implicit() default false;       //if implicit, will hide in generated chart
 

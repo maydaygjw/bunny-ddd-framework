@@ -13,6 +13,8 @@ public abstract class FSMContext<T> {
 
     T payload;
 
+    T oldPayload;
+
     Throwable throwable;
 
 }

@@ -1,27 +1,26 @@
 package xyz.mayday.tools.bunny.ddd.core.service;
 
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.history.Revisions;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.utils.QueryUtils;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
-import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageInfo;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
+import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +33,7 @@ import java.util.stream.Stream;
  */
 
 @NoArgsConstructor
+@Setter
 public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> {
 
     @Autowired(required = false)
@@ -42,14 +42,10 @@ public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<I
     @Autowired(required = false)
     IdGenerator<String> idGenerator;
 
-    @Autowired(required = false)
-    GenericConverter genericConverter;
-
     public AbstractBaseRDBMSService(GenericConverter converter, PrincipalService principalService, PersistenceServiceFactory serviceFactory, IdGenerator<String> idGenerator, GenericConverter genericConverter) {
         super(converter, principalService);
         this.serviceFactory = serviceFactory;
         this.idGenerator = idGenerator;
-        this.genericConverter = genericConverter;
     }
 
     @Override

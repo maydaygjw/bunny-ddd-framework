@@ -6,6 +6,7 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import java.util.Date;
 
 /**
@@ -18,6 +19,7 @@ public abstract class AbstractBaseDAO<ID> implements BaseDAO<ID> {
     @Id
     ID id;
 
+    @Version
     Integer version;
 
     Date createdDate;

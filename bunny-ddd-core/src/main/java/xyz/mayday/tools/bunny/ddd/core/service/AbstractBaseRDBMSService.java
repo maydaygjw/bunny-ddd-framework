@@ -116,7 +116,6 @@ public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<I
         DAO inputOne = convertToDao(dto);
         DAO dbOne = getRepository().findById(dto.getId()).orElseThrow(BusinessException::new);
         BeanUtils.copyProperties(inputOne, dbOne);
-        dbOne.setVersion(dbOne.getVersion() + 1);
         DAO saved = getRepository().save(dbOne);
         return convertToDto(saved);
     }

@@ -1,5 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.sample.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import xyz.mayday.tools.bunny.ddd.core.controller.BaseControllerImpl;
@@ -22,6 +24,7 @@ import static xyz.mayday.tools.bunny.ddd.schema.http.ResourceProperties.*;
 @RestController
 @RequestMapping("/todo")
 @RequiredArgsConstructor
+@Api(tags = "待办模块")
 public class TodoController extends BaseControllerImpl<Long, TodoVO, TodoQuery, TodoDO> {
 
     final TodoService todoService;
@@ -31,6 +34,7 @@ public class TodoController extends BaseControllerImpl<Long, TodoVO, TodoQuery, 
         return todoService;
     }
 
+    @ApiOperation("查询待办")
     @GetMapping
     @Override
     public PageableData<TodoVO> queryItems(TodoQuery todoQuery, CommonQueryParam commonQueryParam) {

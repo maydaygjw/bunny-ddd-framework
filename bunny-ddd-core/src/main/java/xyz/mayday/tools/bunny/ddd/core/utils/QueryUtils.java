@@ -9,7 +9,6 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDomain;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
-import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +43,7 @@ public class QueryUtils {
     }
 
     public static PageRequest buildPageRequest(CommonQueryParam queryParam) {
-        return PageRequest.of(queryParam.getCurrentPage() - 1, queryParam.getPageSize(), Sort.by(queryParam.getSortOrders()));
+        return PageRequest.of(queryParam.getCurrentPage() - 1, queryParam.getPageSize(), Sort.by(queryParam.collectSortOrders()));
     }
 
 }

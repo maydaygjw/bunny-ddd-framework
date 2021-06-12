@@ -9,6 +9,9 @@ spring.datasource.username: sa
 spring.datasource.password: password
 spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
 
+logging.level.org.hibernate.SQL: DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
 #spring.datasource.url: jdbc:mariadb://192.168.50.49:3307/ent
 #spring.datasource.driverClassName: org.mariadb.jdbc.Driver
 #spring.datasource.username: root
@@ -16,6 +19,3 @@ spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
 #spring.jpa.database-platform: org.hibernate.dialect.MariaDBDialect
 
 spring.jpa.hibernate.ddl-auto: create
-
-logging.level.org.hibernate.SQL: DEBUG
-logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE

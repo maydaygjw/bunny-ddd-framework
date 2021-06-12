@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
+import xyz.mayday.tools.bunny.ddd.context.ResponseAdvice;
 import xyz.mayday.tools.bunny.ddd.context.factory.ApplicationContextServiceFactory;
 import xyz.mayday.tools.bunny.ddd.core.converter.DefaultGenericConverter;
 import xyz.mayday.tools.bunny.ddd.core.service.LeafIdGenerator;
@@ -20,7 +21,7 @@ import javax.persistence.EntityManager;
 
 @Configuration
 @ConditionalOnProperty(value = "bunny.ddd.enabled", havingValue = "true")
-@Import(xyz.mayday.tools.bunny.ddd.context.PagingProperties.class)
+@Import({xyz.mayday.tools.bunny.ddd.context.PagingProperties.class, ResponseAdvice.class})
 public class DDDAutoConfiguration {
 
     @Bean

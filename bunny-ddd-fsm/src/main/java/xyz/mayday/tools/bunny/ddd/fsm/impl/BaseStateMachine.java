@@ -1,7 +1,9 @@
 package xyz.mayday.tools.bunny.ddd.fsm.impl;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
+import org.squirrelframework.foundation.fsm.StateMachineLogger;
 import org.squirrelframework.foundation.fsm.impl.AbstractStateMachine;
 import xyz.mayday.tools.bunny.ddd.fsm.action.ActionFactory;
 import xyz.mayday.tools.bunny.ddd.fsm.action.ActionType;
@@ -12,10 +14,13 @@ import xyz.mayday.tools.bunny.ddd.schema.exception.FrameworkExceptionEnum;
 import xyz.mayday.tools.bunny.ddd.schema.service.DistributedLock;
 import xyz.mayday.tools.bunny.ddd.schema.service.ServiceFactory;
 
+import java.util.Objects;
+
 /**
  * @author gejunwen
  */
 @Setter
+@Slf4j
 public class BaseStateMachine<DOMAIN extends FSMSupport<S>, T extends BaseStateMachine<DOMAIN, T, S, E, C>, S extends Enum<S>, E extends Enum<E>, C extends FSMContext<DOMAIN>> extends AbstractStateMachine<T, S, E, C> {
 
     DistributedLock lock;
@@ -26,7 +31,15 @@ public class BaseStateMachine<DOMAIN extends FSMSupport<S>, T extends BaseStateM
 
     public S syncFire(S fromState, E event, C input) {
         if(super.canAccept(event)) {
+            StateMachineLogger fsmLogger = null;
+            if(log.isTraceEnabled()) {
+                fsmLogger = new StateMachineLogger(this);
+                fsmLogger.startLogging();
+            }
             doCheckAndFire(fromState, event, input);
+            if(log.isTraceEnabled()) {
+                Objects.requireNonNull(fsmLogger).stopLogging();
+            }
             return super.getCurrentState();
         } else {
             throw new BusinessException(FrameworkExceptionEnum.FRAMEWORK_EXCEPTION);

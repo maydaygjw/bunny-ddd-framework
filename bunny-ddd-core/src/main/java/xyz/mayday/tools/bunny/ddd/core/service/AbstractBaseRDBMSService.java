@@ -2,6 +2,7 @@ package xyz.mayday.tools.bunny.ddd.core.service;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.javers.core.Javers;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,9 @@ public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<I
 
     @Autowired(required = false)
     IdGenerator<String> idGenerator;
+
+    @Autowired
+    Javers javers;
 
     public AbstractBaseRDBMSService(GenericConverter converter, PrincipalService principalService, PersistenceServiceFactory serviceFactory, IdGenerator<String> idGenerator, GenericConverter genericConverter) {
         super(converter, principalService);

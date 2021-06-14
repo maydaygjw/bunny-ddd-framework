@@ -1,3 +1,15 @@
 bunny.ddd.paging:
   page-size-default: 20
   page-size-limit: 10000
+
+knife4j:
+  enable: true
+  setting:
+    enableSwaggerModels: true
+    swaggerModelName: 领域模型
+  documents:
+    -
+      group: default
+      name: 自定义文档
+      # 某一个文件夹下所有的.md文件
+      locations: classpath:markdown/*

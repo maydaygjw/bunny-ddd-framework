@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
+import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
@@ -21,8 +22,8 @@ public abstract class RedisCacheableServiceImpl<ID, DTO extends AbstractBaseDTO<
     @Inject
     ReactiveRedisOperations<String, DAO> redisOperations;
 
-    public RedisCacheableServiceImpl(GenericConverter converter, ReactiveRedisOperations<String, DAO> redisOperations) {
-        super(converter);
+    public RedisCacheableServiceImpl(GenericConverter converter, ReactiveRedisOperations<String, DAO> redisOperations, PrincipalService principalService) {
+        super(converter, principalService);
         this.redisOperations = redisOperations;
     }
 

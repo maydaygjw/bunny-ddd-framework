@@ -24,7 +24,7 @@ import static xyz.mayday.tools.bunny.ddd.schema.http.ResourceProperties.*;
 @RestController
 @RequestMapping("/todo")
 @RequiredArgsConstructor
-@Api(tags = "待办模块")
+@Api(tags = "待办模块", consumes = "application/json", produces = "application/json")
 public class TodoController extends BaseControllerImpl<Long, TodoVO, TodoQuery, TodoDO> {
 
     final TodoService todoService;
@@ -81,6 +81,12 @@ public class TodoController extends BaseControllerImpl<Long, TodoVO, TodoQuery, 
     @Override
     public TodoVO create(@RequestBody TodoVO vo) {
         return super.create(vo);
+    }
+
+    @PutMapping
+    @Override
+    public TodoVO update(@RequestBody TodoVO vo) {
+        return super.update(vo);
     }
 }
 

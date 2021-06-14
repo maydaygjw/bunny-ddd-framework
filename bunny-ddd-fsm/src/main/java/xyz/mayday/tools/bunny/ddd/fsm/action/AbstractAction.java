@@ -20,13 +20,7 @@ public abstract class AbstractAction<S, E, DOMAIN, C extends FSMContext<DOMAIN>>
 
     @Override
     public final void doAction(S from, S to, E event, FSMContext<DOMAIN> context) {
-        log.trace("Executing {} of context {}, 【{}】", getClass().getSimpleName(), context.getPayload().getClass().getSimpleName(), context.getKey());
-        Object old = SimpleConverter.clone(context.getPayload());
         process(from, to, event, context.getPayload());
-        if(ReflectionUtils.hasProperty(old, "id") && ReflectionUtils.hasProperty(context.getPayload(), "id")) {
-            log.trace("Complete execution of action |{}", DiffUtils.getDiffSummaryString(old, context.getPayload()));
-        }
-
     }
 
     @Override

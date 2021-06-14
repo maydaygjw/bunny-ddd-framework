@@ -1,5 +1,6 @@
 package xyz.mayday.tools.bunny.ddd.core.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -68,11 +69,13 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
         return getService().bulkDeleteById(ids).stream().map(this::convertDtoToVo).collect(Collectors.toList());
     }
 
+    @ApiOperationSupport(ignoreParameters = {"id", "revision", "version", "operationType"})
     @Override
     public VO create(VO vo) {
         return convertDtoToVo(getService().insert(convertVoToDto(vo)));
     }
 
+    @ApiOperationSupport(ignoreParameters = {"revision", "version", "operationType"})
     @Override
     public VO update(VO vo) {
         return convertDtoToVo(getService().update(convertVoToDto(vo)));

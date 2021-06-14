@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class StateMachineFactory {
 
     private static StateMachineFactory instance;

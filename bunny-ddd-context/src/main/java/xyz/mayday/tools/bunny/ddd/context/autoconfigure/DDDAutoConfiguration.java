@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 import xyz.mayday.tools.bunny.ddd.context.ResponseAdvice;
 import xyz.mayday.tools.bunny.ddd.context.factory.ApplicationContextServiceFactory;
+import xyz.mayday.tools.bunny.ddd.context.service.DefaultPrincipalService;
 import xyz.mayday.tools.bunny.ddd.core.converter.DefaultGenericConverter;
 import xyz.mayday.tools.bunny.ddd.core.service.LeafIdGenerator;
+import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
@@ -21,7 +23,7 @@ import javax.persistence.EntityManager;
 
 @Configuration
 @ConditionalOnProperty(value = "bunny.ddd.enabled", havingValue = "true")
-@Import({xyz.mayday.tools.bunny.ddd.context.PagingProperties.class, ResponseAdvice.class})
+@Import({DocumentAutoConfiguration.class, xyz.mayday.tools.bunny.ddd.context.PagingProperties.class, ResponseAdvice.class})
 public class DDDAutoConfiguration {
 
     @Bean
@@ -37,6 +39,11 @@ public class DDDAutoConfiguration {
     @Bean
     PersistenceServiceFactory serviceFactory(EntityManager entityManager, ApplicationContext ctx, JdbcTemplate jdbcTemplate) {
         return new ApplicationContextServiceFactory(entityManager, ctx, jdbcTemplate);
+    }
+
+    @Bean
+    PrincipalService principalService() {
+        return new DefaultPrincipalService();
     }
 
     @Bean

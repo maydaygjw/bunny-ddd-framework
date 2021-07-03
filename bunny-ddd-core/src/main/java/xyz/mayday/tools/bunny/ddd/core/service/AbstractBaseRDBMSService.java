@@ -101,9 +101,10 @@ public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<I
     public DTO insert(DTO dto) {
         DAO dao = convertToDao(dto);
         dao.setId(convertIdType(idGenerator.generate()));
-        dao.setVersion(1);
         auditWhenInsert(dao);
-        return convertToDto(getRepository().save(dao));
+        DAO saved = getRepository().save(dao);
+        javers.commit(saved.getCreatedBy(), saved);
+        return convertToDto(saved);
     }
 
     @Override
@@ -120,7 +121,9 @@ public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<I
         DAO inputOne = convertToDao(dto);
         DAO dbOne = getRepository().findById(dto.getId()).orElseThrow(BusinessException::new);
         BeanUtils.copyProperties(inputOne, dbOne);
+        auditWhenUpdate(dbOne);
         DAO saved = getRepository().save(dbOne);
+        javers.commit(saved.getUpdatedBy(), saved);
         return convertToDto(saved);
     }
 

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import xyz.mayday.tools.bunny.ddd.core.controller.BaseControllerImpl;
 import xyz.mayday.tools.bunny.ddd.sample.domain.TodoDO;
 import xyz.mayday.tools.bunny.ddd.sample.query.TodoQuery;
@@ -13,6 +14,7 @@ import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +89,21 @@ public class TodoController extends BaseControllerImpl<Long, TodoVO, TodoQuery, 
     @Override
     public TodoVO update(@RequestBody TodoVO vo) {
         return super.update(vo);
+    }
+
+    @ApiOperation(value = "多文件MultipartFile上传")
+//    @ApiImplicitParams({@ApiImplicitParam(name = "file[]", value = "文件流对象,接收数组格式", required = true,dataType = "MultipartFile",allowMultiple = true),
+//            @ApiImplicitParam(name = "title", value = "title", required = true)}
+//    )
+    @RequestMapping(value="/uploadMaterial",method = RequestMethod.POST)
+    @ResponseBody
+    public TodoVO updateWithAttachment(@RequestParam(value="file[]",required = true) List<MultipartFile> files,@RequestParam(value = "title") String title, HttpServletRequest request) {
+        return null;
+    }
+
+    @GetMapping("/withMap")
+    public void withMapReturnType() {
+
     }
 }
 

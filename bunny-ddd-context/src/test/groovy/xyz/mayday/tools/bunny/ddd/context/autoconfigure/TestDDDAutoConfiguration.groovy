@@ -47,7 +47,7 @@ class TestDDDAutoConfiguration extends Specification {
         then:
             user.id
             user.version == 1
-            user.createdBy == "ddd-user1"
+            user.createdBy == "MockId"
             found.present
 
     }
@@ -68,7 +68,7 @@ class TestDDDAutoConfiguration extends Specification {
         then:
             found.age == 21
             found.version == 2
-            user.updatedBy == "ddd-user1"
+            user.updatedBy == "MockId"
 
     }
 
@@ -108,7 +108,7 @@ class TestDDDAutoConfiguration extends Specification {
     UserService userServiceBean(GenericConverter converter, PersistenceServiceFactory serviceFactory, IdGenerator<String> idGenerator, GenericConverter genericConverter) {
 
         def principalService = Stub(PrincipalService)
-        principalService.getCurrentUserId() >> "ddd-user1"
+        principalService.getCurrentUserId() >> "MockId"
 
         return new UserService(converter, principalService, serviceFactory, idGenerator, genericConverter)
     }

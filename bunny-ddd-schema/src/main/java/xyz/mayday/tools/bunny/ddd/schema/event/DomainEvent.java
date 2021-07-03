@@ -11,17 +11,19 @@ import java.util.Date;
 @With
 @NoArgsConstructor
 @AllArgsConstructor
-public class DomainEvent<T> {
+public class DomainEvent<DOMAIN> {
 
-    String id;
+    String eventId;
 
     Integer version;
 
-    Date timestamp;
+    Date publishTime;
 
     String source;
 
-    T domain;
+    DOMAIN data;
+
+    DOMAIN lastVersion;
 
     EventTypeEnum eventType;
 

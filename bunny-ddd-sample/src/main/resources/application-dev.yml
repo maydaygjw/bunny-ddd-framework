@@ -8,6 +8,3 @@ spring.datasource.driverClassName: org.mariadb.jdbc.Driver
 spring.datasource.username: root
 spring.datasource.password: Ztou135@$^
 spring.jpa.database-platform: org.hibernate.dialect.MariaDBDialect
-
-javers:
-  newObjectSnapshot: true

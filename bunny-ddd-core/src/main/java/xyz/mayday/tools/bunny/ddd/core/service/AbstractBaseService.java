@@ -9,7 +9,6 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
-import javax.inject.Inject;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -55,6 +54,7 @@ public abstract class AbstractBaseService<ID, DTO, DAO extends BaseDAO<ID>> impl
 
     protected void auditWhenInsert(DAO dao) {
         Date now = new Date();
+        dao.setVersion(1);
         dao.setCreatedBy(principalService.getCurrentUserId());
         dao.setUpdatedBy(principalService.getCurrentUserId());
         dao.setCreatedDate(now);

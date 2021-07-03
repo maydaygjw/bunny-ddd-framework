@@ -2,6 +2,7 @@ package xyz.mayday.tools.bunny.ddd.core.domain;
 
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.javers.core.metamodel.annotation.DiffIgnore;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 
 import javax.persistence.Id;
@@ -19,15 +20,20 @@ public abstract class AbstractBaseDAO<ID> implements BaseDAO<ID> {
     @Id
     ID id;
 
+    @DiffIgnore
     @Version
     Integer version;
 
+    @DiffIgnore
     Date createdDate;
 
+    @DiffIgnore
     Date updatedDate;
 
+    @DiffIgnore
     String createdBy;
 
+    @DiffIgnore
     String updatedBy;
 
     @Override

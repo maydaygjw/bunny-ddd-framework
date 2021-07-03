@@ -5,11 +5,11 @@ import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 public class DefaultPrincipalService implements PrincipalService {
     @Override
     public String getCurrentUserId() {
-        return "mockUserId";
+        return "MockId";
     }
 
     @Override
     public String getCurrentUserName() {
-        return "mockUserName";
+        return "MockName";
     }
 }

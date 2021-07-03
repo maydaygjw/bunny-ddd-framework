@@ -1,12 +1,13 @@
-#spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-#spring.datasource.url: jdbc:postgresql://localhost:5432/bunny
-#spring.datasource.username: postgres
-#spring.datasource.password: example
+spring.datasource.url: jdbc:h2:mem:testdb
+spring.datasource.driverClassName: org.h2.Driver
+spring.datasource.username: sa
+spring.datasource.password: password
+spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled: true
 
-spring.datasource.url: jdbc:mariadb://192.168.50.49:3307/ent
-spring.datasource.driverClassName: org.mariadb.jdbc.Driver
-spring.datasource.username: root
-spring.datasource.password: Ztou135@$^
-spring.jpa.database-platform: org.hibernate.dialect.MariaDBDialect
+#spring.datasource.url: jdbc:mariadb://192.168.50.49:3307/bunny_ddd
+#spring.datasource.driverClassName: org.mariadb.jdbc.Driver
+#spring.datasource.username: root
+#spring.datasource.password: Ztou135@$^
+#spring.jpa.database-platform: org.hibernate.dialect.MariaDBDialect
 
-spring.jpa.hibernate.ddl-auto: create

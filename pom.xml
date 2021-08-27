@@ -17,7 +17,6 @@
         <module>bunny-ddd-fsm</module>
         <module>bunny-ddd-reactive-redis</module>
         <module>bunny-ddd-batch</module>
-<!--        <module>bunny-ddd-sample</module>-->
     </modules>
 
     <properties>

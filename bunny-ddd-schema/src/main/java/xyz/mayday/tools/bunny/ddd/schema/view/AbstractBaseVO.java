@@ -1,4 +1,4 @@
-package xyz.mayday.tools.bunny.ddd.core.domain;
+package xyz.mayday.tools.bunny.ddd.schema.view;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

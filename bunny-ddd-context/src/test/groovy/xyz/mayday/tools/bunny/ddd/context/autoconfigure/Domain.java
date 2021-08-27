@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.envers.Audited;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDAO;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
-import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseVO;
+import xyz.mayday.tools.bunny.ddd.schema.view.AbstractBaseVO;
 
 import javax.persistence.Entity;
 

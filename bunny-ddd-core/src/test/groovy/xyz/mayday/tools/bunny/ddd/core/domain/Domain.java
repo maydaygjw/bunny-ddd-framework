@@ -2,6 +2,7 @@ package xyz.mayday.tools.bunny.ddd.core.domain;
 
 import lombok.*;
 import org.hibernate.envers.Audited;
+import xyz.mayday.tools.bunny.ddd.schema.view.AbstractBaseVO;
 
 import javax.persistence.Entity;
 

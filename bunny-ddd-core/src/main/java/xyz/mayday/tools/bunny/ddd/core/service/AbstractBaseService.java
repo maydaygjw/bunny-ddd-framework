@@ -3,6 +3,7 @@ package xyz.mayday.tools.bunny.ddd.core.service;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import xyz.mayday.tools.bunny.ddd.core.constant.GenericTypeIndexConstant;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
@@ -28,15 +29,15 @@ public abstract class AbstractBaseService<ID, DTO, DAO extends BaseDAO<ID>> impl
     }
 
     public final Class<ID> getIdType() {
-        return ReflectionUtils.getGenericTypeOfSuperClass(this, 0);
+        return ReflectionUtils.getGenericTypeOfSuperClass(this, GenericTypeIndexConstant.ServiceTypeIndex.IDX_ID);
     }
 
     public final Class<DTO> getDtoClass() {
-        return ReflectionUtils.getGenericTypeOfSuperClass(this, 1);
+        return ReflectionUtils.getGenericTypeOfSuperClass(this, GenericTypeIndexConstant.ServiceTypeIndex.IDX_DTO);
     }
 
     public final Class<DAO> getDaoClass() {
-        return ReflectionUtils.getGenericTypeOfSuperClass(this, 2);
+        return ReflectionUtils.getGenericTypeOfSuperClass(this, GenericTypeIndexConstant.ServiceTypeIndex.IDX_DAO);
     }
 
     @Override

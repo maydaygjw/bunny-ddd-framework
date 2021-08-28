@@ -33,6 +33,6 @@ public class ReflectionUtils {
 
     @SneakyThrows
     public static <T> boolean hasProperty(T o, String fieldName) {
-        return Arrays.stream(o.getClass().getDeclaredFields()).filter(field -> field.getName().equals(fieldName)).findAny().isPresent();
+        return Arrays.stream(o.getClass().getDeclaredFields()).anyMatch(field -> field.getName().equals(fieldName));
     }
 }

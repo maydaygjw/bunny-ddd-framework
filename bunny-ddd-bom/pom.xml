@@ -6,7 +6,7 @@
     <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Bunny DDD - Using the BOM for dependency management</name>
+    <name>Bunny DDD - BOM</name>
 
     <properties>
         <spring.boot.version>2.4.3</spring.boot.version>

@@ -1,4 +1,4 @@
-package utils
+package xyz.mayday.tools.bunny.ddd.utils
 
 
 import spock.lang.Specification

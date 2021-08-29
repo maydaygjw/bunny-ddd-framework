@@ -1,21 +1,21 @@
 package xyz.mayday.tools.bunny.ddd.core.domain;
 
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.javers.core.metamodel.annotation.DiffIgnore;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
-
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
-import java.util.Date;
 
 /**
  * @author gejunwen
  */
 @Data
 @MappedSuperclass
-public abstract class AbstractBaseDAO<ID> implements BaseDAO<ID> {
+public abstract class AbstractBaseDAO<ID extends Serializable> implements BaseDAO<ID> {
 
     @Id
     ID id;

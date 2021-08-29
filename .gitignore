@@ -3,10 +3,16 @@
 .springBeans
 .settings/
 target/
+*.factorypath
 
-#IntelliJ Stuff
+### IntelliJ IDEA ###
 .idea
+*.iws
 *.iml
+*.ipr
+
+### VS Code ###
+.vscode/
 
 #Geode Stuff
 *.log

@@ -1,5 +1,12 @@
 package xyz.mayday.tools.bunny.ddd.core.service;
 
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.javers.core.Javers;
@@ -22,20 +29,13 @@ import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * @author gejunwen
  */
 
 @NoArgsConstructor
 @Setter
-public abstract class AbstractBaseRDBMSService<ID, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> {
+public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> {
 
     @Autowired(required = false)
     PersistenceServiceFactory serviceFactory;

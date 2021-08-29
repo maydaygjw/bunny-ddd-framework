@@ -1,0 +1,4 @@
+spring.profiles.group.local[0]: ddd
+spring.profiles.group.dev[0]: ddd
+
+

@@ -7,7 +7,7 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bunny-ddd-reactive-redis</artifactId>
+    <artifactId>bunny-ddd-reactive-r2dbc</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,7 +15,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
 
-    <name>Bunny DDD - Reactive Redis</name>
+    <name>Bunny DDD - Reactive R2DBC</name>
 
     <dependencies>
         <dependency>
@@ -31,10 +31,6 @@
             <groupId>xyz.mayday.tools</groupId>
             <artifactId>bunny-ddd-core</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
         </dependency>
     </dependencies>
 

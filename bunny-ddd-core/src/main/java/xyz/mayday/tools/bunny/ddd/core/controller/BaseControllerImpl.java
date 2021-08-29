@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.CollectionUtils;
+import xyz.mayday.tools.bunny.ddd.core.constant.GenericTypeIndexConstant;
 import xyz.mayday.tools.bunny.ddd.schema.controller.BaseController;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
@@ -114,11 +115,11 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
     }
 
     protected Class<VO> getVOClass() {
-        return ReflectionUtils.getGenericTypeOfSuperClass(this, 1);
+        return ReflectionUtils.getGenericTypeOfSuperClass(this, GenericTypeIndexConstant.ControllerTypeIndex.IDX_VO);
     }
 
     protected Class<DTO> getDTOClass() {
-        return ReflectionUtils.getGenericTypeOfSuperClass(this, 3);
+        return ReflectionUtils.getGenericTypeOfSuperClass(this, GenericTypeIndexConstant.ControllerTypeIndex.IDX_DTO);
     }
 
 

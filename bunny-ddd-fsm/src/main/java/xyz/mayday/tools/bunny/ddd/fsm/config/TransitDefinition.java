@@ -11,17 +11,17 @@ import lombok.With;
 @AllArgsConstructor
 public class TransitDefinition {
 
-    String from;
+  String from;
 
-    String to;
+  String to;
 
-    String on;
+  String on;
 
-    String whenMvel;
+  String whenMvel;
 
-    String comment;
+  String comment;
 
-    Boolean implicit;
+  Boolean implicit;
 
-    Boolean enabled;
+  Boolean enabled;
 }

@@ -13,10 +13,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class JobExecutionVO {
 
-    String jobName;
+  String jobName;
 
-    Date initialTime;
+  Date initialTime;
 
-    String batchStatus;
-
+  String batchStatus;
 }

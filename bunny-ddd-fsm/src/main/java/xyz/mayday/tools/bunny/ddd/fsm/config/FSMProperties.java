@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class FSMProperties {
 
-    String enabled;
+  String enabled;
 
-    String basePackages;
+  String basePackages;
 }

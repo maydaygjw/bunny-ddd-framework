@@ -23,40 +23,41 @@ import xyz.mayday.tools.bunny.ddd.schema.http.Response;
 
 import java.util.Date;
 
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 @RestController
 public class BatchController {
 
-    @Autowired
-    JobLauncher jobLauncher;
+  @Autowired JobLauncher jobLauncher;
 
-    @Autowired
-    JobExplorer jobExplorer;
+  @Autowired JobExplorer jobExplorer;
 
-    @Autowired
-    JobRepository jobRepository;
+  @Autowired JobRepository jobRepository;
 
-    @Autowired
-    JobBuilderFactory jobBuilderFactory;
+  @Autowired JobBuilderFactory jobBuilderFactory;
 
-    @Autowired
-    BatchTemplate batchTemplate;
+  @Autowired BatchTemplate batchTemplate;
 
-    @Autowired
-    Flow mainFlow;
+  @Autowired Flow mainFlow;
 
-    @GetMapping("_queryJob")
-    Response<JobExecutionVO> queryJob(Date initialTime) {
-        JobExecution jobExecution = jobRepository.getLastJobExecution(batchTemplate.getJobName(), new JobParameters(ImmutableMap.of("initialTime", new JobParameter(initialTime))));
-        return Response.success(new JobExecutionVO().withJobName(jobExecution.getJobInstance().getJobName()).withBatchStatus(jobExecution.getStatus().name()));
-    }
+  @GetMapping("_queryJob")
+  Response<JobExecutionVO> queryJob(Date initialTime) {
+    JobExecution jobExecution =
+        jobRepository.getLastJobExecution(
+            batchTemplate.getJobName(),
+            new JobParameters(ImmutableMap.of("initialTime", new JobParameter(initialTime))));
+    return Response.success(
+        new JobExecutionVO()
+            .withJobName(jobExecution.getJobInstance().getJobName())
+            .withBatchStatus(jobExecution.getStatus().name()));
+  }
 
-    @PostMapping("_startJob")
-    Response<Void> startJob(String jobName, Date initialTime) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
-        jobLauncher.run(jobBuilderFactory.get(batchTemplate.getJobName()).start(mainFlow).end().build(), new JobParameters(ImmutableMap.of("initialTime", new JobParameter(initialTime))));
-        return Response.success();
-    }
-
+  @PostMapping("_startJob")
+  Response<Void> startJob(String jobName, Date initialTime)
+      throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
+          JobRestartException, JobInstanceAlreadyCompleteException {
+    jobLauncher.run(
+        jobBuilderFactory.get(batchTemplate.getJobName()).start(mainFlow).end().build(),
+        new JobParameters(ImmutableMap.of("initialTime", new JobParameter(initialTime))));
+    return Response.success();
+  }
 }

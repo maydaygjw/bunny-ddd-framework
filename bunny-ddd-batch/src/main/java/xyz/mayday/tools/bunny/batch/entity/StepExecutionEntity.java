@@ -6,17 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * @author gejunwen
- */
-
+/** @author gejunwen */
 @Data
 @Entity
 @Table(name = "batch_step_execution")
 public class StepExecutionEntity {
 
-    @Id
-    Long id;
+  @Id Long id;
 
-    String stepName;
+  String stepName;
 }

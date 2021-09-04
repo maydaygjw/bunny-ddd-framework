@@ -5,13 +5,14 @@ import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 
 public @interface QueryComparator {
 
-    String key() default "";
+  String key() default "";
 
-    String[] compareWith() default "";
+  String[] compareWith() default "";
 
-    SearchOperation operation() default SearchOperation.EQUALS;
+  SearchOperation operation() default SearchOperation.EQUALS;
 
-    SearchConjunction conjunction() default SearchConjunction.AND;
+  SearchConjunction conjunction() default SearchConjunction.AND;
 
-    SearchConjunction.ConjunctionGroup conjunctionGroup() default SearchConjunction.ConjunctionGroup.DEFAULT;
+  SearchConjunction.ConjunctionGroup conjunctionGroup() default
+      SearchConjunction.ConjunctionGroup.DEFAULT;
 }

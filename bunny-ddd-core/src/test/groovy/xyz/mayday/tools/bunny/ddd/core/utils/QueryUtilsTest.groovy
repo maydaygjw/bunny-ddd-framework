@@ -13,16 +13,16 @@ class QueryUtilsTest extends Specification {
     def "test for buildSpecification"() {
 
         given:
-            def userDTO = new Domain.UserDTO();
-            userDTO.with {userName = "Bill"}
+        def userDTO = new Domain.UserDTO();
+        userDTO.with { userName = "Bill" }
         when:
-            def queryCondition = (QueryCondition)QueryUtils.buildSpecification(userDTO)
+        def queryCondition = (QueryCondition) QueryUtils.buildSpecification(userDTO)
         then:
-            queryCondition.searchCriteriaList.size() == 1
-            queryCondition.searchCriteriaList[0].key == "userName"
-            queryCondition.searchCriteriaList[0].getValue() == "Bill"
-            queryCondition.searchCriteriaList[0].getSearchConjunction() == SearchConjunction.AND
-            queryCondition.searchCriteriaList[0].getSearchOperation() == SearchOperation.EQUALS
+        queryCondition.searchCriteriaList.size() == 1
+        queryCondition.searchCriteriaList[0].key == "userName"
+        queryCondition.searchCriteriaList[0].getValue() == "Bill"
+        queryCondition.searchCriteriaList[0].getSearchConjunction() == SearchConjunction.AND
+        queryCondition.searchCriteriaList[0].getSearchOperation() == SearchOperation.EQUALS
     }
 
     def "test for buildFieldCriteria"() {
@@ -31,9 +31,9 @@ class QueryUtilsTest extends Specification {
 
     def "test for buildPageRequest"() {
         when:
-            def request = QueryUtils.buildPageRequest(new CommonQueryParam().withCurrentPage(5).withPageSize(30))
+        def request = QueryUtils.buildPageRequest(new CommonQueryParam().withCurrentPage(5).withPageSize(30))
         then:
-            request.getPageSize() == 30
-            request.getPageNumber() == 4
+        request.getPageSize() == 30
+        request.getPageNumber() == 4
     }
 }

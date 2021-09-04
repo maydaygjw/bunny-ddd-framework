@@ -8,19 +8,19 @@ import org.springframework.batch.item.ItemWriter;
 
 public interface BatchTemplate<I, O> {
 
-    String getJobCategory();
+  String getJobCategory();
 
-    String getJobName();
+  String getJobName();
 
-    int getConcurrency();
+  int getConcurrency();
 
-    Partitioner getPartitioner();
+  Partitioner getPartitioner();
 
-    Tasklet getPreDefinedTask();
+  Tasklet getPreDefinedTask();
 
-    ItemReader<I> getReader();
+  ItemReader<I> getReader();
 
-    ItemWriter<O> getWriter();
+  ItemWriter<O> getWriter();
 
-    ItemProcessor<I, O> getProcessor();
+  ItemProcessor<I, O> getProcessor();
 }

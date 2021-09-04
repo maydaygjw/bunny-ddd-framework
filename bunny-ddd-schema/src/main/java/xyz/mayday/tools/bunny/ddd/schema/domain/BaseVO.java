@@ -1,12 +1,10 @@
 package xyz.mayday.tools.bunny.ddd.schema.domain;
 
-
 public interface BaseVO<ID> {
 
-    ID getId();
+  ID getId();
 
-    Integer getVersion();
+  Integer getVersion();
 
-    Integer getRevision();
-
+  Integer getRevision();
 }

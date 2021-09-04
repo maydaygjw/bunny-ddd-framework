@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface IdGenerator<ID> {
 
-    ID generate();
+  ID generate();
 
-    List<ID> bulkGenerate(int size);
+  List<ID> bulkGenerate(int size);
 }

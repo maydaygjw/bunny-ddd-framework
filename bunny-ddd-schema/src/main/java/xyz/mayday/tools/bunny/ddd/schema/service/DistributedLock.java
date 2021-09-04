@@ -1,9 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.schema.service;
 
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 public interface DistributedLock {
 
-    void lock(String lockKey);
+  void lock(String lockKey);
 }

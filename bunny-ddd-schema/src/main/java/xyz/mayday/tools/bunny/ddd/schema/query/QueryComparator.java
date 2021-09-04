@@ -2,17 +2,15 @@ package xyz.mayday.tools.bunny.ddd.schema.query;
 
 import lombok.Data;
 
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 @Data
 public class QueryComparator {
 
-    String key;
+  String key;
 
-    String compareWith;
+  String compareWith;
 
-    SearchOperation operation;
+  SearchOperation operation;
 
-    SearchConjunction conjunction;
+  SearchConjunction conjunction;
 }

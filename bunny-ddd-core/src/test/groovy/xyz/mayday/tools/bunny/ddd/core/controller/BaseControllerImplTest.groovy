@@ -10,21 +10,21 @@ class BaseControllerImplTest extends Specification {
 
     def "test for applyQueryRestriction"() {
         given:
-            def genericConverter = Mock(GenericConverter)
-            def pagingConfigure = Mock(PagingParameters)
+        def genericConverter = Mock(GenericConverter)
+        def pagingConfigure = Mock(PagingParameters)
 
-            pagingConfigure.defaultPageSize >> 30
-            pagingConfigure.pageSizeLimit >> 10000
+        pagingConfigure.defaultPageSize >> 30
+        pagingConfigure.pageSizeLimit >> 10000
 
-            def controller = new TestBaseControllerImpl(genericConverter, pagingConfigure)
-            def commonQueryParam = new CommonQueryParam()
+        def controller = new TestBaseControllerImpl(genericConverter, pagingConfigure)
+        def commonQueryParam = new CommonQueryParam()
         when:
-            controller.applyQueryRestriction(commonQueryParam)
+        controller.applyQueryRestriction(commonQueryParam)
         then:
-            commonQueryParam.currentPage == 1
-            commonQueryParam.pageSize == 30
-            commonQueryParam.sortField == ["updatedDate"]
-            commonQueryParam.sortOrder == ["DESC"]
+        commonQueryParam.currentPage == 1
+        commonQueryParam.pageSize == 30
+        commonQueryParam.sortField == ["updatedDate"]
+        commonQueryParam.sortOrder == ["DESC"]
     }
 
     static class TestBaseControllerImpl extends BaseControllerImpl {

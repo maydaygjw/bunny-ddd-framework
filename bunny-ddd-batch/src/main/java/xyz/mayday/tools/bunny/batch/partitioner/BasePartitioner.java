@@ -8,10 +8,10 @@ import java.util.Map;
 
 public abstract class BasePartitioner implements Partitioner {
 
-    @Override
-    public Map<String, ExecutionContext> partition(int gridSize) {
-        return null;
-    }
+  @Override
+  public Map<String, ExecutionContext> partition(int gridSize) {
+    return null;
+  }
 
-    abstract List<String> partition();
+  abstract List<String> partition();
 }

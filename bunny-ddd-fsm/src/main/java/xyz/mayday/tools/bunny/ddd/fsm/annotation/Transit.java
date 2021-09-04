@@ -6,32 +6,28 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.TYPE;
 
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 @Target(TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Transit {
 
-    String[] from();
+  String[] from();
 
-    String to() default "";
+  String to() default "";
 
-    String on();
+  String on();
 
-    String whenMvel() default "";
+  String whenMvel() default "";
 
-    String comment() default "";
+  String comment() default "";
 
-    boolean enabled() default true;
+  boolean enabled() default true;
 
-    boolean implicit() default false;       //if implicit, will hide in generated chart
+  boolean implicit() default false; // if implicit, will hide in generated chart
 
-    @Target(TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface Transitions {
-        Transit[] values();
-    }
+  @Target(TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface Transitions {
+    Transit[] values();
+  }
 }
-
-

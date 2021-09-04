@@ -9,17 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BaseExceptionEnum {
 
-    String code;
-    String message;
-    Object payload;
+  String code;
+  String message;
+  Object payload;
 
-    public static BaseExceptionEnum of(String code, String message, Object payload) {
-        return new BaseExceptionEnum(code, message, payload);
-    }
+  public static BaseExceptionEnum of(String code, String message, Object payload) {
+    return new BaseExceptionEnum(code, message, payload);
+  }
 
-    public static BaseExceptionEnum of(String code, String message) {
-        return of(code, message, null);
-    }
-
-
+  public static BaseExceptionEnum of(String code, String message) {
+    return of(code, message, null);
+  }
 }

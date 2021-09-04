@@ -1,7 +1,6 @@
 package xyz.mayday.tools.bunny.ddd.fsm;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMSupport;
 
@@ -13,15 +12,15 @@ import xyz.mayday.tools.bunny.ddd.fsm.context.FSMSupport;
 @Builder
 public class TodoDTO extends AbstractBaseDTO<String> implements FSMSupport<TodoState> {
 
-    TodoState todoState;
+  TodoState todoState;
 
-    @Override
-    public TodoState getState() {
-        return todoState;
-    }
+  @Override
+  public TodoState getState() {
+    return todoState;
+  }
 
-    @Override
-    public void setState(TodoState state) {
-        setTodoState(state);
-    }
+  @Override
+  public void setState(TodoState state) {
+    setTodoState(state);
+  }
 }

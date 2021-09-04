@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class PagingProperties {
 
-    Integer pageSizeDefault;
+  Integer pageSizeDefault;
 
-    Integer pageSizeLimit;
+  Integer pageSizeLimit;
 }

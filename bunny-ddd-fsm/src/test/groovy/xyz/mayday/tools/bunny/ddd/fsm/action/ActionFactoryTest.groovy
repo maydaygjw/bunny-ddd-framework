@@ -24,9 +24,9 @@ class ActionFactoryTest extends Specification {
 
     def "FetchActions"() {
         when:
-            def actions = actionFactory.fetchActions(TodoState.INIT, TodoEvent.START, ActionType.PRE)
+        def actions = actionFactory.fetchActions(TodoState.INIT, TodoEvent.START, ActionType.PRE)
         then:
-            actions.size() == 1
+        actions.size() == 1
 
     }
 }

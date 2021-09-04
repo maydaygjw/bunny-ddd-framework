@@ -8,16 +8,16 @@ class DefaultGenericConverterTest extends Specification {
 
     def "basic conversion"() {
         given:
-            def mapper = new ObjectMapper()
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            def converter = new DefaultGenericConverter(mapper)
-            def userVO = new UserVO("1", "Bill", 1, 1)
-            userVO.subs = [new UserSubVO("Gates")]
+        def mapper = new ObjectMapper()
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        def converter = new DefaultGenericConverter(mapper)
+        def userVO = new UserVO("1", "Bill", 1, 1)
+        userVO.subs = [new UserSubVO("Gates")]
         when:
-            def query = converter.convert(userVO, UserQuery.class)
+        def query = converter.convert(userVO, UserQuery.class)
         then:
-            query.name == "Bill"
-            query.subs[0].name == "Gates"
+        query.name == "Bill"
+        query.subs[0].name == "Gates"
     }
 
     static class UserVO {

@@ -8,15 +8,15 @@ class DiffUtilsTest extends Specification {
 
     def "test for getValueChanges"() {
         given:
-            def person1 = new Person(1, "Bob")
-            def person2 = new Person(1, "Harie")
+        def person1 = new Person(1, "Bob")
+        def person2 = new Person(1, "Harie")
         when:
-            def changes = DiffUtils.getValueChanges(person1, person2)
+        def changes = DiffUtils.getValueChanges(person1, person2)
         then:
-            changes.size() == 1
-            changes.get(0).getPropertyName() == "name"
-            changes.get(0).left == "Bob"
-            changes.get(0).right == "Harie"
+        changes.size() == 1
+        changes.get(0).getPropertyName() == "name"
+        changes.get(0).left == "Bob"
+        changes.get(0).right == "Harie"
     }
 
     static class Person {

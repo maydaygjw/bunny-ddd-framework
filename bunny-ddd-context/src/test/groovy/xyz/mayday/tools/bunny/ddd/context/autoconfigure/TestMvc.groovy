@@ -14,7 +14,8 @@ class TestMvc extends Specification {
     UserController userController
 
     def "test for startup"() {
-        expect: userController
+        expect:
+        userController
     }
 
     @RestController

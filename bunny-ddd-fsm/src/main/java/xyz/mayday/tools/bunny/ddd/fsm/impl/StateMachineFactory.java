@@ -7,25 +7,25 @@ import java.util.Objects;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class StateMachineFactory {
 
-    private static StateMachineFactory instance;
+  private static StateMachineFactory instance;
 
-    public static StateMachineFactory getInstance() {
-        if(Objects.isNull(instance)) {
-            instance = new StateMachineFactory();
-            instance.builderWrappers = new HashMap<>(5);
-        }
-
-        return instance;
+  public static StateMachineFactory getInstance() {
+    if (Objects.isNull(instance)) {
+      instance = new StateMachineFactory();
+      instance.builderWrappers = new HashMap<>(5);
     }
 
-    public void addStateMachine(String smId, StateMachineBuilderWrapper wrapper) {
-        builderWrappers.put(smId, wrapper);
-    }
+    return instance;
+  }
 
-    Map<String, StateMachineBuilderWrapper> builderWrappers;
+  public void addStateMachine(String smId, StateMachineBuilderWrapper wrapper) {
+    builderWrappers.put(smId, wrapper);
+  }
 
-    public <S extends Enum<S>> BaseStateMachine getStateMachineInstance(String machineId, S initialState) {
-        return builderWrappers.get(machineId).getStateMachineInstance(initialState);
-    }
+  Map<String, StateMachineBuilderWrapper> builderWrappers;
 
+  public <S extends Enum<S>> BaseStateMachine getStateMachineInstance(
+      String machineId, S initialState) {
+    return builderWrappers.get(machineId).getStateMachineInstance(initialState);
+  }
 }

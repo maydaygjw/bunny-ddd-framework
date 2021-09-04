@@ -4,8 +4,7 @@ import java.util.List;
 
 public interface ActionSupport<S> {
 
-    S getState();
+  S getState();
 
-    List<Action> getActions();
-
+  List<Action> getActions();
 }

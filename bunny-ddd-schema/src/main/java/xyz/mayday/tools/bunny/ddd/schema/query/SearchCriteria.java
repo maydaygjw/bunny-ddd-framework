@@ -11,26 +11,26 @@ import java.util.List;
 @NoArgsConstructor
 public class SearchCriteria<T> {
 
-    List<String> keys;
+  List<String> keys;
 
-    List<T> values;
+  List<T> values;
 
-    SearchOperation searchOperation;
+  SearchOperation searchOperation;
 
-    SearchConjunction searchConjunction;
+  SearchConjunction searchConjunction;
 
-    public SearchCriteria(List<String> keys, List<T> values) {
-        this.keys = keys;
-        this.values = values;
-        this.searchOperation = SearchOperation.EQUALS;
-        this.searchConjunction = SearchConjunction.AND;
-    }
+  public SearchCriteria(List<String> keys, List<T> values) {
+    this.keys = keys;
+    this.values = values;
+    this.searchOperation = SearchOperation.EQUALS;
+    this.searchConjunction = SearchConjunction.AND;
+  }
 
-    public String getKey() {
-        return keys.get(0);
-    }
+  public String getKey() {
+    return keys.get(0);
+  }
 
-    public T getValue() {
-        return values.get(0);
-    }
+  public T getValue() {
+    return values.get(0);
+  }
 }

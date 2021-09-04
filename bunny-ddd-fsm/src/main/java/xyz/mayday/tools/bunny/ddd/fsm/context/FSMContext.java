@@ -2,28 +2,24 @@ package xyz.mayday.tools.bunny.ddd.fsm.context;
 
 import lombok.Data;
 
-/**
- * @author gejunwen
- */
-
+/** @author gejunwen */
 @Data
 public abstract class FSMContext<T> {
 
-    public FSMContext(String key, T payload) {
-        this.key = key;
-        this.payload = payload;
-    }
+  public FSMContext(String key, T payload) {
+    this.key = key;
+    this.payload = payload;
+  }
 
-    public FSMContext(T payload) {
-        this.payload = payload;
-    }
+  public FSMContext(T payload) {
+    this.payload = payload;
+  }
 
-    String key;
+  String key;
 
-    T payload;
+  T payload;
 
-    T current;
+  T current;
 
-    Throwable throwable;
-
+  Throwable throwable;
 }

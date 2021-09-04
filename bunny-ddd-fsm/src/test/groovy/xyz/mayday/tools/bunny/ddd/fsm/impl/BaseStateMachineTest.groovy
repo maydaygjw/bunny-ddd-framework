@@ -39,11 +39,11 @@ class BaseStateMachineTest extends Specification {
 
     def "test for SyncFire"() {
         given:
-            def instance = wrapper.getStateMachineInstance(TodoState.INIT)
+        def instance = wrapper.getStateMachineInstance(TodoState.INIT)
         when:
-            def afterState = instance.syncFire(TodoState.INIT, TodoEvent.START, new TodoContext(null, new TodoDTO()))
+        def afterState = instance.syncFire(TodoState.INIT, TodoEvent.START, new TodoContext(null, new TodoDTO()))
         then:
-            afterState == TodoState.DOING
+        afterState == TodoState.DOING
     }
 
 }

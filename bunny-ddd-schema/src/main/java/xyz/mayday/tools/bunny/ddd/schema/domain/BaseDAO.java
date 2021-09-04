@@ -6,30 +6,30 @@ import java.util.Date;
 
 public interface BaseDAO<ID> {
 
-    ID getId();
+  ID getId();
 
-    Integer getVersion();
+  Integer getVersion();
 
-    Date getCreatedDate();
+  Date getCreatedDate();
 
-    Date getUpdatedDate();
+  Date getUpdatedDate();
 
-    String getCreatedBy();
+  String getCreatedBy();
 
-    String getUpdatedBy();
+  String getUpdatedBy();
 
-    void setId(ID id);
+  void setId(ID id);
 
-    void setVersion(Integer version);
+  void setVersion(Integer version);
 
-    void setCreatedBy(String createdBy);
+  void setCreatedBy(String createdBy);
 
-    void setUpdatedBy(String updatedBy);
+  void setUpdatedBy(String updatedBy);
 
-    void setCreatedDate(Date createdDate);
+  void setCreatedDate(Date createdDate);
 
-    void setUpdatedDate(Date updatedDate);
+  void setUpdatedDate(Date updatedDate);
 
-    @JsonIgnore
-    String getDomainName();
+  @JsonIgnore
+  String getDomainName();
 }

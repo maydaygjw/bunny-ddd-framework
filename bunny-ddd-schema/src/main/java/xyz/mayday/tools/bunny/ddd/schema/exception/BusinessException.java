@@ -11,24 +11,24 @@ import static xyz.mayday.tools.bunny.ddd.schema.exception.FrameworkExceptionEnum
 @AllArgsConstructor
 public class BusinessException extends RuntimeException {
 
-    String code;
+  String code;
 
-    String message;
+  String message;
 
-    Object payload;
+  Object payload;
 
-    public BusinessException(String code, String message, Object payload, Throwable cause) {
-        super(cause);
-    }
+  public BusinessException(String code, String message, Object payload, Throwable cause) {
+    super(cause);
+  }
 
-    public BusinessException(BaseExceptionEnum exceptionEnum) {
-        super();
-        this.code = exceptionEnum.code;
-        this.message = exceptionEnum.message;
-        this.payload = exceptionEnum.payload;
-    }
+  public BusinessException(BaseExceptionEnum exceptionEnum) {
+    super();
+    this.code = exceptionEnum.code;
+    this.message = exceptionEnum.message;
+    this.payload = exceptionEnum.payload;
+  }
 
-    public BusinessException() {
-        this(FRAMEWORK_EXCEPTION);
-    }
+  public BusinessException() {
+    this(FRAMEWORK_EXCEPTION);
+  }
 }

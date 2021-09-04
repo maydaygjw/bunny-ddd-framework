@@ -1,40 +1,38 @@
 package xyz.mayday.tools.bunny.ddd.fsm.action;
 
 import lombok.extern.slf4j.Slf4j;
-import xyz.mayday.tools.bunny.ddd.core.converter.SimpleConverter;
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMContext;
-import xyz.mayday.tools.bunny.ddd.utils.DiffUtils;
-import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 import java.util.Set;
 
 @Slf4j
-public abstract class AbstractAction<S, E, DOMAIN, C extends FSMContext<DOMAIN>> implements Action<S, E, DOMAIN, C>{
+public abstract class AbstractAction<S, E, DOMAIN, C extends FSMContext<DOMAIN>>
+    implements Action<S, E, DOMAIN, C> {
 
-    public abstract void process(S from, S to, E event, DOMAIN payload);
+  public abstract void process(S from, S to, E event, DOMAIN payload);
 
-    @Override
-    public boolean predict(S from, S to, E event, FSMContext<DOMAIN> payload) {
-        return true;
-    }
+  @Override
+  public boolean predict(S from, S to, E event, FSMContext<DOMAIN> payload) {
+    return true;
+  }
 
-    @Override
-    public final void doAction(S from, S to, E event, FSMContext<DOMAIN> context) {
-        process(from, to, event, context.getPayload());
-    }
+  @Override
+  public final void doAction(S from, S to, E event, FSMContext<DOMAIN> context) {
+    process(from, to, event, context.getPayload());
+  }
 
-    @Override
-    public int order() {
-        return 10;
-    }
+  @Override
+  public int order() {
+    return 10;
+  }
 
-    @Override
-    public ActionType getActionType() {
-        return ActionType.PRE;
-    }
+  @Override
+  public ActionType getActionType() {
+    return ActionType.PRE;
+  }
 
-    @Override
-    public Set<ActionCondition<S, E>> getMatchedConditions() {
-        return null;
-    }
+  @Override
+  public Set<ActionCondition<S, E>> getMatchedConditions() {
+    return null;
+  }
 }

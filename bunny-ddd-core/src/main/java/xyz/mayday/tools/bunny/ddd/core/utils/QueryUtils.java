@@ -16,38 +16,49 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 public class QueryUtils {
-    
-    public static <ID, DTO extends BaseDomain<ID>, DAO extends BaseDAO<ID>> Specification<DAO> buildSpecification(DTO dto) {
-        List<SearchCriteria<?>> fieldSearchCriteriaList = buildFieldCriteria(dto);
-        List<SearchCriteria<?>> multipleValuesSearchCriteria = buildMultipleValuesCriteria(dto);
 
-        fieldSearchCriteriaList.addAll(multipleValuesSearchCriteria);
-        
-        return new QuerySpecification<>(fieldSearchCriteriaList);
-    }
+  public static <ID, DTO extends BaseDomain<ID>, DAO extends BaseDAO<ID>>
+      Specification<DAO> buildSpecification(DTO dto) {
+    List<SearchCriteria<?>> fieldSearchCriteriaList = buildFieldCriteria(dto);
+    List<SearchCriteria<?>> multipleValuesSearchCriteria = buildMultipleValuesCriteria(dto);
 
+    fieldSearchCriteriaList.addAll(multipleValuesSearchCriteria);
 
-    private static <ID, DTO extends BaseDomain<ID>> List<SearchCriteria<?>> buildMultipleValuesCriteria(DTO dto) {
-        return Collections.emptyList();
-    }
+    return new QuerySpecification<>(fieldSearchCriteriaList);
+  }
 
-    private static <ID, DTO extends BaseDomain<ID>> List<SearchCriteria<?>> buildFieldCriteria(DTO dto) {
+  private static <ID, DTO extends BaseDomain<ID>>
+      List<SearchCriteria<?>> buildMultipleValuesCriteria(DTO dto) {
+    return Collections.emptyList();
+  }
 
-        List<SearchCriteria<?>> searchCriteria = new ArrayList<>();
+  private static <ID, DTO extends BaseDomain<ID>> List<SearchCriteria<?>> buildFieldCriteria(
+      DTO dto) {
 
-        ReflectionUtils.doWithFields(dto.getClass(),
-                field -> searchCriteria.add(new SearchCriteria<>(Collections.singletonList(field.getName()), Collections.singletonList(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)))),
-                field -> !Modifier.isStatic(field.getModifiers()) && Objects.nonNull(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)));
+    List<SearchCriteria<?>> searchCriteria = new ArrayList<>();
 
-        return searchCriteria;
-    }
+    ReflectionUtils.doWithFields(
+        dto.getClass(),
+        field ->
+            searchCriteria.add(
+                new SearchCriteria<>(
+                    Collections.singletonList(field.getName()),
+                    Collections.singletonList(
+                        xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)))),
+        field ->
+            !Modifier.isStatic(field.getModifiers())
+                && Objects.nonNull(
+                    xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)));
 
-    public static PageRequest buildPageRequest(CommonQueryParam queryParam) {
-        return PageRequest.of(queryParam.getCurrentPage() - 1, queryParam.getPageSize(), Sort.by(queryParam.collectSortOrders()));
-    }
+    return searchCriteria;
+  }
 
+  public static PageRequest buildPageRequest(CommonQueryParam queryParam) {
+    return PageRequest.of(
+        queryParam.getCurrentPage() - 1,
+        queryParam.getPageSize(),
+        Sort.by(queryParam.collectSortOrders()));
+  }
 }

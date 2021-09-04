@@ -18,29 +18,33 @@ import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 @EnableSwagger2WebMvc
 public class DocumentConfiguration {
 
-    final OpenApiExtensionResolver openApiExtensionResolver;
+  final OpenApiExtensionResolver openApiExtensionResolver;
 
-    final TypeResolver typeResolver;
+  final TypeResolver typeResolver;
 
-    @Bean(value = "defaultApi2")
-    public Docket defaultApi2() {
+  @Bean(value = "defaultApi2")
+  public Docket defaultApi2() {
 
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(new ApiInfoBuilder()
-                        .description("# BUNNY DDD Restful Api Document")
-                        .termsOfServiceUrl("http://www.xx.com/")
-                        .contact("xx@qq.com")
-                        .version("1.0")
-                        .build())
-                //分组名称
-                .groupName("default")
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("org.springframework").negate())
-                .paths(PathSelectors.any())
-                .build()
-                .pathMapping("/")
-                .genericModelSubstitutes(PageableData.class)
-                .additionalModels(typeResolver.resolve(Response.class), typeResolver.resolve(PageableData.class), typeResolver.resolve(CommonQueryParam.class))
-                .extensions(openApiExtensionResolver.buildExtensions("default"));
-    }
+    return new Docket(DocumentationType.SWAGGER_2)
+        .apiInfo(
+            new ApiInfoBuilder()
+                .description("# BUNNY DDD Restful Api Document")
+                .termsOfServiceUrl("http://www.xx.com/")
+                .contact("xx@qq.com")
+                .version("1.0")
+                .build())
+        // 分组名称
+        .groupName("default")
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("org.springframework").negate())
+        .paths(PathSelectors.any())
+        .build()
+        .pathMapping("/")
+        .genericModelSubstitutes(PageableData.class)
+        .additionalModels(
+            typeResolver.resolve(Response.class),
+            typeResolver.resolve(PageableData.class),
+            typeResolver.resolve(CommonQueryParam.class))
+        .extensions(openApiExtensionResolver.buildExtensions("default"));
+  }
 }

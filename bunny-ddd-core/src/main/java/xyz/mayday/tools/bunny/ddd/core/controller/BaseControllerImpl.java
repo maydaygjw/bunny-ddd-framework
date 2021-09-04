@@ -20,107 +20,115 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 @RequiredArgsConstructor
-public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> implements BaseController<ID, VO, QUERY, DTO> {
+public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO>
+    implements BaseController<ID, VO, QUERY, DTO> {
 
-    @Autowired(required = false)
-    GenericConverter converter;
+  @Autowired(required = false)
+  GenericConverter converter;
 
-    @Autowired(required = false)
-    PagingParameters pagingConfigure;
+  @Autowired(required = false)
+  PagingParameters pagingConfigure;
 
-    public BaseControllerImpl(GenericConverter converter, PagingParameters pagingConfigure) {
-        this.converter = converter;
-        this.pagingConfigure = pagingConfigure;
+  public BaseControllerImpl(GenericConverter converter, PagingParameters pagingConfigure) {
+    this.converter = converter;
+    this.pagingConfigure = pagingConfigure;
+  }
+
+  @Override
+  public PageableData<VO> queryItems(QUERY query, CommonQueryParam commonQueryParam) {
+    commonQueryParam = applyQueryRestriction(commonQueryParam);
+    PageableData<DTO> items = getService().findItems(convertQueryToDto(query), commonQueryParam);
+    return PageableData.<VO>builder()
+        .records(items.getRecords().stream().map(this::convertDtoToVo).collect(Collectors.toList()))
+        .pageInfo(items.getPageInfo())
+        .build();
+  }
+
+  @Override
+  public Long countItems(QUERY query) {
+    return getService().countItems(convertQueryToDto(query));
+  }
+
+  CommonQueryParam applyQueryRestriction(CommonQueryParam commonQueryParam) {
+
+    commonQueryParam = Optional.ofNullable(commonQueryParam).orElse(new CommonQueryParam());
+
+    if (CollectionUtils.isEmpty(commonQueryParam.getSortField())) {
+      commonQueryParam.setSortField(Collections.singletonList("updatedDate"));
+      commonQueryParam.setSortOrder(Collections.singletonList(Sort.Direction.DESC.name()));
     }
 
-    @Override
-    public PageableData<VO> queryItems(QUERY query, CommonQueryParam commonQueryParam) {
-        commonQueryParam = applyQueryRestriction(commonQueryParam);
-        PageableData<DTO> items = getService().findItems(convertQueryToDto(query), commonQueryParam);
-        return PageableData.<VO>builder().records(items.getRecords().stream().map(this::convertDtoToVo).collect(Collectors.toList())).pageInfo(items.getPageInfo()).build();
-    }
+    if (Objects.isNull(commonQueryParam.getPageSize()))
+      commonQueryParam.setPageSize(pagingConfigure.getDefaultPageSize());
+    if (Objects.isNull(commonQueryParam.getCurrentPage())) commonQueryParam.setCurrentPage(1);
+    if (commonQueryParam.getPageSize() > pagingConfigure.getPageSizeLimit())
+      commonQueryParam.setPageSize(pagingConfigure.getPageSizeLimit());
 
-    @Override
-    public Long countItems(QUERY query) {
-        return getService().countItems(convertQueryToDto(query));
-    }
+    return commonQueryParam;
+  }
 
-    CommonQueryParam applyQueryRestriction(CommonQueryParam commonQueryParam) {
+  @Override
+  public List<VO> bulkDelete(List<ID> ids) {
+    return getService().bulkDeleteById(ids).stream()
+        .map(this::convertDtoToVo)
+        .collect(Collectors.toList());
+  }
 
-        commonQueryParam = Optional.ofNullable(commonQueryParam).orElse(new CommonQueryParam());
+  @ApiOperationSupport(ignoreParameters = {"id", "revision", "version", "operationType"})
+  @Override
+  public VO create(VO vo) {
+    return convertDtoToVo(getService().insert(convertVoToDto(vo)));
+  }
 
-        if(CollectionUtils.isEmpty(commonQueryParam.getSortField())) {
-            commonQueryParam.setSortField(Collections.singletonList("updatedDate"));
-            commonQueryParam.setSortOrder(Collections.singletonList(Sort.Direction.DESC.name()));
-        }
+  @ApiOperationSupport(ignoreParameters = {"revision", "version", "operationType"})
+  @Override
+  public VO update(VO vo) {
+    return convertDtoToVo(getService().update(convertVoToDto(vo)));
+  }
 
-        if (Objects.isNull(commonQueryParam.getPageSize())) commonQueryParam.setPageSize(pagingConfigure.getDefaultPageSize());
-        if (Objects.isNull(commonQueryParam.getCurrentPage())) commonQueryParam.setCurrentPage(1);
-        if(commonQueryParam.getPageSize() > pagingConfigure.getPageSizeLimit()) commonQueryParam.setPageSize(pagingConfigure.getPageSizeLimit());
+  @Override
+  public VO delete(ID id) {
+    return convertDtoToVo(getService().delete(id));
+  }
 
-        return commonQueryParam;
-    }
+  @Override
+  public Optional<VO> queryById(ID id) {
+    return getService().findItemById(id).map(this::convertDtoToVo);
+  }
 
-    @Override
-    public List<VO> bulkDelete(List<ID> ids) {
-        return getService().bulkDeleteById(ids).stream().map(this::convertDtoToVo).collect(Collectors.toList());
-    }
+  @Override
+  public List<VO> queryAll(CommonQueryParam commonQueryParam) {
+    return null;
+  }
 
-    @ApiOperationSupport(ignoreParameters = {"id", "revision", "version", "operationType"})
-    @Override
-    public VO create(VO vo) {
-        return convertDtoToVo(getService().insert(convertVoToDto(vo)));
-    }
+  @Override
+  public List<VO> findHistories(ID id) {
+    return getService().findHistoriesById(id).stream()
+        .map(this::convertDtoToVo)
+        .collect(Collectors.toList());
+  }
 
-    @ApiOperationSupport(ignoreParameters = {"revision", "version", "operationType"})
-    @Override
-    public VO update(VO vo) {
-        return convertDtoToVo(getService().update(convertVoToDto(vo)));
-    }
+  public DTO convertQueryToDto(QUERY query) {
+    return converter.convert(query, getDTOClass());
+  }
 
-    @Override
-    public VO delete(ID id) {
-        return convertDtoToVo(getService().delete(id));
-    }
+  public VO convertDtoToVo(DTO dto) {
+    return converter.convert(dto, getVOClass());
+  }
 
-    @Override
-    public Optional<VO> queryById(ID id) {
-        return getService().findItemById(id).map(this::convertDtoToVo);
-    }
+  public DTO convertVoToDto(VO vo) {
+    return converter.convert(vo, getDTOClass());
+  }
 
-    @Override
-    public List<VO> queryAll(CommonQueryParam commonQueryParam) {
-        return null;
-    }
+  protected Class<VO> getVOClass() {
+    return ReflectionUtils.getGenericTypeOfSuperClass(
+        this, GenericTypeIndexConstant.ControllerTypeIndex.IDX_VO);
+  }
 
-    @Override
-    public List<VO> findHistories(ID id) {
-        return getService().findHistoriesById(id).stream().map(this::convertDtoToVo).collect(Collectors.toList());
-    }
-
-    public DTO convertQueryToDto(QUERY query) {
-        return converter.convert(query, getDTOClass());
-    }
-
-    public VO convertDtoToVo(DTO dto) {
-        return converter.convert(dto, getVOClass());
-    }
-
-    public DTO convertVoToDto(VO vo) {
-        return converter.convert(vo, getDTOClass());
-    }
-
-    protected Class<VO> getVOClass() {
-        return ReflectionUtils.getGenericTypeOfSuperClass(this, GenericTypeIndexConstant.ControllerTypeIndex.IDX_VO);
-    }
-
-    protected Class<DTO> getDTOClass() {
-        return ReflectionUtils.getGenericTypeOfSuperClass(this, GenericTypeIndexConstant.ControllerTypeIndex.IDX_DTO);
-    }
-
-
+  protected Class<DTO> getDTOClass() {
+    return ReflectionUtils.getGenericTypeOfSuperClass(
+        this, GenericTypeIndexConstant.ControllerTypeIndex.IDX_DTO);
+  }
 }

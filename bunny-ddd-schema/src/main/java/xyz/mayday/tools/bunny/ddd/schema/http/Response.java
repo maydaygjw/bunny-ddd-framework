@@ -14,21 +14,20 @@ import lombok.With;
 @ApiModel("响应对象")
 public class Response<T> {
 
-    @ApiModelProperty("响应码")
-    String code;
+  @ApiModelProperty("响应码")
+  String code;
 
-    @ApiModelProperty("响应消息, '0'表示正常返回")
-    String message;
+  @ApiModelProperty("响应消息, '0'表示正常返回")
+  String message;
 
-    @ApiModelProperty("响应消息体")
-    T body;
+  @ApiModelProperty("响应消息体")
+  T body;
 
-    public static <T> Response<T> success(T body) {
-        return new Response<T>().withCode("0").withMessage("执行成功").withBody(body);
-    }
+  public static <T> Response<T> success(T body) {
+    return new Response<T>().withCode("0").withMessage("执行成功").withBody(body);
+  }
 
-    public static <T> Response<T> success() {
-        return new Response<T>().withCode("0").withMessage("执行成功");
-    }
-
+  public static <T> Response<T> success() {
+    return new Response<T>().withCode("0").withMessage("执行成功");
+  }
 }

@@ -31,7 +31,7 @@ class AbstractBaseRDBMSServiceTest extends Specification {
         principalService.currentUserName >> "Bob"
 
         def repo = Stub(JpaRepositoryImplementation.class);
-        repo.save(_ as UserDAO) >> {UserDAO user -> user}
+        repo.save(_ as UserDAO) >> { UserDAO user -> user }
         def serviceFactory = Stub(PersistenceServiceFactory.class)
         serviceFactory.getRepository(_) >> repo
 
@@ -41,12 +41,12 @@ class AbstractBaseRDBMSServiceTest extends Specification {
 
     def "insert"() {
         given:
-            def user = new Domain.UserDTO().withUserName("Bob").withAge(18)
-            user.id = 1L
+        def user = new Domain.UserDTO().withUserName("Bob").withAge(18)
+        user.id = 1L
         when:
-            user = userService.insert(user)
+        user = userService.insert(user)
         then:
-            user.version == 1
+        user.version == 1
     }
 
     def "update"() {

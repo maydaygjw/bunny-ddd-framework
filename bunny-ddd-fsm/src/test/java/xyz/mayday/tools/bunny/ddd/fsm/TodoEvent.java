@@ -1,9 +1,8 @@
 package xyz.mayday.tools.bunny.ddd.fsm;
 
 public enum TodoEvent {
-
-    START,
-    CHECK,
-    HALT,
-    CLOSE
+  START,
+  CHECK,
+  HALT,
+  CLOSE
 }

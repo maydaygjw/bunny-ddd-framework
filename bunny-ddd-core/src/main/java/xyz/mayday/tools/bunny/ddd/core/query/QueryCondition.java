@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 public class QueryCondition {
 
-    List<SearchCriteria<?>> searchCriteriaList;
+  List<SearchCriteria<?>> searchCriteriaList;
 }

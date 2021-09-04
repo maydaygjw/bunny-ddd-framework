@@ -13,11 +13,10 @@ import xyz.mayday.tools.bunny.ddd.fsm.impl.StateMachineFactory;
 @ConditionalOnProperty(prefix = "bunny.ddd.fsm", name = "enabled", havingValue = "true")
 public class FSMAutoConfiguration {
 
-    @Autowired
-    ApplicationContext ctx;
+  @Autowired ApplicationContext ctx;
 
-    @Bean
-    public StateMachineFactory stateMachineFactory() {
-        return null;
-    }
+  @Bean
+  public StateMachineFactory stateMachineFactory() {
+    return null;
+  }
 }

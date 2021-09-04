@@ -12,10 +12,9 @@ import java.util.List;
 @ApiModel("分页数据集")
 public class PageableData<T> {
 
-    @ApiModelProperty("数据集")
-    List<T> records;
+  @ApiModelProperty("数据集")
+  List<T> records;
 
-    @ApiModelProperty("分页信息")
-    PageInfo pageInfo;
-
+  @ApiModelProperty("分页信息")
+  PageInfo pageInfo;
 }

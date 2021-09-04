@@ -6,12 +6,10 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.TYPE;
 
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 @Target(TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StateMachine {
 
-    String id() default "";
+  String id() default "";
 }

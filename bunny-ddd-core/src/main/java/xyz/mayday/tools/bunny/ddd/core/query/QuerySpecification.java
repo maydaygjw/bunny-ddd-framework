@@ -11,29 +11,37 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.stream.Collectors;
 
-/**
- * @author gejunwen
- */
-public class QuerySpecification <DAO extends BaseDAO<?>> extends QueryCondition implements Specification<DAO> {
+/** @author gejunwen */
+public class QuerySpecification<DAO extends BaseDAO<?>> extends QueryCondition
+    implements Specification<DAO> {
 
-    public QuerySpecification(List<SearchCriteria<?>> searchCriteriaList) {
-        super(searchCriteriaList);
-    }
+  public QuerySpecification(List<SearchCriteria<?>> searchCriteriaList) {
+    super(searchCriteriaList);
+  }
 
+  @Override
+  public Predicate toPredicate(Root<DAO> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
-    @Override
-    public Predicate toPredicate(Root<DAO> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-
-        return query.where(getSearchCriteriaList().stream().map(searchCriteria -> {
-            if (searchCriteria.getSearchOperation().equals(SearchOperation.EQUALS)) {
-                return builder.equal(root.get(searchCriteria.getKey()), searchCriteria.getValue());
-            } else if (searchCriteria.getSearchOperation().equals(SearchOperation.MATCH)) {
-                return builder.like(root.get(searchCriteria.getKey()), "%" + searchCriteria.getValue() + "%");
-            } else {
-                throw new BusinessException();
-            }
-        }).toArray(Predicate[]::new)).getRestriction();
-    }
+    return query
+        .where(
+            getSearchCriteriaList().stream()
+                .map(
+                    searchCriteria -> {
+                      if (searchCriteria.getSearchOperation().equals(SearchOperation.EQUALS)) {
+                        return builder.equal(
+                            root.get(searchCriteria.getKey()), searchCriteria.getValue());
+                      } else if (searchCriteria
+                          .getSearchOperation()
+                          .equals(SearchOperation.MATCH)) {
+                        return builder.like(
+                            root.get(searchCriteria.getKey()),
+                            "%" + searchCriteria.getValue() + "%");
+                      } else {
+                        throw new BusinessException();
+                      }
+                    })
+                .toArray(Predicate[]::new))
+        .getRestriction();
+  }
 }

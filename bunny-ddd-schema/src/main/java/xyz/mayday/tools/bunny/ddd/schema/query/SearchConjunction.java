@@ -1,16 +1,14 @@
 package xyz.mayday.tools.bunny.ddd.schema.query;
 
 public enum SearchConjunction {
+  AND,
+  OR,
+  ;
 
-    AND,
-    OR,
+  public enum ConjunctionGroup {
+    DEFAULT,
+    FIRST,
+    SECOND,
     ;
-
-    public enum ConjunctionGroup {
-        DEFAULT,
-        FIRST,
-        SECOND,
-        ;
-
-    }
+  }
 }

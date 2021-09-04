@@ -1,39 +1,34 @@
 package xyz.mayday.tools.bunny.batch.reader;
 
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.NonTransientResourceException;
-import org.springframework.batch.item.ParseException;
-import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.batch.runtime.StepExecution;
 
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 public abstract class DoOnceItemReader<I> implements ItemReader<I> {
 
-    boolean executed;
+  boolean executed;
 
-    @Value("#{stepExecution}")
-    StepExecution stepExecution;
+  @Value("#{stepExecution}")
+  StepExecution stepExecution;
 
-    @Override
-    public I read() throws Exception {
+  @Override
+  public I read() throws Exception {
 
-        I i = null;
+    I i = null;
 
-        if(!executed) {
-            i = doRead();
-            executed = true;
-        }
-
-        return i;
+    if (!executed) {
+      i = doRead();
+      executed = true;
     }
 
-    public abstract I doRead();
+    return i;
+  }
 
-    protected StepExecution getStepExecution() {
-        return stepExecution;
-    }
+  public abstract I doRead();
+
+  protected StepExecution getStepExecution() {
+    return stepExecution;
+  }
 }

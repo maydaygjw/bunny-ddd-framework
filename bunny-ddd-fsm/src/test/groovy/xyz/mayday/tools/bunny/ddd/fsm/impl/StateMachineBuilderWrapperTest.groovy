@@ -4,11 +4,7 @@ import com.google.common.collect.ImmutableMap
 import org.springframework.context.ApplicationContext
 import spock.lang.Shared
 import spock.lang.Specification
-import xyz.mayday.tools.bunny.ddd.fsm.TodoContext
-import xyz.mayday.tools.bunny.ddd.fsm.TodoDTO
-import xyz.mayday.tools.bunny.ddd.fsm.TodoEvent
-import xyz.mayday.tools.bunny.ddd.fsm.TodoState
-import xyz.mayday.tools.bunny.ddd.fsm.TodoStateMachine
+import xyz.mayday.tools.bunny.ddd.fsm.*
 import xyz.mayday.tools.bunny.ddd.fsm.action.Action
 import xyz.mayday.tools.bunny.ddd.fsm.config.FSMDefinition
 import xyz.mayday.tools.bunny.ddd.schema.service.ServiceFactory
@@ -30,16 +26,16 @@ class StateMachineBuilderWrapperTest extends Specification {
 
     def "GenerateStateMachineDefinition"() {
         when:
-            wrapper.generateStateMachineDefinition()
+        wrapper.generateStateMachineDefinition()
         then:
-            wrapper.transitionDefinitions.size() == 4
+        wrapper.transitionDefinitions.size() == 4
     }
 
     def "GetStateMachineInstance"() {
         when:
-            def instance = wrapper.getStateMachineInstance(TodoState.DOING)
+        def instance = wrapper.getStateMachineInstance(TodoState.DOING)
         then:
-            instance.getInitialState() == TodoState.DOING
+        instance.getInitialState() == TodoState.DOING
 
     }
 }

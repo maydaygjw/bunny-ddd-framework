@@ -2,7 +2,7 @@ package xyz.mayday.tools.bunny.ddd.schema.page;
 
 public interface PagingParameters {
 
-    Integer getDefaultPageSize();
+  Integer getDefaultPageSize();
 
-    Integer getPageSizeLimit();
+  Integer getPageSizeLimit();
 }

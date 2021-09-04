@@ -32,69 +32,69 @@ class TestDDDAutoConfiguration extends Specification {
 
     def "auto configuration and injection is working fine"() {
         expect:
-            idGenerator.generate()
-            genericConverter
-            userService
+        idGenerator.generate()
+        genericConverter
+        userService
     }
 
     def "basic CRUD of insert"() {
         given:
-            user = new Domain.UserDTO()
-            user.with {userName = "Bob"; age = 20}
+        user = new Domain.UserDTO()
+        user.with { userName = "Bob"; age = 20 }
         when:
-            user = userService.insert(user)
-            def found = userService.findItemById(user.id)
+        user = userService.insert(user)
+        def found = userService.findItemById(user.id)
         then:
-            user.id
-            user.version == 1
-            user.createdBy == "MockId"
-            found.present
+        user.id
+        user.version == 1
+        user.createdBy == "MockId"
+        found.present
 
     }
 
     def "basic CRUD of update"() {
         given:
-            user.age = 21
+        user.age = 21
         when:
-            def idBackup = user.id
-            user.id = null
-            user = userService.update(user)
+        def idBackup = user.id
+        user.id = null
+        user = userService.update(user)
         then:
-            thrown(BusinessException.class)
+        thrown(BusinessException.class)
         when:
-            user.id = idBackup
-            user = userService.update(user)
-            def found = userService.findItemById(user.id).get()
+        user.id = idBackup
+        user = userService.update(user)
+        def found = userService.findItemById(user.id).get()
         then:
-            found.age == 21
-            found.version == 2
-            user.updatedBy == "MockId"
+        found.age == 21
+        found.version == 2
+        user.updatedBy == "MockId"
 
     }
 
     def "basic CRUD of delete"() {
         given:
-            def NON_EXIST_ID = 123789L
+        def NON_EXIST_ID = 123789L
         when:
-            userService.delete(NON_EXIST_ID)
+        userService.delete(NON_EXIST_ID)
         then:
-            thrown(BusinessException.class)
+        thrown(BusinessException.class)
         when:
-            userService.delete(user.id)
-            def found = userService.findItemById(user.id)
+        userService.delete(user.id)
+        def found = userService.findItemById(user.id)
         then:
-            !found.isPresent()
+        !found.isPresent()
     }
 
     def "basic CRUD of conditional query"() {
         given:
-            user = new Domain.UserDTO()
-            user.with {userName = "Bob"; age = 20}
-            userService.insert(user)
+        user = new Domain.UserDTO()
+        user.with { userName = "Bob"; age = 20 }
+        userService.insert(user)
         when:
-            def all = userService.findAll(new Domain.UserDTO().withAge(20))
+        def all = userService.findAll(new Domain.UserDTO().withAge(20))
         then:
-            all.size() == 1
+        all.size() == 1
     }
 
 

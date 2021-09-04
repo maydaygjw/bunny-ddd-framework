@@ -2,19 +2,17 @@ package xyz.mayday.tools.bunny.ddd.fsm.config;
 
 import lombok.Data;
 
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 @Data
 public class FSMActionDefinition {
 
-    String fromState;
+  String fromState;
 
-    String toState;
+  String toState;
 
-    String operationKey;
+  String operationKey;
 
-    String operationName;
+  String operationName;
 
-    String mvel;
+  String mvel;
 }

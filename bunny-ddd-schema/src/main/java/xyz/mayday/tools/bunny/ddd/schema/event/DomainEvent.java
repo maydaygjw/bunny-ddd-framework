@@ -13,18 +13,17 @@ import java.util.Date;
 @AllArgsConstructor
 public class DomainEvent<DOMAIN> {
 
-    String eventId;
+  String eventId;
 
-    Integer version;
+  Integer version;
 
-    Date publishTime;
+  Date publishTime;
 
-    String source;
+  String source;
 
-    DOMAIN data;
+  DOMAIN data;
 
-    DOMAIN lastVersion;
+  DOMAIN lastVersion;
 
-    EventTypeEnum eventType;
-
+  EventTypeEnum eventType;
 }

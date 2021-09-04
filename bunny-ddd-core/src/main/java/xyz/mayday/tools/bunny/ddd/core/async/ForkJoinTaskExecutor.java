@@ -9,23 +9,23 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-/**
- * @author gejunwen
- */
-
+/** @author gejunwen */
 @RequiredArgsConstructor
 public class ForkJoinTaskExecutor {
 
-    final AsyncTaskExecutor asyncTaskExecutor;
+  final AsyncTaskExecutor asyncTaskExecutor;
 
-    public <T> List<T> submit(List<Callable<T>> tasks) {
-
-        return tasks.parallelStream().map(task -> {
-            try {
+  public <T> List<T> submit(List<Callable<T>> tasks) {
+    int a = 0;
+    return tasks.parallelStream()
+        .map(
+            task -> {
+              try {
                 return asyncTaskExecutor.submit(task).get();
-            } catch (InterruptedException | ExecutionException e) {
+              } catch (InterruptedException | ExecutionException e) {
                 throw new BusinessException();
-            }
-        }).collect(Collectors.toList());
-    }
+              }
+            })
+        .collect(Collectors.toList());
+  }
 }

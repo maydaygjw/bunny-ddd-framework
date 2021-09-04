@@ -26,45 +26,49 @@ class AbstractBaseServiceTest extends Specification {
 
     def "test for auditWhenInsert"() {
         given:
-            def user = new Domain.UserDAO("Bob", 12)
+        def user = new Domain.UserDAO("Bob", 12)
         when:
-            userBaseService.auditWhenInsert(user)
+        userBaseService.auditWhenInsert(user)
         then:
-            user.createdBy == "ddd-user1"
-            user.updatedBy == "ddd-user1"
-            user.createdDate != null
-            user.updatedDate != null
+        user.createdBy == "ddd-user1"
+        user.updatedBy == "ddd-user1"
+        user.createdDate != null
+        user.updatedDate != null
 
     }
 
     def "test for auditWhenUpdate"() {
         given:
-            def user = new Domain.UserDAO("Bob", 12)
-            user.createdDate = new Date()
-            user.createdBy = "ddd-user0"
+        def user = new Domain.UserDAO("Bob", 12)
+        user.createdDate = new Date()
+        user.createdBy = "ddd-user0"
         when:
-            userBaseService.auditWhenUpdate(user)
+        userBaseService.auditWhenUpdate(user)
         then:
-            user.createdBy == "ddd-user0"
-            user.updatedBy == "ddd-user1"
-            user.createdDate != null
-            user.updatedDate != null
+        user.createdBy == "ddd-user0"
+        user.updatedBy == "ddd-user1"
+        user.createdDate != null
+        user.updatedDate != null
     }
 
     def "test for get DAO class"() {
-        expect: userBaseService.getDaoClass() == Domain.UserDAO.class
+        expect:
+        userBaseService.getDaoClass() == Domain.UserDAO.class
     }
 
     def "test for get DTO class"() {
-        expect: userBaseService.getDtoClass() == Domain.UserDTO.class
+        expect:
+        userBaseService.getDtoClass() == Domain.UserDTO.class
     }
 
     def "test for get ID type"() {
-        expect: userBaseService.getIdType() == Long.class
+        expect:
+        userBaseService.getIdType() == Long.class
     }
 
     def "test for convert ID type"() {
-        expect: userBaseService.convertIdType("1002") == 1002L
+        expect:
+        userBaseService.convertIdType("1002") == 1002L
     }
 
     @Subject

@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class ViolationResult {
 
-    String code;
+  String code;
 
-    String message;
+  String message;
 
-    String reference;
+  String reference;
 }

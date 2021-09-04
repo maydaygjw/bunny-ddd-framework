@@ -1,17 +1,11 @@
 package xyz.mayday.tools.bunny.ddd.schema.service;
 
-import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
-
-/**
- * @author gejunwen
- */
+/** @author gejunwen */
 public interface CacheableService<ID, DOMAIN> extends BaseService<ID, DOMAIN> {
 
-    void createCache();
+  void createCache();
 
-    void destroyCache();
+  void destroyCache();
 
-    void initCache();
-
-
+  void initCache();
 }

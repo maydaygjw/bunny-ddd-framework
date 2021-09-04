@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public interface FSMSupport<S1 extends Enum<S1>> {
 
-    @JsonIgnore
-    S1 getState();
+  @JsonIgnore
+  S1 getState();
 
-    void setState(S1 state);
+  void setState(S1 state);
 }

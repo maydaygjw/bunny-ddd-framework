@@ -16,7 +16,6 @@ public class ForkJoinTaskExecutor {
   final AsyncTaskExecutor asyncTaskExecutor;
 
   public <T> List<T> submit(List<Callable<T>> tasks) {
-    int a = 0;
     return tasks.parallelStream()
         .map(
             task -> {

@@ -10,6 +10,7 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDomain;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +41,7 @@ public class QueryUtils {
 
         ReflectionUtils.doWithFields(dto.getClass(),
                 field -> searchCriteria.add(new SearchCriteria<>(Collections.singletonList(field.getName()), Collections.singletonList(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)))),
-                field -> Objects.nonNull(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)));
+                field -> !Modifier.isStatic(field.getModifiers()) && Objects.nonNull(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)));
 
         return searchCriteria;
     }

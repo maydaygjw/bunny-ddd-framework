@@ -17,8 +17,8 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 @MappedSuperclass
 public abstract class AbstractBaseDAO<ID extends Serializable> implements BaseDAO<ID> {
 
-    static final String DAO_SUFFIX = "DAO";
-    static final String DO_SUFFIX = "DO";
+    private static final String DAO_SUFFIX = "DAO";
+    private static final String DO_SUFFIX = "DO";
 
     @Id
     ID id;

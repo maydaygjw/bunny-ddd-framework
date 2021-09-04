@@ -10,7 +10,6 @@ import xyz.mayday.tools.bunny.ddd.context.ResponseAdvice;
 import xyz.mayday.tools.bunny.ddd.context.factory.ApplicationContextServiceFactory;
 import xyz.mayday.tools.bunny.ddd.context.service.DefaultPrincipalService;
 import xyz.mayday.tools.bunny.ddd.core.converter.DefaultGenericConverter;
-import xyz.mayday.tools.bunny.ddd.core.resource.YamlPropertySourceFactory;
 import xyz.mayday.tools.bunny.ddd.core.service.LeafIdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
@@ -22,7 +21,7 @@ import javax.persistence.EntityManager;
 
 @Configuration
 @ConditionalOnProperty(value = "bunny.ddd.enabled", havingValue = "true")
-@Import({DocumentAutoConfiguration.class, xyz.mayday.tools.bunny.ddd.context.PagingProperties.class, ResponseAdvice.class})
+@Import({DocumentConfiguration.class, xyz.mayday.tools.bunny.ddd.context.PagingProperties.class, ResponseAdvice.class})
 public class DDDAutoConfiguration {
 
     @Bean

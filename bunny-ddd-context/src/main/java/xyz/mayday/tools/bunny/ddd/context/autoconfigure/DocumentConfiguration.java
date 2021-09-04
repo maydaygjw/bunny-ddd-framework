@@ -16,7 +16,7 @@ import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 
 @RequiredArgsConstructor
 @EnableSwagger2WebMvc
-public class DocumentAutoConfiguration {
+public class DocumentConfiguration {
 
     final OpenApiExtensionResolver openApiExtensionResolver;
 

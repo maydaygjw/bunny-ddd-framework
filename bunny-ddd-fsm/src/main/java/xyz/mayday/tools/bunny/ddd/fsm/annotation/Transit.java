@@ -6,6 +6,9 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.TYPE;
 
+/**
+ * @author gejunwen
+ */
 @Target(TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Transit {

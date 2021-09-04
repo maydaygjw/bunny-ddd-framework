@@ -17,6 +17,9 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 @MappedSuperclass
 public abstract class AbstractBaseDAO<ID extends Serializable> implements BaseDAO<ID> {
 
+    static final String DAO_SUFFIX = "DAO";
+    static final String DO_SUFFIX = "DO";
+
     @Id
     ID id;
 
@@ -40,10 +43,10 @@ public abstract class AbstractBaseDAO<ID extends Serializable> implements BaseDA
     public String getDomainName() {
 
         String simpleName = getClass().getSimpleName();
-        if(StringUtils.endsWithIgnoreCase(simpleName, "DAO")) {
-            return StringUtils.substringBeforeLast(simpleName, "DAO");
-        } else if(StringUtils.endsWithIgnoreCase(simpleName, "DO")) {
-            return StringUtils.substringBeforeLast(simpleName, "DO");
+        if(StringUtils.endsWithIgnoreCase(simpleName, DAO_SUFFIX)) {
+            return StringUtils.substringBeforeLast(simpleName, DAO_SUFFIX);
+        } else if(StringUtils.endsWithIgnoreCase(simpleName, DO_SUFFIX)) {
+            return StringUtils.substringBeforeLast(simpleName, DO_SUFFIX);
         }
         return simpleName;
     }

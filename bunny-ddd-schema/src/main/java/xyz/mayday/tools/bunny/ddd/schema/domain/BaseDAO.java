@@ -1,7 +1,6 @@
 package xyz.mayday.tools.bunny.ddd.schema.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 
 public interface BaseDAO<ID> {

@@ -1,11 +1,10 @@
 package xyz.mayday.tools.bunny.ddd.schema.service;
 
+import javax.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
-
-import javax.persistence.EntityManager;
 
 /** @author gejunwen */
 public interface PersistenceServiceFactory extends ServiceFactory {

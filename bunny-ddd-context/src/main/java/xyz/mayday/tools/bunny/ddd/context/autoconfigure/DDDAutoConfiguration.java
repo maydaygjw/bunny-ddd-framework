@@ -1,6 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.context.autoconfigure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.persistence.EntityManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
@@ -18,8 +19,6 @@ import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory;
-
-import javax.persistence.EntityManager;
 
 @Configuration
 @ConditionalOnProperty(value = "bunny.ddd.enabled", havingValue = "true")

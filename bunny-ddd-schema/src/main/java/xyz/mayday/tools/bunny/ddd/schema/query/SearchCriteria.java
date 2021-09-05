@@ -1,10 +1,9 @@
 package xyz.mayday.tools.bunny.ddd.schema.query;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor

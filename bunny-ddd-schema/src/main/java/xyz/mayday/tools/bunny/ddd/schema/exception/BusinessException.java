@@ -1,10 +1,10 @@
 package xyz.mayday.tools.bunny.ddd.schema.exception;
 
+import static xyz.mayday.tools.bunny.ddd.schema.exception.FrameworkExceptionEnum.FRAMEWORK_EXCEPTION;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import static xyz.mayday.tools.bunny.ddd.schema.exception.FrameworkExceptionEnum.FRAMEWORK_EXCEPTION;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

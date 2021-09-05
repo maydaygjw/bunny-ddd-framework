@@ -1,9 +1,8 @@
 package xyz.mayday.tools.bunny.ddd.fsm.action;
 
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMContext;
-
-import java.util.Set;
 
 @Slf4j
 public abstract class AbstractAction<S, E, DOMAIN, C extends FSMContext<DOMAIN>>

@@ -1,11 +1,10 @@
 package xyz.mayday.tools.bunny.ddd.utils;
 
-import lombok.SneakyThrows;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import lombok.SneakyThrows;
 
 /** @author gejunwen */
 @SuppressWarnings("unchecked")

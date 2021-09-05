@@ -1,10 +1,9 @@
 package xyz.mayday.tools.bunny.batch.entity;
 
-import lombok.Data;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Data;
 
 /** @author gejunwen */
 @Data

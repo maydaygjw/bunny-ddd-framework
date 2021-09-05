@@ -1,10 +1,9 @@
 package xyz.mayday.tools.bunny.batch.partitioner;
 
-import org.springframework.batch.core.partition.support.Partitioner;
-import org.springframework.batch.item.ExecutionContext;
-
 import java.util.List;
 import java.util.Map;
+import org.springframework.batch.core.partition.support.Partitioner;
+import org.springframework.batch.item.ExecutionContext;
 
 public abstract class BasePartitioner implements Partitioner {
 

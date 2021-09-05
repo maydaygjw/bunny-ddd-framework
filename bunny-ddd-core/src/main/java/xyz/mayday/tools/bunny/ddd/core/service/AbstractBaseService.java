@@ -1,5 +1,6 @@
 package xyz.mayday.tools.bunny.ddd.core.service;
 
+import java.util.Date;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,6 @@ import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
-
-import java.util.Date;
 
 @NoArgsConstructor
 public abstract class AbstractBaseService<ID, DTO, DAO extends BaseDAO<ID>>

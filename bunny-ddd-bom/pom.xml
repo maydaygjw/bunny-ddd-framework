@@ -12,6 +12,7 @@
     <properties>
         <spring.boot.version>2.4.3</spring.boot.version>
         <spring.cloud.version>2020.0.0</spring.cloud.version>
+        <spotless.verson>2.13.0</spotless.verson>
     </properties>
 
     <dependencyManagement>
@@ -132,9 +133,33 @@
                 <scope>compile</scope>
                 <version>1.4.200</version>
             </dependency>
+
+            <!-- code style -->
+            <dependency>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.verson}</version>
+            </dependency>
         </dependencies>
-
-
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.verson}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

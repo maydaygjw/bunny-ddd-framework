@@ -1,5 +1,9 @@
 package xyz.mayday.tools.bunny.ddd.fsm.impl;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,11 +18,6 @@ import xyz.mayday.tools.bunny.ddd.fsm.config.TransitDefinition;
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMContext;
 import xyz.mayday.tools.bunny.ddd.fsm.context.FSMSupport;
 import xyz.mayday.tools.bunny.ddd.schema.service.ServiceFactory;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /** @author gejunwen */
 @Getter

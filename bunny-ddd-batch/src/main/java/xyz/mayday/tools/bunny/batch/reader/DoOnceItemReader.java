@@ -1,9 +1,8 @@
 package xyz.mayday.tools.bunny.batch.reader;
 
+import javax.batch.runtime.StepExecution;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Value;
-
-import javax.batch.runtime.StepExecution;
 
 /** @author gejunwen */
 public abstract class DoOnceItemReader<I> implements ItemReader<I> {

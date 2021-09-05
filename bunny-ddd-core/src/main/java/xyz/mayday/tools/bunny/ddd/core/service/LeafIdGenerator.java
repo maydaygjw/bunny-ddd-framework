@@ -1,8 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.core.service;
 
-import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
-
 import java.util.List;
+import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 
 /** @author gejunwen */
 public class LeafIdGenerator implements IdGenerator<String> {

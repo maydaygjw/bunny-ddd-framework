@@ -1,8 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.fsm.action;
 
-import xyz.mayday.tools.bunny.ddd.fsm.context.FSMContext;
-
 import java.util.Set;
+import xyz.mayday.tools.bunny.ddd.fsm.context.FSMContext;
 
 public interface Action<S, E, DOMAIN, C extends FSMContext<DOMAIN>> {
 

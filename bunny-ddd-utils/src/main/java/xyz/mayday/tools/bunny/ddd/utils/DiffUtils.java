@@ -1,12 +1,11 @@
 package xyz.mayday.tools.bunny.ddd.utils;
 
+import java.util.List;
 import org.javers.core.Javers;
 import org.javers.core.JaversBuilder;
 import org.javers.core.diff.Diff;
 import org.javers.core.diff.ListCompareAlgorithm;
 import org.javers.core.diff.changetype.ValueChange;
-
-import java.util.List;
 
 public class DiffUtils {
 

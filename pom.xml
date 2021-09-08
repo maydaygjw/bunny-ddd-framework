@@ -45,13 +45,6 @@
     </dependencies>
   </dependencyManagement>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.diffplug.spotless</groupId>
-      <artifactId>spotless-maven-plugin</artifactId>
-    </dependency>
-  </dependencies>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -71,6 +64,26 @@
               </goals>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.13.0</version>
+          <configuration>
+            <java>
+              <includes>
+                <include>src/main/java/**/*.java</include>
+                <include>src/test/java/**/*.java</include>
+              </includes>
+              <importOrder>
+                <file>${basedir}/../eclipse.importorder</file>
+              </importOrder>
+              <removeUnusedImports/>
+              <eclipse>
+                <file>${basedir}/../eclipse-formatter.xml</file>
+              </eclipse>
+            </java>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -113,24 +126,6 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
-        <version>${spotless.verson}</version>
-        <configuration>
-          <java>
-            <includes>
-              <include>src/main/java/**/*.java</include>
-              <include>src/test/java/**/*.java</include>
-            </includes>
-            <importOrder/>
-            <removeUnusedImports/>
-            <googleJavaFormat>
-              <version>1.8</version>
-            </googleJavaFormat>
-          </java>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 

@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -9,7 +9,7 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bunny-ddd-utils</artifactId>
+    <artifactId>bunny-ddd-starter-workflow</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,7 +18,7 @@
     </properties>
 
 
-    <name>Bunny DDD - Utils</name>
+    <name>Bunny DDD Starter - Workflow</name>
 
     <dependencies>
         <dependency>
@@ -26,20 +26,24 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
+            <groupId>xyz.mayday.tools</groupId>
+            <artifactId>bunny-ddd-utils</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>xyz.mayday.tools</groupId>
+            <artifactId>bunny-ddd-context</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
+            <groupId>xyz.mayday.tools</groupId>
+            <artifactId>bunny-ddd-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.javers</groupId>
-            <artifactId>javers-core</artifactId>
+            <groupId>com.uber.cadence</groupId>
+            <artifactId>cadence-client</artifactId>
+            <version>3.5.0</version>
         </dependency>
 
         <!--Test -->

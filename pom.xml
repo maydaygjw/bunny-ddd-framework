@@ -21,6 +21,8 @@
     <module>bunny-ddd-batch</module>
     <module>bunny-ddd-reactive-r2dbc</module>
     <module>bunny-ddd-cache</module>
+
+    <module>bunny-ddd-starter-workflow</module>
   </modules>
 
   <properties>

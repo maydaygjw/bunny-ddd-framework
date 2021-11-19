@@ -1,12 +1,12 @@
 package xyz.mayday.tools.bunny.ddd.workflow.client;
 
-import com.uber.cadence.worker.Worker;
-import lombok.AllArgsConstructor;
-import xyz.mayday.tools.bunny.ddd.workflow.execution.CommonSagaWorkflow;
-import xyz.mayday.tools.bunny.ddd.workflow.execution.CompensatoryActivity;
-import xyz.mayday.tools.bunny.ddd.workflow.config.WorkflowProperties;
-
 import java.util.List;
+
+import com.uber.cadence.worker.Worker;
+
+import lombok.AllArgsConstructor;
+import xyz.mayday.tools.bunny.ddd.workflow.config.WorkflowProperties;
+import xyz.mayday.tools.bunny.ddd.workflow.execution.CommonSagaWorkflow;
 
 @AllArgsConstructor
 public class WorkflowClient {
@@ -21,13 +21,14 @@ public class WorkflowClient {
 
     }
 
-    public void registerActivity(Class<?> activityClass) {
-
+    public void registerActivityImplementation(Class<?> activityClass) {
+        worker.registerActivitiesImplementations(activityClass);
     }
 
-    public void executeSaga(String taskList, List<CompensatoryActivity> activityList) {
+    public void executeSaga(String taskList, List<Class<?>> activitySpecList) {
 
-        workflowClient.newWorkflowStub(CommonSagaWorkflow.class).executeSaga(null);
+        workflowClient.newWorkflowStub(CommonSagaWorkflow.class).executeSaga(activitySpecList, null);
     }
+
 
 }

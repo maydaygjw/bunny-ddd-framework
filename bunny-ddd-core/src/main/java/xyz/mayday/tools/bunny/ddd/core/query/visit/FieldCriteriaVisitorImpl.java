@@ -22,7 +22,7 @@ public class FieldCriteriaVisitorImpl extends BaseQuerySpecVisitor {
         List<SearchCriteria> collect = Arrays.stream(FieldUtils.getAllFields(dto.getClass()))
                 .filter(field -> !TypeUtils.isArrayType(field.getType()))
                 .filter(field -> !TypeUtils.isAssignable(field.getType(), Collection.class))
-                .filter(field -> TypeUtils.isAssignable(field.getType(), Map.class))
+                .filter(field -> !TypeUtils.isAssignable(field.getType(), Map.class))
                 .filter(field -> Objects.nonNull(ReflectionUtils.getValue(field, dto)))
                 .filter(field -> !Modifier.isStatic(field.getModifiers()))
                 .map(field -> Pair.of(field.getName(), ReflectionUtils.getValue(field, dto)))

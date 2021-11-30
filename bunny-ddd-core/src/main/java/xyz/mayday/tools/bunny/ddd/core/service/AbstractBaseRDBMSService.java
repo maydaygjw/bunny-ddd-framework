@@ -1,10 +1,5 @@
 package xyz.mayday.tools.bunny.ddd.core.service;
 
-import java.io.Serializable;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.google.common.collect.Lists;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,10 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.history.Revisions;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.mayday.tools.bunny.ddd.core.converter.SimpleConverter;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDAO;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
-import xyz.mayday.tools.bunny.ddd.core.domain.Visitor;
 import xyz.mayday.tools.bunny.ddd.core.query.QuerySpecification;
 import xyz.mayday.tools.bunny.ddd.core.query.visit.BaseQuerySpecVisitor;
 import xyz.mayday.tools.bunny.ddd.core.query.visit.ExtraCriteriaVisitorImpl;
@@ -27,7 +20,6 @@ import xyz.mayday.tools.bunny.ddd.core.query.visit.MultipleValueCriteriaVisitorI
 import xyz.mayday.tools.bunny.ddd.core.utils.QueryUtils;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
-import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageInfo;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
@@ -35,6 +27,11 @@ import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
+
+import java.io.Serializable;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** @author gejunwen */
 @NoArgsConstructor
@@ -78,7 +75,7 @@ public abstract class AbstractBaseRDBMSService<
   public PageableData<DTO> findItems(DTO dto, CommonQueryParam queryParam) {
     dto = Optional.ofNullable(dto).orElse(ReflectionUtils.newInstance(getDtoClass()));
 
-    QuerySpecification<DAO> querySpecification = new QuerySpecification<DAO>();
+    QuerySpecification<DAO> querySpecification = new QuerySpecification<>();
     Collection<BaseQuerySpecVisitor> visitors = Lists.newArrayList(
             new FieldCriteriaVisitorImpl(),
             new MultipleValueCriteriaVisitorImpl(),
@@ -86,11 +83,7 @@ public abstract class AbstractBaseRDBMSService<
     visitors.forEach(dto::accept);
     visitors.forEach(visitor -> querySpecification.addAll(visitor.getQuerySpecifications()));
 
-    Page<DAO> pageResult =
-        serviceFactory
-            .getRepository(getDaoClass())
-            .findAll(
-                QueryUtils.buildSpecification(dto), QueryUtils.buildPageRequest(queryParam));
+    Page<DAO> pageResult = serviceFactory.getRepository(getDaoClass()).findAll(querySpecification, QueryUtils.buildPageRequest(queryParam));
     return PageableData.<DTO>builder()
         .pageInfo(PageInfo.fromPage(pageResult))
         .records(pageResult.get().map(this::convertToDto).collect(Collectors.toList()))

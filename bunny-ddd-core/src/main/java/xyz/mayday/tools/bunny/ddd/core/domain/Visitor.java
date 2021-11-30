@@ -1,6 +1,6 @@
 package xyz.mayday.tools.bunny.ddd.core.domain;
 
-public interface Visitor {
+public interface Visitor<T> {
 
-    void visit(AbstractBaseDTO<?> dto);
+    void visit(T target);
 }

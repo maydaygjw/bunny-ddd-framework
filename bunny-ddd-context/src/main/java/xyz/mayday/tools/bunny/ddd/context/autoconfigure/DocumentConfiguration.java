@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
@@ -30,7 +31,7 @@ public class DocumentConfiguration {
             new ApiInfoBuilder()
                 .description("# BUNNY DDD Restful Api Document")
                 .termsOfServiceUrl("http://www.xx.com/")
-                .contact("xx@qq.com")
+                .contact(new Contact("qq", "http://www.qq.com", "xx@qq.com"))
                 .version("1.0")
                 .build())
         // 分组名称

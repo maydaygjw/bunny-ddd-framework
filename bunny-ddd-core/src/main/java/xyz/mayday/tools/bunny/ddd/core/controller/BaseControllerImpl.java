@@ -59,7 +59,7 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO>
       commonQueryParam.setSortOrder(Collections.singletonList(Sort.Direction.DESC.name()));
     }
 
-    if (Objects.isNull(commonQueryParam.getPageSize()))
+    if (0 >= commonQueryParam.getPageSize())
       commonQueryParam.setPageSize(pagingConfigure.getDefaultPageSize());
     if (Objects.isNull(commonQueryParam.getCurrentPage())) commonQueryParam.setCurrentPage(1);
     if (commonQueryParam.getPageSize() > pagingConfigure.getPageSizeLimit())

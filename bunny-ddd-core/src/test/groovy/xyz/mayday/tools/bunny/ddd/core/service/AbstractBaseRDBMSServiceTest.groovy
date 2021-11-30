@@ -12,6 +12,7 @@ import xyz.mayday.tools.bunny.ddd.core.domain.Domain
 import xyz.mayday.tools.bunny.ddd.core.domain.Domain.UserDAO
 import xyz.mayday.tools.bunny.ddd.core.domain.UserService
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService
+import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory
 
 @SpringBootTest
@@ -37,6 +38,13 @@ class AbstractBaseRDBMSServiceTest extends Specification {
 
         userService.setPrincipalService(principalService)
         userService.setServiceFactory(serviceFactory)
+    }
+
+    def "findItems"() {
+        when:
+        def items = userService.findItems(new Domain.UserDTO(), new CommonQueryParam().withPageSize(20)).records
+        then:
+        items.size() == 0
     }
 
     def "insert"() {

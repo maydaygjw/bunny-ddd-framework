@@ -21,30 +21,21 @@ import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 public class QueryUtils {
     
     public static <ID, DTO extends BaseDomain<ID>, DAO extends BaseDAO<ID>> Specification<DAO> buildSpecification(DTO dto) {
-        List<SearchCriteria<?>> fieldSearchCriteriaList = buildFieldCriteria(dto);
-        List<SearchCriteria<?>> multipleValuesSearchCriteria = buildMultipleValuesCriteria(dto);
-        
-        fieldSearchCriteriaList.addAll(multipleValuesSearchCriteria);
-        
-        return new QuerySpecification<>(fieldSearchCriteriaList);
+//        List<SearchCriteria<?>> fieldSearchCriteriaList = buildFieldCriteria(dto);
+//        List<SearchCriteria<?>> multipleValuesSearchCriteria = buildMultipleValuesCriteria(dto);
+//
+//        fieldSearchCriteriaList.addAll(multipleValuesSearchCriteria);
+//
+//        return new QuerySpecification<>(fieldSearchCriteriaList);
+
+        return null;
     }
     
     private static <ID, DTO extends BaseDomain<ID>> List<SearchCriteria<?>> buildMultipleValuesCriteria(DTO dto) {
         return Collections.emptyList();
     }
     
-    private static <ID, DTO extends BaseDomain<ID>> List<SearchCriteria<?>> buildFieldCriteria(DTO dto) {
-        
-        List<SearchCriteria<?>> searchCriteria = new ArrayList<>();
-        
-        ReflectionUtils.doWithFields(dto.getClass(),
-                field -> searchCriteria.add(new SearchCriteria<>(Collections.singletonList(field.getName()),
-                        Collections.singletonList(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)))),
-                field -> !Modifier.isStatic(field.getModifiers()) && Objects.nonNull(xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils.getValue(field, dto)));
-        
-        return searchCriteria;
-    }
-    
+
     public static PageRequest buildPageRequest(CommonQueryParam queryParam) {
         return PageRequest.of(queryParam.getCurrentPage() - 1, queryParam.getPageSize(), Sort.by(queryParam.collectSortOrders()));
     }

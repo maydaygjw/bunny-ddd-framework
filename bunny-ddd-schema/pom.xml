@@ -51,6 +51,12 @@
             <artifactId>swagger-annotations</artifactId>
             <version>1.5.22</version>
         </dependency>
+
+        <dependency>
+            <groupId>xyz.mayday.tools</groupId>
+            <artifactId>bunny-ddd-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

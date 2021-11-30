@@ -1,35 +1,42 @@
 package xyz.mayday.tools.bunny.ddd.schema.query;
 
+import java.util.Collection;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Optional;
+
+import lombok.*;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@With
+@EqualsAndHashCode
 public class SearchCriteria<T> {
 
-  List<String> keys;
+  String key;
 
-  List<T> values;
+  Collection<T> values;
 
   SearchOperation searchOperation;
 
   SearchConjunction searchConjunction;
 
-  public SearchCriteria(List<String> keys, List<T> values) {
-    this.keys = keys;
-    this.values = values;
-    this.searchOperation = SearchOperation.EQUALS;
-    this.searchConjunction = SearchConjunction.AND;
+  String conjunctionGroup;
+
+  public SearchOperation getSearchOperation() {
+    return Optional.ofNullable(searchOperation).orElse(SearchOperation.EQUALS);
   }
 
-  public String getKey() {
-    return keys.get(0);
+  public String getConjunctionGroup() {
+    return StringUtils.defaultIfBlank(conjunctionGroup, "Default");
   }
 
   public T getValue() {
-    return values.get(0);
+    if(CollectionUtils.isEmpty(values)) {
+      return null;
+    }
+    return values.iterator().next();
   }
 }

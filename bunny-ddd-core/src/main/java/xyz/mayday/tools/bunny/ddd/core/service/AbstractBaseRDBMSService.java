@@ -1,12 +1,11 @@
 package xyz.mayday.tools.bunny.ddd.core.service;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.google.common.collect.Lists;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.javers.core.Javers;
@@ -16,7 +15,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.history.Revisions;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.mayday.tools.bunny.ddd.core.converter.SimpleConverter;
+import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDAO;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
+import xyz.mayday.tools.bunny.ddd.core.domain.Visitor;
+import xyz.mayday.tools.bunny.ddd.core.query.QuerySpecification;
+import xyz.mayday.tools.bunny.ddd.core.query.visit.BaseQuerySpecVisitor;
+import xyz.mayday.tools.bunny.ddd.core.query.visit.ExtraCriteriaVisitorImpl;
+import xyz.mayday.tools.bunny.ddd.core.query.visit.FieldCriteriaVisitorImpl;
+import xyz.mayday.tools.bunny.ddd.core.query.visit.MultipleValueCriteriaVisitorImpl;
 import xyz.mayday.tools.bunny.ddd.core.utils.QueryUtils;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
@@ -33,7 +40,7 @@ import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 @NoArgsConstructor
 @Setter
 public abstract class AbstractBaseRDBMSService<
-        ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>>
+        ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends AbstractBaseDAO<ID>>
     extends AbstractBaseService<ID, DTO, DAO> {
 
   @Autowired(required = false)
@@ -68,13 +75,22 @@ public abstract class AbstractBaseRDBMSService<
   }
 
   @Override
-  public PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam) {
-    example = Optional.ofNullable(example).orElse(ReflectionUtils.newInstance(getDtoClass()));
+  public PageableData<DTO> findItems(DTO dto, CommonQueryParam queryParam) {
+    dto = Optional.ofNullable(dto).orElse(ReflectionUtils.newInstance(getDtoClass()));
+
+    QuerySpecification<DAO> querySpecification = new QuerySpecification<DAO>();
+    Collection<BaseQuerySpecVisitor> visitors = Lists.newArrayList(
+            new FieldCriteriaVisitorImpl(),
+            new MultipleValueCriteriaVisitorImpl(),
+            new ExtraCriteriaVisitorImpl());
+    visitors.forEach(dto::accept);
+    visitors.forEach(visitor -> querySpecification.addAll(visitor.getQuerySpecifications()));
+
     Page<DAO> pageResult =
         serviceFactory
             .getRepository(getDaoClass())
             .findAll(
-                QueryUtils.buildSpecification(example), QueryUtils.buildPageRequest(queryParam));
+                QueryUtils.buildSpecification(dto), QueryUtils.buildPageRequest(queryParam));
     return PageableData.<DTO>builder()
         .pageInfo(PageInfo.fromPage(pageResult))
         .records(pageResult.get().map(this::convertToDto).collect(Collectors.toList()))

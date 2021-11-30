@@ -10,20 +10,6 @@ import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation
 
 class QueryUtilsTest extends Specification {
 
-    def "test for buildSpecification"() {
-
-        given:
-        def userDTO = new Domain.UserDTO();
-        userDTO.with { userName = "Bill" }
-        when:
-        def queryCondition = (QueryCondition) QueryUtils.buildSpecification(userDTO)
-        then:
-        queryCondition.searchCriteriaList.size() == 1
-        queryCondition.searchCriteriaList[0].key == "userName"
-        queryCondition.searchCriteriaList[0].getValue() == "Bill"
-        queryCondition.searchCriteriaList[0].getSearchConjunction() == SearchConjunction.AND
-        queryCondition.searchCriteriaList[0].getSearchOperation() == SearchOperation.EQUALS
-    }
 
     def "test for buildFieldCriteria"() {
 

@@ -41,6 +41,8 @@ class AbstractBaseRDBMSServiceTest extends Specification {
     }
 
     def "findItems"() {
+        given:
+
         when:
         def items = userService.findItems(new Domain.UserDTO(), new CommonQueryParam().withPageSize(20)).records
         then:
@@ -60,5 +62,6 @@ class AbstractBaseRDBMSServiceTest extends Specification {
     def "update"() {
 
     }
+
 
 }

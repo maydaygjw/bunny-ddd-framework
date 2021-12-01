@@ -97,8 +97,7 @@ public abstract class AbstractBaseRDBMSService<
 
   @Override
   public List<DTO> findAll(DTO example) {
-
-    return getRepository().findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+    return findItems(example, new CommonQueryParam().withPageSize(Integer.MAX_VALUE)).getRecords();
   }
 
   @Override

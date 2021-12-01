@@ -13,4 +13,8 @@ public abstract class BaseQuerySpecVisitor implements Visitor<AbstractBaseDTO<?>
 
     List<SearchCriteria> querySpecifications = new ArrayList<>();
 
+    protected Object processValue(Object value) {
+        return value;
+    }
+
 }

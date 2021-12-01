@@ -5,6 +5,7 @@ import org.hibernate.envers.Audited;
 import xyz.mayday.tools.bunny.ddd.schema.view.AbstractBaseVO;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.List;
 
 public class Domain {
@@ -17,6 +18,9 @@ public class Domain {
   public static class UserDTO extends AbstractBaseDTO<Long> {
     String userName;
     Integer age;
+
+    @Transient
+    Integer userNo;
 
     List<String> authorizations;
   }

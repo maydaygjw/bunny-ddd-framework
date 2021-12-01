@@ -1,10 +1,10 @@
 package xyz.mayday.tools.bunny.ddd.schema.query;
 
-import lombok.*;
-import org.springframework.util.ObjectUtils;
-
 import java.util.Collection;
-import java.util.Objects;
+
+import lombok.*;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /** @author gejunwen */
 @Data
@@ -22,8 +22,19 @@ public class QueryComparator<T> {
 
   SearchOperation searchOperation;
 
-  SearchConjunction searchConjunction = SearchConjunction.AND;
+  SearchConjunction searchConjunction;
 
-  String conjunctionGroup = "Default";
+  String conjunctionGroup;
 
+  public SearchOperation getSearchOperation() {
+    return ObjectUtils.defaultIfNull(searchOperation, SearchOperation.EQUALS);
+  }
+
+  public SearchConjunction getSearchConjunction() {
+    return ObjectUtils.defaultIfNull(searchConjunction, SearchConjunction.AND);
+  }
+
+  public String getConjunctionGroup() {
+    return StringUtils.defaultIfBlank(conjunctionGroup, "Default");
+  }
 }

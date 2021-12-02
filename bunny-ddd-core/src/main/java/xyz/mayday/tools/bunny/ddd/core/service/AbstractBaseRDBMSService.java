@@ -75,13 +75,7 @@ public abstract class AbstractBaseRDBMSService<
   public PageableData<DTO> findItems(DTO dto, CommonQueryParam queryParam) {
     dto = Optional.ofNullable(dto).orElse(ReflectionUtils.newInstance(getDtoClass()));
 
-    QuerySpecification<DAO> querySpecification = new QuerySpecification<>();
-    Collection<BaseQuerySpecVisitor> visitors = Lists.newArrayList(
-            new FieldCriteriaVisitorImpl(),
-            new MultipleValueCriteriaVisitorImpl(),
-            new ExtraCriteriaVisitorImpl());
-    visitors.forEach(dto::accept);
-    visitors.forEach(visitor -> querySpecification.addAll(visitor.getSearchCriteria()));
+    QuerySpecification<DAO> querySpecification = buildQuerySpecification(dto);
 
     Page<DAO> pageResult = serviceFactory.getRepository(getDaoClass()).findAll(querySpecification, QueryUtils.buildPageRequest(queryParam));
     return PageableData.<DTO>builder()
@@ -90,9 +84,20 @@ public abstract class AbstractBaseRDBMSService<
         .build();
   }
 
+  private QuerySpecification<DAO> buildQuerySpecification(DTO dto) {
+    QuerySpecification<DAO> querySpecification = new QuerySpecification<>();
+    Collection<BaseQuerySpecVisitor> visitors = Lists.newArrayList(
+            new FieldCriteriaVisitorImpl(),
+            new MultipleValueCriteriaVisitorImpl(),
+            new ExtraCriteriaVisitorImpl());
+    visitors.forEach(dto::accept);
+    visitors.forEach(visitor -> querySpecification.addAll(visitor.getSearchCriteria()));
+    return querySpecification;
+  }
+
   @Override
   public Long countItems(DTO example) {
-    return getRepository().count(QueryUtils.buildSpecification(example));
+    return getRepository().count(buildQuerySpecification(example));
   }
 
   @Override

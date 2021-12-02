@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContextAware;
 
 import org.springframework.stereotype.Component;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
+import xyz.mayday.tools.bunny.ddd.schema.service.DomainAggregator;
 import xyz.mayday.tools.bunny.ddd.utils.reflect.TypeReference;
 
 @Component
@@ -19,6 +20,9 @@ public class ContextHolder implements ApplicationContextAware {
 
     @Getter
     private static GenericConverter genericConverter;
+
+    @Getter
+    private static DomainAggregator domainAggregator;
 
     @SuppressWarnings("unchecked")
     public static <T> Optional<T> getBeanOfType(TypeReference<T> typeReference) {
@@ -33,6 +37,11 @@ public class ContextHolder implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext ctx) throws BeansException {
         ContextHolder.ctx = ctx;
+    }
+
+    @Autowired
+    public void setDomainAggregator(DomainAggregator domainAggregator) {
+        ContextHolder.domainAggregator = domainAggregator;
     }
 
     @Autowired

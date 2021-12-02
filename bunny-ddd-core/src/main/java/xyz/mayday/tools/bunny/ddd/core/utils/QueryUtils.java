@@ -31,7 +31,7 @@ public class QueryUtils {
         return null;
     }
     
-    private static <ID, DTO extends BaseDomain<ID>> List<SearchCriteria<?>> buildMultipleValuesCriteria(DTO dto) {
+    private static <ID, DTO extends BaseDomain<ID>> List<SearchCriteria> buildMultipleValuesCriteria(DTO dto) {
         return Collections.emptyList();
     }
     

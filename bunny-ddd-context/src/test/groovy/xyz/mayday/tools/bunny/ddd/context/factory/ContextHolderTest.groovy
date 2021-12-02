@@ -4,6 +4,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import spock.lang.Specification
+import xyz.mayday.tools.bunny.ddd.context.autoconfigure.Domain
 import xyz.mayday.tools.bunny.ddd.utils.reflect.TypeReference
 
 @SpringBootTest
@@ -20,6 +21,18 @@ class ContextHolderTest extends Specification {
         type.present
         type2.present
         type3.present
+    }
+
+    def "GetGenericConverter"() {
+        when:
+
+        def converter = ContextHolder.getGenericConverter()
+        def anotherUser = converter.clone(new Domain.UserDTO().withUserName("Peter"))
+
+        then:
+
+        anotherUser.userName == "Peter"
+
     }
 
     @Bean

@@ -12,7 +12,6 @@ import javax.persistence.Transient;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import xyz.mayday.tools.bunny.ddd.core.converter.SimpleConverter;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
@@ -37,14 +36,13 @@ public class MultipleValueCriteriaVisitorImpl extends BaseQuerySpecVisitor {
 
                     String key = entry.getKey();
                     Collection<Object> values = entry.getValue().stream().map(this::processValue).collect(Collectors.toSet());
-                    QueryComparator<?> comparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key),
-                            new QueryComparator<>().withCompareWith(key).withKey(key).withSearchOperation(SearchOperation.IN).withValues(values));
+                    QueryComparator comparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key),
+                            new QueryComparator().withCompareWith(key).withKey(key).withSearchOperation(SearchOperation.IN).withValues(values));
                     return comparator;
 
-                }).map(comparator -> {
-                    return SimpleConverter.convert(comparator, SearchCriteria.class);
-                }).collect(Collectors.toList());
+                }).map(this::toCriteria)
+                .collect(Collectors.toList());
 
-        getQuerySpecifications().addAll(collect);
+        getSearchCriteria().addAll(collect);
     }
 }

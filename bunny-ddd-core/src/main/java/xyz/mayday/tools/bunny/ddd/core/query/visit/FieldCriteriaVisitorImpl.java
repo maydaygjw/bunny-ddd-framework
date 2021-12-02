@@ -34,20 +34,13 @@ public class FieldCriteriaVisitorImpl extends BaseQuerySpecVisitor {
                 .map(pair -> {
                     String key = pair.getLeft();
                     Object value = processValue(pair.getRight());
-                    QueryComparator<?> queryComparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key),
-                            new QueryComparator<>().withKey(key).withCompareWith(key).withSearchOperation(SearchOperation.IN).withValues(Collections.singleton(value)));
+                    QueryComparator queryComparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key),
+                            new QueryComparator().withKey(key).withCompareWith(key).withSearchOperation(SearchOperation.IN).withValues(Collections.singleton(value)));
 
                     return queryComparator;
-                }).map(comparator -> {
-                    return new SearchCriteria()
-                            .withKey(comparator.getKey())
-                            .withValues(comparator.getValues())
-                            .withSearchOperation(comparator.getSearchOperation())
-                            .withSearchConjunction(comparator.getSearchConjunction())
-                            .withConjunctionGroup(comparator.getConjunctionGroup());
-                }).collect(Collectors.toList());
+                }).map(this::toCriteria).collect(Collectors.toList());
 
-        querySpecifications.addAll(collect);
+        searchCriteria.addAll(collect);
 
     }
 }

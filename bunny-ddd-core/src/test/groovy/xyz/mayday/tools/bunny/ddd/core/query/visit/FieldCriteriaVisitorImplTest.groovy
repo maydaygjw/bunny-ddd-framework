@@ -22,9 +22,9 @@ class FieldCriteriaVisitorImplTest extends Specification {
 
         then:
 
-        visitor.querySpecifications.size() == 2
-        visitor.querySpecifications[1].key == "age"
-        visitor.querySpecifications[1].values == [21].toSet()
+        visitor.searchCriteria.size() == 2
+        visitor.searchCriteria[1].key == "age"
+        visitor.searchCriteria[1].values == [21].toSet()
 
 
     }

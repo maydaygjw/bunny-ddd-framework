@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import lombok.*;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -13,11 +14,11 @@ import org.springframework.util.CollectionUtils;
 @NoArgsConstructor
 @With
 @EqualsAndHashCode
-public class SearchCriteria<T> {
+public class SearchCriteria {
 
   String key;
 
-  Collection<T> values;
+  Collection<?> values;
 
   SearchOperation searchOperation;
 
@@ -26,14 +27,14 @@ public class SearchCriteria<T> {
   String conjunctionGroup;
 
   public SearchOperation getSearchOperation() {
-    return Optional.ofNullable(searchOperation).orElse(SearchOperation.EQUALS);
+    return ObjectUtils.defaultIfNull(searchOperation, SearchOperation.EQUALS);
   }
 
   public String getConjunctionGroup() {
     return StringUtils.defaultIfBlank(conjunctionGroup, "Default");
   }
 
-  public T getValue() {
+  public Object getValue() {
     if(CollectionUtils.isEmpty(values)) {
       return null;
     }

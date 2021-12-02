@@ -81,7 +81,7 @@ public abstract class AbstractBaseRDBMSService<
             new MultipleValueCriteriaVisitorImpl(),
             new ExtraCriteriaVisitorImpl());
     visitors.forEach(dto::accept);
-    visitors.forEach(visitor -> querySpecification.addAll(visitor.getQuerySpecifications()));
+    visitors.forEach(visitor -> querySpecification.addAll(visitor.getSearchCriteria()));
 
     Page<DAO> pageResult = serviceFactory.getRepository(getDaoClass()).findAll(querySpecification, QueryUtils.buildPageRequest(queryParam));
     return PageableData.<DTO>builder()

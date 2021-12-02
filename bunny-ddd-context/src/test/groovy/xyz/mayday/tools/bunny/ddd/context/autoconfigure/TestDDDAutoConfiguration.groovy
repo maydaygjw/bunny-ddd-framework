@@ -11,6 +11,9 @@ import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseRDBMSService
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException
+import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator
+import xyz.mayday.tools.bunny.ddd.schema.query.SearchConjunction
+import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory
 
@@ -95,6 +98,20 @@ class TestDDDAutoConfiguration extends Specification {
         def all = userService.findAll(new Domain.UserDTO().withAge(20))
         then:
         all.size() == 1
+
+        when:
+
+        def user = new Domain.UserDTO();
+        user.age = 20
+        QueryComparator q1 = new QueryComparator("ageUpperRange").withCompareWith("age").withSearchOperation(SearchOperation.GREATER_THAN_EQUAL).withValues(Collections.singletonList(30)).withSearchConjunction(SearchConjunction.OR)
+        QueryComparator q2 = new QueryComparator("ageLowerRange").withCompareWith("age").withSearchOperation(SearchOperation.LESS_THAN_EQUAL).withValues(Collections.singletonList(10)).withSearchConjunction(SearchConjunction.OR)
+        user.addQueryComparators(q1, q2)
+
+        all = userService.findAll(user)
+
+        then:
+
+        all.size() == 0
     }
 
 

@@ -37,7 +37,7 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO>
 
   @Override
   public PageableData<VO> queryItems(QUERY query, CommonQueryParam commonQueryParam) {
-    commonQueryParam = applyQueryRestriction(commonQueryParam);
+    applyQueryRestriction(commonQueryParam);
     PageableData<DTO> items = getService().findItems(convertQueryToDto(query), commonQueryParam);
     return PageableData.<VO>builder()
         .records(items.getRecords().stream().map(this::convertDtoToVo).collect(Collectors.toList()))
@@ -50,7 +50,7 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO>
     return getService().countItems(convertQueryToDto(query));
   }
 
-  CommonQueryParam applyQueryRestriction(CommonQueryParam commonQueryParam) {
+  void applyQueryRestriction(CommonQueryParam commonQueryParam) {
 
     commonQueryParam = Optional.ofNullable(commonQueryParam).orElse(new CommonQueryParam());
 
@@ -65,7 +65,6 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO>
     if (commonQueryParam.getPageSize() > pagingConfigure.getPageSizeLimit())
       commonQueryParam.setPageSize(pagingConfigure.getPageSizeLimit());
 
-    return commonQueryParam;
   }
 
   @Override

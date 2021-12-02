@@ -6,9 +6,11 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDomain;
 import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -18,7 +20,7 @@ public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractB
     
     String operationType;
 
-    Map<String, QueryComparator<?>> queryComparators;
+    Map<String, QueryComparator> queryComparators;
 
     Map<String, Collection<?>> multipleValueAttributes;
 
@@ -27,8 +29,12 @@ public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractB
         multipleValueAttributes = new ConcurrentHashMap<>();
     }
 
-    public void addQueryComparator(QueryComparator<?> queryComparator) {
+    public void addQueryComparator(QueryComparator queryComparator) {
         queryComparators.put(queryComparator.getKey(), queryComparator);
+    }
+
+    public void addQueryComparators(QueryComparator... queryComparators) {
+    this.queryComparators.putAll(Arrays.stream(queryComparators).collect(Collectors.toMap(QueryComparator::getKey, q -> q)));
     }
     
     public <T> void addMultiValues(String key, Collection<T> values) {

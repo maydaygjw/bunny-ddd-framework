@@ -2,17 +2,23 @@ package xyz.mayday.tools.bunny.ddd.context.factory;
 
 import java.util.Optional;
 
+import lombok.Getter;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import org.springframework.stereotype.Component;
+import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.utils.reflect.TypeReference;
 
 @Component
 public class ContextHolder implements ApplicationContextAware {
 
     private static ApplicationContext ctx;
+
+    @Getter
+    private static GenericConverter genericConverter;
 
     @SuppressWarnings("unchecked")
     public static <T> Optional<T> getBeanOfType(TypeReference<T> typeReference) {
@@ -27,5 +33,10 @@ public class ContextHolder implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext ctx) throws BeansException {
         ContextHolder.ctx = ctx;
+    }
+
+    @Autowired
+    public void setGenericConverter(GenericConverter genericConverter) {
+        ContextHolder.genericConverter = genericConverter;
     }
 }

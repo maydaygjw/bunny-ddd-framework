@@ -22,6 +22,6 @@ class MultipleValueCriteriaVisitorImplTest extends Specification {
 
         then:
 
-        visitor.querySpecifications.size() == 1
+        visitor.searchCriteria.size() == 1
     }
 }

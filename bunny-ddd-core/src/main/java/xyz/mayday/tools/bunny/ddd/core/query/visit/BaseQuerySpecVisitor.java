@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
-import xyz.mayday.tools.bunny.ddd.core.converter.SimpleConverter;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.domain.Visitor;
 import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator;

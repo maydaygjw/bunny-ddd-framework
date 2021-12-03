@@ -11,16 +11,16 @@ import xyz.mayday.tools.bunny.ddd.fsm.context.FSMSupport;
 @With
 @Builder
 public class TodoDTO extends AbstractBaseDTO<String> implements FSMSupport<TodoState> {
-
-  TodoState todoState;
-
-  @Override
-  public TodoState getState() {
-    return todoState;
-  }
-
-  @Override
-  public void setState(TodoState state) {
-    setTodoState(state);
-  }
+    
+    TodoState todoState;
+    
+    @Override
+    public TodoState getState() {
+        return todoState;
+    }
+    
+    @Override
+    public void setState(TodoState state) {
+        setTodoState(state);
+    }
 }

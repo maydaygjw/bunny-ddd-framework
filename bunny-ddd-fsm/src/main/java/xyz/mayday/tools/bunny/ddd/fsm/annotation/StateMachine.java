@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StateMachine {
-
-  String id() default "";
+    
+    String id() default "";
 }

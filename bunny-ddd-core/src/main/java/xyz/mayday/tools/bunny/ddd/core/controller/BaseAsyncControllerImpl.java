@@ -11,12 +11,12 @@ public abstract class BaseAsyncControllerImpl<ID, VO extends BaseVO<ID>, Q, DTO>
     public AsyncResultVO queryItemsAsync(Q query, CommonQueryParam req) {
         return null;
     }
-
+    
     @Override
     public PageableData<VO> queryAsyncResult(String ticket) {
         return null;
     }
-
+    
     @Override
     public AsyncResultVO createAsync(VO vo) {
         return null;

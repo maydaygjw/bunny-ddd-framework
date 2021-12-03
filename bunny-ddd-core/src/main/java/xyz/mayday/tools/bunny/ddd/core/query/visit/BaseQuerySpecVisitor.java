@@ -11,20 +11,16 @@ import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 
 @Getter
 public abstract class BaseQuerySpecVisitor implements Visitor<AbstractBaseDTO<?>> {
-
+    
     List<SearchCriteria> searchCriteria = new ArrayList<>();
-
+    
     protected Object processValue(Object value) {
         return value;
     }
-
+    
     protected SearchCriteria toCriteria(QueryComparator comparator) {
-        return new SearchCriteria()
-                .withKey(comparator.getCompareWith())
-                .withValues(comparator.getValues())
-                .withSearchOperation(comparator.getSearchOperation())
-                .withSearchConjunction(comparator.getSearchConjunction())
-                .withConjunctionGroup(comparator.getConjunctionGroup());
+        return new SearchCriteria().withKey(comparator.getCompareWith()).withValues(comparator.getValues()).withSearchOperation(comparator.getSearchOperation())
+                .withSearchConjunction(comparator.getSearchConjunction()).withConjunctionGroup(comparator.getConjunctionGroup());
     }
-
+    
 }

@@ -5,14 +5,14 @@ import lombok.Data;
 /** @author gejunwen */
 @Data
 public class FSMActionDefinition {
-
-  String fromState;
-
-  String toState;
-
-  String operationKey;
-
-  String operationName;
-
-  String mvel;
+    
+    String fromState;
+    
+    String toState;
+    
+    String operationKey;
+    
+    String operationName;
+    
+    String mvel;
 }

@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExecutionContext<DOMAIN> {
-
+    
     String correlationId;
-
+    
     DOMAIN domain;
-
+    
     Object result;
 }

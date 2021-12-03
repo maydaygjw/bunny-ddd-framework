@@ -6,13 +6,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public enum SearchOperation {
-  EQUALS,
-  IN,
-  NOT_IN,
-  MATCH,
-  GREATER_THAN,
-  GREATER_THAN_EQUAL,
-  LESS_THAN,
-  LESS_THAN_EQUAL,
-  ;
+    EQUALS,
+    IN,
+    NOT_IN,
+    MATCH,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
+    LESS_THAN,
+    LESS_THAN_EQUAL,;
 }

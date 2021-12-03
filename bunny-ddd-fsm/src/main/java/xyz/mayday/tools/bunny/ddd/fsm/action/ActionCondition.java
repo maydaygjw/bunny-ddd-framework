@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class ActionCondition<S, E> {
-
-  S fromState;
-
-  E event;
-
-  public static <S, E> ActionCondition<S, E> of(S fromState, E event) {
-    return new ActionCondition<>(fromState, event);
-  }
+    
+    S fromState;
+    
+    E event;
+    
+    public static <S, E> ActionCondition<S, E> of(S fromState, E event) {
+        return new ActionCondition<>(fromState, event);
+    }
 }

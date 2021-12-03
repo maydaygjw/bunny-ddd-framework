@@ -1,3 +1,4 @@
 package xyz.mayday.tools.bunny.ddd.schema.query.annotation;
 
-public @interface OneToMany {}
+public @interface OneToMany {
+}

@@ -18,29 +18,26 @@ import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 public class FieldCriteriaVisitorImpl extends BaseQuerySpecVisitor {
-
+    
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void visit(AbstractBaseDTO<?> dto) {
-
+        
         List<SearchCriteria> collect = Arrays.stream(FieldUtils.getAllFields(dto.getClass()))
                 .filter(field -> !FieldUtils.getFieldsListWithAnnotation(dto.getClass(), Transient.class).contains(field))
-                .filter(field -> !TypeUtils.isArrayType(field.getType()))
-                .filter(field -> !TypeUtils.isAssignable(field.getType(), Collection.class))
-                .filter(field -> !TypeUtils.isAssignable(field.getType(), Map.class))
-                .filter(field -> Objects.nonNull(ReflectionUtils.getValue(field, dto)))
-                .filter(field -> !Modifier.isStatic(field.getModifiers()))
-                .map(field -> Pair.of(field.getName(), ReflectionUtils.getValue(field, dto)))
+                .filter(field -> !TypeUtils.isArrayType(field.getType())).filter(field -> !TypeUtils.isAssignable(field.getType(), Collection.class))
+                .filter(field -> !TypeUtils.isAssignable(field.getType(), Map.class)).filter(field -> Objects.nonNull(ReflectionUtils.getValue(field, dto)))
+                .filter(field -> !Modifier.isStatic(field.getModifiers())).map(field -> Pair.of(field.getName(), ReflectionUtils.getValue(field, dto)))
                 .map(pair -> {
                     String key = pair.getLeft();
                     Object value = processValue(pair.getRight());
-                    QueryComparator queryComparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key),
-                            new QueryComparator().withKey(key).withCompareWith(key).withSearchOperation(SearchOperation.IN).withValues(Collections.singleton(value)));
-
+                    QueryComparator queryComparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key), new QueryComparator().withKey(key)
+                            .withCompareWith(key).withSearchOperation(SearchOperation.IN).withValues(Collections.singleton(value)));
+                    
                     return queryComparator;
                 }).map(this::toCriteria).collect(Collectors.toList());
-
+        
         searchCriteria.addAll(collect);
-
+        
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
+
 import xyz.mayday.tools.bunny.batch.config.BatchTemplate;
 import xyz.mayday.tools.bunny.batch.controller.BatchController;
 
@@ -21,43 +22,26 @@ import xyz.mayday.tools.bunny.batch.controller.BatchController;
 @EntityScan("xyz.mayday.tools.bunny.batch.entity")
 @EnableJpaRepositories("xyz.mayday.tools.bunny.batch.repo")
 public class BatchAutoConfiguration {
-
-  @Autowired BatchTemplate batchTemplate;
-
-  @Autowired StepBuilderFactory stepBuilderFactory;
-
-  @Bean
-  Flow mainFlow() {
-    return new FlowBuilder<Flow>("mainFlow")
-        .start(
-            stepBuilderFactory
-                .get("preDefinedTask")
-                .tasklet(batchTemplate.getPreDefinedTask())
-                .build())
-        .on("SKIPPED")
-        .end()
-        .on("*")
-        .to(masterStep())
-        .end();
-  }
-
-  Step masterStep() {
-    return stepBuilderFactory
-        .get("masterStep")
-        .partitioner(slaveStep())
-        .partitioner(slaveStep().getName(), batchTemplate.getPartitioner())
-        .gridSize(batchTemplate.getConcurrency())
-        .taskExecutor(new ConcurrentTaskExecutor())
-        .build();
-  }
-
-  Step slaveStep() {
-    return stepBuilderFactory
-        .get("slaveStep")
-        .chunk(1)
-        .reader(batchTemplate.getReader())
-        .writer(batchTemplate.getWriter())
-        .processor(batchTemplate.getProcessor())
-        .build();
-  }
+    
+    @Autowired
+    BatchTemplate batchTemplate;
+    
+    @Autowired
+    StepBuilderFactory stepBuilderFactory;
+    
+    @Bean
+    Flow mainFlow() {
+        return new FlowBuilder<Flow>("mainFlow").start(stepBuilderFactory.get("preDefinedTask").tasklet(batchTemplate.getPreDefinedTask()).build())
+                .on("SKIPPED").end().on("*").to(masterStep()).end();
+    }
+    
+    Step masterStep() {
+        return stepBuilderFactory.get("masterStep").partitioner(slaveStep()).partitioner(slaveStep().getName(), batchTemplate.getPartitioner())
+                .gridSize(batchTemplate.getConcurrency()).taskExecutor(new ConcurrentTaskExecutor()).build();
+    }
+    
+    Step slaveStep() {
+        return stepBuilderFactory.get("slaveStep").chunk(1).reader(batchTemplate.getReader()).writer(batchTemplate.getWriter())
+                .processor(batchTemplate.getProcessor()).build();
+    }
 }

@@ -9,10 +9,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.springframework.data.jpa.domain.Specification;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import org.springframework.data.jpa.domain.Specification;
+
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
@@ -28,11 +29,11 @@ public class QuerySpecification<DAO extends BaseDAO<?>> extends QueryCondition i
     
     @Override
     public Predicate toPredicate(Root<DAO> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-
+        
         List<Predicate> collect = getSearchCriteriaList().stream().map(searchCriteria -> {
-
+            
             QueryPredicate predicate = QueryPredicate.presetPredicates.get(searchCriteria.getSearchOperation());
-            if( Objects.isNull(predicate)) {
+            if (Objects.isNull(predicate)) {
                 throw new BusinessException();
             }
             return predicate.buildPredicate(searchCriteria, root, builder);

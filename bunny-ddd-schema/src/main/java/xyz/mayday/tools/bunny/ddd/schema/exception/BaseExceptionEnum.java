@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseExceptionEnum {
-
-  String code;
-  String message;
-  Object payload;
-
-  public static BaseExceptionEnum of(String code, String message, Object payload) {
-    return new BaseExceptionEnum(code, message, payload);
-  }
-
-  public static BaseExceptionEnum of(String code, String message) {
-    return of(code, message, null);
-  }
+    
+    String code;
+    String message;
+    Object payload;
+    
+    public static BaseExceptionEnum of(String code, String message, Object payload) {
+        return new BaseExceptionEnum(code, message, payload);
+    }
+    
+    public static BaseExceptionEnum of(String code, String message) {
+        return of(code, message, null);
+    }
 }

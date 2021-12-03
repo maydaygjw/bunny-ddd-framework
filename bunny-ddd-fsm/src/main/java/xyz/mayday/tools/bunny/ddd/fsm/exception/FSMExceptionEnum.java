@@ -5,4 +5,5 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class FSMExceptionEnum {}
+public class FSMExceptionEnum {
+}

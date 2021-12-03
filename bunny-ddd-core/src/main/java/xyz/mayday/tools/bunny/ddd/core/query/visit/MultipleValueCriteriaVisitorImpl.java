@@ -18,31 +18,26 @@ import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 
 public class MultipleValueCriteriaVisitorImpl extends BaseQuerySpecVisitor {
-
+    
     @Override
     public void visit(AbstractBaseDTO<?> dto) {
-
+        
         Map<String, Collection<?>> multipleValueAttributes = dto.getMultipleValueAttributes();
-        List<SearchCriteria> collect = multipleValueAttributes.entrySet().stream()
-                .filter(entry -> {
-                    return FieldUtils.getFieldsListWithAnnotation(dto.getClass(), Transient.class).stream()
-                            .map(Field::getName)
-                            .noneMatch(fieldName -> fieldName.equals(entry.getKey()));
-                })
-                .filter(entry -> {
-                    return Arrays.stream(FieldUtils.getAllFields(dto.getClass())).anyMatch(f -> f.getName().equals(entry.getKey()));
-                })
-                .map(entry -> {
-
-                    String key = entry.getKey();
-                    Collection<Object> values = entry.getValue().stream().map(this::processValue).collect(Collectors.toSet());
-                    QueryComparator comparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key),
-                            new QueryComparator().withCompareWith(key).withKey(key).withSearchOperation(SearchOperation.IN).withValues(values));
-                    return comparator;
-
-                }).map(this::toCriteria)
-                .collect(Collectors.toList());
-
+        List<SearchCriteria> collect = multipleValueAttributes.entrySet().stream().filter(entry -> {
+            return FieldUtils.getFieldsListWithAnnotation(dto.getClass(), Transient.class).stream().map(Field::getName)
+                    .noneMatch(fieldName -> fieldName.equals(entry.getKey()));
+        }).filter(entry -> {
+            return Arrays.stream(FieldUtils.getAllFields(dto.getClass())).anyMatch(f -> f.getName().equals(entry.getKey()));
+        }).map(entry -> {
+            
+            String key = entry.getKey();
+            Collection<Object> values = entry.getValue().stream().map(this::processValue).collect(Collectors.toSet());
+            QueryComparator comparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key),
+                    new QueryComparator().withCompareWith(key).withKey(key).withSearchOperation(SearchOperation.IN).withValues(values));
+            return comparator;
+            
+        }).map(this::toCriteria).collect(Collectors.toList());
+        
         getSearchCriteria().addAll(collect);
     }
 }

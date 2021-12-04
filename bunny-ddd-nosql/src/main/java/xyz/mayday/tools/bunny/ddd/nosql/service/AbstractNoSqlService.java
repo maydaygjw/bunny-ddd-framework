@@ -2,6 +2,7 @@ package xyz.mayday.tools.bunny.ddd.nosql.service;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -15,7 +16,7 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 
-public class NoSqlServiceImpl<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> {
+public class AbstractNoSqlService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> {
     
     @Autowired
     MongoTemplate mongoTemplate;
@@ -76,7 +77,12 @@ public class NoSqlServiceImpl<ID extends Serializable, DTO extends AbstractBaseD
     
     @Override
     public DTO update(DTO dto) {
-        return null;
+        Objects.requireNonNull(dto.getId());
+        DAO tbUpdate = convertToDao(dto);
+        auditWhenUpdate(tbUpdate);
+        mongoTemplate.update(getDaoClass()).replaceWith(tbUpdate);
+        javers.commit(tbUpdate.getUpdatedBy(), tbUpdate);
+        return dto;
     }
     
     @Override

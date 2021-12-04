@@ -16,7 +16,7 @@ import org.reflections.Reflections;
 
 /** @author gejunwen */
 @SuppressWarnings("unchecked")
-public class ReflectionUtils {
+public class ReflectionUtils extends org.reflections.ReflectionUtils {
     
     @SneakyThrows
     public static <T> T getValue(Field f, Object instance) {

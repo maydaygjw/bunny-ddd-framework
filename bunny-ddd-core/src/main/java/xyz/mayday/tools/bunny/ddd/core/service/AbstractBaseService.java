@@ -7,6 +7,7 @@ import java.util.Date;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import xyz.mayday.tools.bunny.ddd.core.constant.GenericTypeIndexConstant;
@@ -97,6 +98,10 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
     
     protected ID convertIdType(String id) {
         return converter.convert(id, getIdType());
+    }
+
+    protected void mergeProperties(DTO source, DTO target) {
+        BeanUtils.copyProperties(source, target);
     }
     
     protected QuerySpecification<DAO> buildQuerySpecification(DTO dto) {

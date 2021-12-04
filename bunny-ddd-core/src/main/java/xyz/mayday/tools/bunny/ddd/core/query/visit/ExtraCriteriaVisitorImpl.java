@@ -9,14 +9,15 @@ import javax.persistence.Transient;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.reflections.ReflectionUtils;
 
+import org.apache.commons.collections.CollectionUtils;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 
 import com.google.common.collect.Lists;
+import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 @Slf4j
 public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
@@ -28,6 +29,7 @@ public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
                 .map(Field::getName).collect(Collectors.toList());
         
         List<SearchCriteria> collect = dto.getQueryComparators().values().stream()
+                .filter(comparator -> CollectionUtils.isNotEmpty(comparator.getValues()))
                 .filter(comparator -> illegibleFields.containsAll(comparator.getCompareWith())).map(comparator -> {
                     
                     if (comparator.getValues().size() > 1) {

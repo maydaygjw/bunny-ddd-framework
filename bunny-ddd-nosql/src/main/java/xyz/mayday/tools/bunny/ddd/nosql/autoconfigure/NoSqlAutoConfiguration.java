@@ -10,9 +10,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.client.MongoDatabase;
 
-@Configuration()
+@Configuration
 public class NoSqlAutoConfiguration {
-    
+
     @Bean
     @Primary
     Javers javas(MongoTemplate mongoTemplate) {

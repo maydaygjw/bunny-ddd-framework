@@ -15,12 +15,13 @@
         <module>bunny-ddd-utils</module>
         <module>bunny-ddd-schema</module>
         <module>bunny-ddd-core</module>
-        <module>bunny-ddd-context</module>
+        <module>bunny-ddd-starter</module>
         <module>bunny-ddd-fsm</module>
         <module>bunny-ddd-reactive-redis</module>
         <module>bunny-ddd-batch</module>
         <module>bunny-ddd-reactive-r2dbc</module>
         <module>bunny-ddd-cache</module>
+        <module>bunny-ddd-nosql</module>
 
         <module>bunny-ddd-starter-workflow</module>
     </modules>

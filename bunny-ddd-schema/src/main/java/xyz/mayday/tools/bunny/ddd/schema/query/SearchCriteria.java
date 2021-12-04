@@ -1,6 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.schema.query;
 
 import java.util.Collection;
+import java.util.List;
 
 import lombok.*;
 
@@ -15,7 +16,7 @@ import org.springframework.util.CollectionUtils;
 @EqualsAndHashCode
 public class SearchCriteria {
     
-    String key;
+    List<String> keys;
     
     Collection<?> values;
     
@@ -24,6 +25,10 @@ public class SearchCriteria {
     SearchConjunction searchConjunction;
     
     String conjunctionGroup;
+    
+    public String getKey() {
+        return keys.get(0);
+    }
     
     public SearchOperation getSearchOperation() {
         return ObjectUtils.defaultIfNull(searchOperation, SearchOperation.EQUAL);

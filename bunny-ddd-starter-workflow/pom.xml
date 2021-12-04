@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>xyz.mayday.tools</groupId>
-            <artifactId>bunny-ddd-context</artifactId>
+            <artifactId>bunny-ddd-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

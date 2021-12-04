@@ -19,6 +19,7 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
+import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 
 @NoArgsConstructor
 public abstract class RedisCacheableServiceImpl<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>>
@@ -27,8 +28,9 @@ public abstract class RedisCacheableServiceImpl<ID extends Serializable, DTO ext
     @Inject
     ReactiveRedisOperations<String, DAO> redisOperations;
     
-    public RedisCacheableServiceImpl(GenericConverter converter, ReactiveRedisOperations<String, DAO> redisOperations, PrincipalService principalService) {
-        super(converter, principalService);
+    public RedisCacheableServiceImpl(GenericConverter converter, ReactiveRedisOperations<String, DAO> redisOperations, PrincipalService principalService,
+            IdGenerator<String> idGenerator) {
+        super(converter, principalService, idGenerator);
         this.redisOperations = redisOperations;
     }
     
@@ -48,7 +50,7 @@ public abstract class RedisCacheableServiceImpl<ID extends Serializable, DTO ext
     }
     
     @Override
-    public PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam) {
+    protected PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam) {
         return null;
     }
     
@@ -106,6 +108,6 @@ public abstract class RedisCacheableServiceImpl<ID extends Serializable, DTO ext
     }
     
     @Override
-    public void initCache() {
+    public void initCacheData() {
     }
 }

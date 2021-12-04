@@ -9,10 +9,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.springframework.data.jpa.domain.Specification;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import org.springframework.data.jpa.domain.Specification;
+
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;

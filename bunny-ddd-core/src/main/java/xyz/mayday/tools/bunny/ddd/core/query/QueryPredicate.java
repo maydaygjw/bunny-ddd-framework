@@ -6,10 +6,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.google.common.collect.ImmutableMap;
-
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
+
+import com.google.common.collect.ImmutableMap;
 
 public abstract class QueryPredicate {
     

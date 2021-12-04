@@ -7,15 +7,18 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Transient;
 
-import org.reflections.ReflectionUtils;
+import lombok.extern.slf4j.Slf4j;
 
-import com.google.common.collect.Lists;
+import org.reflections.ReflectionUtils;
 
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 
+import com.google.common.collect.Lists;
+
+@Slf4j
 public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
     
     @Override
@@ -24,8 +27,8 @@ public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
         List<String> illegibleFields = ReflectionUtils.getAllFields(dto.getClass(), field -> Objects.isNull(field.getAnnotation(Transient.class))).stream()
                 .map(Field::getName).collect(Collectors.toList());
         
-        List<SearchCriteria> collect = dto.getQueryComparators().values().stream().filter(comparator -> illegibleFields.contains(comparator.getCompareWith()))
-                .map(comparator -> {
+        List<SearchCriteria> collect = dto.getQueryComparators().values().stream()
+                .filter(comparator -> illegibleFields.containsAll(comparator.getCompareWith())).map(comparator -> {
                     
                     if (comparator.getValues().size() > 1) {
                         
@@ -42,6 +45,8 @@ public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
                     return toCriteria(comparator);
                     
                 }).collect(Collectors.toList());
+        
+        log.trace("Extra criteria: {}", collect);
         
         getSearchCriteria().addAll(collect);
     }

@@ -1,8 +1,13 @@
 package xyz.mayday.tools.bunny.ddd.schema.query.annotation;
 
+import java.lang.annotation.*;
+
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchConjunction;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = { ElementType.FIELD })
 public @interface QueryComparator {
     
     String key() default "";
@@ -13,5 +18,5 @@ public @interface QueryComparator {
     
     SearchConjunction conjunction() default SearchConjunction.AND;
     
-    SearchConjunction.ConjunctionGroup conjunctionGroup() default SearchConjunction.ConjunctionGroup.DEFAULT;
+    String conjunctionGroup() default "Default";
 }

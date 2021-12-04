@@ -7,5 +7,5 @@ public interface CacheableService<ID, DOMAIN> extends BaseService<ID, DOMAIN> {
     
     void destroyCache();
     
-    void initCache();
+    void initCacheData();
 }

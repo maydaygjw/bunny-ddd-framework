@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Transient;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
@@ -17,6 +19,7 @@ import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
+@Slf4j
 public class FieldCriteriaVisitorImpl extends BaseQuerySpecVisitor {
     
     @Override
@@ -32,10 +35,12 @@ public class FieldCriteriaVisitorImpl extends BaseQuerySpecVisitor {
                     String key = pair.getLeft();
                     Object value = processValue(pair.getRight());
                     QueryComparator queryComparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key), new QueryComparator().withKey(key)
-                            .withCompareWith(key).withSearchOperation(SearchOperation.IN).withValues(Collections.singleton(value)));
+                            .withCompareWith(Collections.singletonList(key)).withSearchOperation(SearchOperation.IN).withValues(Collections.singleton(value)));
                     
                     return queryComparator;
                 }).map(this::toCriteria).collect(Collectors.toList());
+        
+        log.trace("Field criteria: {}", collect);
         
         searchCriteria.addAll(collect);
         

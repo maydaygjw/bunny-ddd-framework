@@ -2,6 +2,7 @@ package xyz.mayday.tools.bunny.ddd.schema.query;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import lombok.*;
 
@@ -18,7 +19,7 @@ public class QueryComparator {
     
     String key;
     
-    String compareWith;
+    List<String> compareWith;
     
     Collection<?> values;
     
@@ -29,11 +30,11 @@ public class QueryComparator {
     }
     
     public QueryComparator(String compareWith, Object value) {
-        this(compareWith, Collections.singleton(value));
+        this(Collections.singletonList(compareWith), Collections.singleton(value));
     }
     
-    public QueryComparator(String compareWith, Collection<?> values) {
-        this.key = compareWith;
+    public QueryComparator(List<String> compareWith, Collection<?> values) {
+        this.key = compareWith.get(0);
         this.compareWith = compareWith;
         this.values = values;
     }

@@ -5,10 +5,11 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import lombok.Data;
+
 import org.apache.commons.lang3.StringUtils;
 import org.javers.core.metamodel.annotation.DiffIgnore;
 
-import lombok.Data;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.domain.DataStateEnum;
 

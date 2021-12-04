@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import org.springframework.data.annotation.Transient;
+
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDomain;
 import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator;
 
@@ -20,8 +23,10 @@ public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractB
     
     String operationType;
     
+    @Transient
     Map<String, QueryComparator> queryComparators;
     
+    @Transient
     Map<String, Collection<?>> multipleValueAttributes;
     
     public AbstractBaseDTO() {
@@ -35,6 +40,10 @@ public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractB
     
     public void addQueryComparators(QueryComparator... queryComparators) {
         this.queryComparators.putAll(Arrays.stream(queryComparators).collect(Collectors.toMap(QueryComparator::getKey, q -> q)));
+    }
+    
+    public void addQueryComparators(Collection<QueryComparator> queryComparators) {
+        this.queryComparators.putAll(queryComparators.stream().collect(Collectors.toMap(QueryComparator::getKey, q -> q)));
     }
     
     public <T> void addMultiValues(String key, Collection<T> values) {

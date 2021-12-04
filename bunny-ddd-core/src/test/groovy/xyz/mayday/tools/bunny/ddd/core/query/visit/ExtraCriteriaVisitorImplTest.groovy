@@ -29,8 +29,8 @@ class ExtraCriteriaVisitorImplTest extends Specification {
 
         when:
 
-        QueryComparator q1 = new QueryComparator("ageUpperRange").withCompareWith("age").withSearchOperation(SearchOperation.GREATER_THAN_EQUAL).withValues(Collections.singletonList(30)).withSearchConjunction(SearchConjunction.OR)
-        QueryComparator q2 = new QueryComparator("ageLowerRange").withCompareWith("age").withSearchOperation(SearchOperation.LESS_THAN_EQUAL).withValues(Collections.singletonList(10)).withSearchConjunction(SearchConjunction.OR)
+        QueryComparator q1 = new QueryComparator("ageUpperRange").withCompareWith(["age"]).withSearchOperation(SearchOperation.GREATER_THAN_EQUAL).withValues(Collections.singletonList(30)).withSearchConjunction(SearchConjunction.OR)
+        QueryComparator q2 = new QueryComparator("ageLowerRange").withCompareWith(["age"]).withSearchOperation(SearchOperation.LESS_THAN_EQUAL).withValues(Collections.singletonList(10)).withSearchConjunction(SearchConjunction.OR)
         dto.addQueryComparators(q1, q2)
 
         visitor = new ExtraCriteriaVisitorImpl()

@@ -1,13 +1,12 @@
 package xyz.mayday.tools.bunny.ddd.core.query.visit;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.persistence.Transient;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -17,6 +16,7 @@ import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 
+@Slf4j
 public class MultipleValueCriteriaVisitorImpl extends BaseQuerySpecVisitor {
     
     @Override
@@ -32,11 +32,13 @@ public class MultipleValueCriteriaVisitorImpl extends BaseQuerySpecVisitor {
             
             String key = entry.getKey();
             Collection<Object> values = entry.getValue().stream().map(this::processValue).collect(Collectors.toSet());
-            QueryComparator comparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key),
-                    new QueryComparator().withCompareWith(key).withKey(key).withSearchOperation(SearchOperation.IN).withValues(values));
+            QueryComparator comparator = ObjectUtils.defaultIfNull(dto.getQueryComparators().get(key), new QueryComparator()
+                    .withCompareWith(Collections.singletonList(key)).withKey(key).withSearchOperation(SearchOperation.IN).withValues(values));
             return comparator;
             
         }).map(this::toCriteria).collect(Collectors.toList());
+        
+        log.trace("Multiple values attribute: {}", collect);
         
         getSearchCriteria().addAll(collect);
     }

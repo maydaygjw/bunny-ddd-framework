@@ -10,6 +10,7 @@ import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam
+import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator
 
 import java.util.stream.Stream
 
@@ -21,7 +22,8 @@ class AbstractBaseServiceTest extends Specification {
     def setup() {
         PrincipalService principalService = Mock()
         principalService.getCurrentUserId() >> "ddd-user1"
-        userBaseService = new UserBaseService(new DefaultGenericConverter(new ObjectMapper()), principalService)
+        def idGenerator = Mock(IdGenerator.class)
+        userBaseService = new UserBaseService(new DefaultGenericConverter(new ObjectMapper()), principalService, idGenerator)
     }
 
     def "test for auditWhenInsert"() {
@@ -74,8 +76,8 @@ class AbstractBaseServiceTest extends Specification {
     @Subject
     static class UserBaseService extends AbstractBaseService<Long, Domain.UserDTO, Domain.UserDAO> {
 
-        UserBaseService(GenericConverter converter, PrincipalService principalService) {
-            super(converter, principalService)
+        UserBaseService(GenericConverter converter, PrincipalService principalService, IdGenerator<String> idGenerator) {
+            super(converter, principalService, idGenerator)
         }
 
         @Override
@@ -94,7 +96,7 @@ class AbstractBaseServiceTest extends Specification {
         }
 
         @Override
-        PageableData<Domain.UserDTO> findItems(Domain.UserDTO example, CommonQueryParam queryParam) {
+        PageableData<Domain.UserDTO> doFindItems(Domain.UserDTO example, CommonQueryParam queryParam) {
             return null
         }
 

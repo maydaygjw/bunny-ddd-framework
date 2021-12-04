@@ -1,19 +1,22 @@
 package xyz.mayday.tools.bunny.ddd.core.controller;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.util.CollectionUtils;
 
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-
-import lombok.RequiredArgsConstructor;
 import xyz.mayday.tools.bunny.ddd.core.constant.GenericTypeIndexConstant;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.controller.BaseController;
@@ -22,7 +25,10 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
+import xyz.mayday.tools.bunny.ddd.schema.query.annotation.QueryComparator;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
+
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 
 /** @author gejunwen */
 @RequiredArgsConstructor
@@ -72,6 +78,21 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
         DTO dto = convertQueryToDto(query);
         dto.addMultiValues("dataState", commonQueryParam.getDataState());
         
+        List<xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator> collect = FieldUtils.getFieldsListWithAnnotation(query.getClass(), QueryComparator.class)
+                .stream().map(field -> Pair.of(field, field.getAnnotation(QueryComparator.class))).map(pair -> {
+                    QueryComparator comparatorAnnotation = pair.getRight();
+                    xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator convert = new xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator()
+                            .withSearchOperation(comparatorAnnotation.operation()).withConjunctionGroup(comparatorAnnotation.conjunctionGroup())
+                            .withSearchConjunction(comparatorAnnotation.conjunction());
+                    Field field = pair.getLeft();
+                    convert.setKey(StringUtils.defaultIfBlank(comparatorAnnotation.key(), field.getName()));
+                    if (StringUtils.isAllBlank(comparatorAnnotation.compareWith())) {
+                        convert.setCompareWith(Collections.singletonList(field.getName()));
+                    }
+                    convert.setValues(Collections.singleton(ReflectionUtils.getValue(field, query)));
+                    return convert;
+                }).collect(Collectors.toList());
+        dto.addQueryComparators(collect);
         return dto;
         
     }

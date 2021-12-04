@@ -77,7 +77,7 @@
         <dependency>
             <groupId>org.javers</groupId>
             <artifactId>javers-spring-boot-starter-sql</artifactId>
-            <version>5.14.0</version>
+            <version>6.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.javassist</groupId>

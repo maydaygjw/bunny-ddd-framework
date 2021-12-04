@@ -1,7 +1,10 @@
 package xyz.mayday.tools.bunny.ddd.core.service;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,10 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDAO;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.query.QuerySpecification;
-import xyz.mayday.tools.bunny.ddd.core.query.visit.BaseQuerySpecVisitor;
-import xyz.mayday.tools.bunny.ddd.core.query.visit.ExtraCriteriaVisitorImpl;
-import xyz.mayday.tools.bunny.ddd.core.query.visit.FieldCriteriaVisitorImpl;
-import xyz.mayday.tools.bunny.ddd.core.query.visit.MultipleValueCriteriaVisitorImpl;
 import xyz.mayday.tools.bunny.ddd.core.utils.QueryUtils;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
@@ -34,8 +33,6 @@ import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
-import com.google.common.collect.Lists;
-
 /** @author gejunwen */
 @NoArgsConstructor
 @Setter
@@ -45,15 +42,12 @@ public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO exte
     @Autowired(required = false)
     PersistenceServiceFactory serviceFactory;
     
-    @Autowired(required = false)
-    IdGenerator<String> idGenerator;
-    
     @Autowired
     Javers javers;
     
     public AbstractBaseRDBMSService(GenericConverter converter, PrincipalService principalService, PersistenceServiceFactory serviceFactory,
             IdGenerator<String> idGenerator, GenericConverter genericConverter) {
-        super(converter, principalService);
+        super(converter, principalService, idGenerator);
         this.serviceFactory = serviceFactory;
         this.idGenerator = idGenerator;
     }
@@ -69,7 +63,7 @@ public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO exte
     }
     
     @Override
-    public PageableData<DTO> findItems(DTO dto, CommonQueryParam queryParam) {
+    public PageableData<DTO> doFindItems(DTO dto, CommonQueryParam queryParam) {
         dto = Optional.ofNullable(dto).orElse(ReflectionUtils.newInstance(getDtoClass()));
         
         QuerySpecification<DAO> querySpecification = buildQuerySpecification(dto);
@@ -77,15 +71,6 @@ public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO exte
         Page<DAO> pageResult = serviceFactory.getRepository(getDaoClass()).findAll(querySpecification, QueryUtils.buildPageRequest(queryParam));
         return PageableData.<DTO> builder().pageInfo(PageInfo.fromPage(pageResult))
                 .records(pageResult.get().map(this::convertToDto).collect(Collectors.toList())).build();
-    }
-    
-    private QuerySpecification<DAO> buildQuerySpecification(DTO dto) {
-        QuerySpecification<DAO> querySpecification = new QuerySpecification<>();
-        Collection<BaseQuerySpecVisitor> visitors = Lists.newArrayList(new FieldCriteriaVisitorImpl(), new MultipleValueCriteriaVisitorImpl(),
-                new ExtraCriteriaVisitorImpl());
-        visitors.forEach(dto::accept);
-        visitors.forEach(visitor -> querySpecification.addAll(visitor.getSearchCriteria()));
-        return querySpecification;
     }
     
     @Override

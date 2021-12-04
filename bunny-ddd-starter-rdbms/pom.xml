@@ -9,7 +9,7 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bunny-ddd-nosql</artifactId>
+    <artifactId>bunny-ddd-starter-rdbms</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,41 +17,82 @@
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
 
-    <name>Bunny DDD - NoSQL</name>
+    <name>Bunny DDD - Starter RDBMS</name>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
         <dependency>
             <groupId>xyz.mayday.tools</groupId>
             <artifactId>bunny-ddd-schema</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>xyz.mayday.tools</groupId>
             <artifactId>bunny-ddd-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.javers</groupId>
-            <artifactId>javers-spring-boot-starter-mongo</artifactId>
+            <artifactId>javers-spring-boot-starter-sql</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>xyz.mayday.tools</groupId>
+            <artifactId>bunny-ddd-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!--Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
-
 </project>

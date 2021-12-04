@@ -1,4 +1,4 @@
-package xyz.mayday.tools.bunny.ddd.core.service;
+package xyz.mayday.tools.bunny.ddd.rdbms.service;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDAO;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.query.QuerySpecification;
+import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.core.utils.QueryUtils;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;

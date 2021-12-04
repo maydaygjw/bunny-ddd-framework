@@ -1,7 +1,6 @@
 package xyz.mayday.tools.bunny.ddd.core.domain;
 
 import lombok.*;
-import org.hibernate.envers.Audited;
 import xyz.mayday.tools.bunny.ddd.schema.view.AbstractBaseVO;
 
 import javax.persistence.Entity;
@@ -31,7 +30,6 @@ public class Domain {
   @With
   @AllArgsConstructor
   @NoArgsConstructor
-  @Audited
   public static class UserDAO extends AbstractBaseDAO<Long> {
     String userName;
     Integer age;

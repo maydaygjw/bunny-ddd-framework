@@ -1,4 +1,4 @@
-package xyz.mayday.tools.bunny.ddd.context.autoconfigure;
+package xyz.mayday.tools.bunny.ddd.rdbms.domain;
 
 import lombok.*;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDAO;
@@ -6,6 +6,8 @@ import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.view.AbstractBaseVO;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.util.List;
 
 public class Domain {
 
@@ -17,6 +19,11 @@ public class Domain {
   public static class UserDTO extends AbstractBaseDTO<Long> {
     String userName;
     Integer age;
+
+    @Transient
+    Integer userNo;
+
+    List<String> authorizations;
   }
 
   @Entity

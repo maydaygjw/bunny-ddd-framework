@@ -1,4 +1,4 @@
-package xyz.mayday.tools.bunny.ddd.context.factory;
+package xyz.mayday.tools.bunny.ddd.rdbms.factory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -8,11 +8,7 @@ import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.envers.DefaultRevisionEntity;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.envers.repository.support.EnversRevisionRepositoryImpl;
-import org.springframework.data.envers.repository.support.ReflectionRevisionEntityInformation;
-import org.springframework.data.jpa.repository.support.JpaPersistableEntityInformation;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.history.RevisionRepository;
@@ -59,8 +55,7 @@ public class ApplicationContextServiceFactory implements PersistenceServiceFacto
     
     @Override
     public <ID, DTO, DAO extends BaseDAO<ID>> RevisionRepository<DAO, ID, Integer> getRevisionRepository(Class<DAO> daoCls) {
-        return new EnversRevisionRepositoryImpl<>(new JpaPersistableEntityInformation(daoCls, entityManager.getMetamodel()),
-                new ReflectionRevisionEntityInformation(DefaultRevisionEntity.class), entityManager);
+        return null;
     }
     
     @Override

@@ -1,4 +1,4 @@
-package xyz.mayday.tools.bunny.ddd.core.service
+package xyz.mayday.tools.bunny.ddd.rdbms.service
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -8,9 +8,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation
 import spock.lang.Specification
 import xyz.mayday.tools.bunny.ddd.core.converter.DefaultGenericConverter
-import xyz.mayday.tools.bunny.ddd.core.domain.Domain
-import xyz.mayday.tools.bunny.ddd.core.domain.Domain.UserDAO
-import xyz.mayday.tools.bunny.ddd.core.domain.UserService
+import xyz.mayday.tools.bunny.ddd.core.service.LeafIdGenerator
+import xyz.mayday.tools.bunny.ddd.rdbms.domain.Domain
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory
@@ -32,7 +31,7 @@ class AbstractBaseRDBMSServiceTest extends Specification {
         principalService.currentUserName >> "Bob"
 
         def repo = Stub(JpaRepositoryImplementation.class);
-        repo.save(_ as UserDAO) >> { UserDAO user -> user }
+        repo.save(_ as Domain.UserDAO) >> { Domain.UserDAO user -> user }
         def serviceFactory = Stub(PersistenceServiceFactory.class)
         serviceFactory.getRepository(_) >> repo
 

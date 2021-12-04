@@ -23,6 +23,7 @@
         <module>bunny-ddd-cache</module>
         <module>bunny-ddd-nosql</module>
 
+        <module>bunny-ddd-starter-rdbms</module>
         <module>bunny-ddd-starter-workflow</module>
     </modules>
 
@@ -74,7 +75,7 @@
                     <version>2.13.0</version>
                     <executions>
                         <execution>
-                            <phase>validate</phase>
+                            <phase>verify</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>

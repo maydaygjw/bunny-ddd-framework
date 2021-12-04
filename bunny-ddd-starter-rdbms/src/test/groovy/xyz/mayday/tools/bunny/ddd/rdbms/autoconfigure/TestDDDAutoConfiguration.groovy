@@ -1,4 +1,4 @@
-package xyz.mayday.tools.bunny.ddd.context.autoconfigure
+package xyz.mayday.tools.bunny.ddd.rdbms.autoconfigure
 
 
 import org.springframework.beans.factory.annotation.Autowired
@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import spock.lang.Shared
 import spock.lang.Specification
-import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseRDBMSService
+import xyz.mayday.tools.bunny.ddd.rdbms.domain.Domain
+import xyz.mayday.tools.bunny.ddd.rdbms.service.AbstractBaseRDBMSService
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException

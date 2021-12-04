@@ -9,12 +9,12 @@ import javax.persistence.Transient;
 
 import org.reflections.ReflectionUtils;
 
+import com.google.common.collect.Lists;
+
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
-
-import com.google.common.collect.Lists;
 
 public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
     
@@ -29,7 +29,7 @@ public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
                     
                     if (comparator.getValues().size() > 1) {
                         
-                        if (comparator.getSearchOperation().equals(SearchOperation.EQUALS)) {
+                        if (comparator.getSearchOperation().equals(SearchOperation.EQUAL)) {
                             comparator.setSearchOperation(SearchOperation.IN);
                         }
                         if (!Lists.newArrayList(SearchOperation.IN, SearchOperation.NOT_IN, SearchOperation.MATCH).contains(comparator.getSearchOperation())) {

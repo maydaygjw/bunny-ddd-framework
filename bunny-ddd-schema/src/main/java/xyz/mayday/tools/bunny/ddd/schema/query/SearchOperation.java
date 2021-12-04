@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public enum SearchOperation {
-    EQUALS,
+    EQUAL,
+    NOT_EQUAL,
     IN,
     NOT_IN,
     MATCH,

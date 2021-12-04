@@ -1,18 +1,21 @@
 package xyz.mayday.tools.bunny.ddd.core.controller;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.CollectionUtils;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+
+import lombok.RequiredArgsConstructor;
 import xyz.mayday.tools.bunny.ddd.core.constant.GenericTypeIndexConstant;
+import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.controller.BaseController;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
@@ -21,11 +24,10 @@ import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-
 /** @author gejunwen */
 @RequiredArgsConstructor
-public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> implements BaseController<ID, VO, QUERY, DTO> {
+public abstract class BaseControllerImpl<ID extends Serializable, VO extends BaseVO<ID>, QUERY, DTO extends AbstractBaseDTO<ID>>
+        implements BaseController<ID, VO, QUERY, DTO> {
     
     @Autowired(required = false)
     GenericConverter converter;
@@ -40,8 +42,8 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
     
     @Override
     public PageableData<VO> queryItems(QUERY query, CommonQueryParam commonQueryParam) {
-        applyQueryRestriction(commonQueryParam);
-        PageableData<DTO> items = getService().findItems(convertQueryToDto(query), commonQueryParam);
+        DTO dto = applyQuery(query, commonQueryParam);
+        PageableData<DTO> items = getService().findItems(dto, commonQueryParam);
         return PageableData.<VO> builder().records(items.getRecords().stream().map(this::convertDtoToVo).collect(Collectors.toList()))
                 .pageInfo(items.getPageInfo()).build();
     }
@@ -51,7 +53,7 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
         return getService().countItems(convertQueryToDto(query));
     }
     
-    void applyQueryRestriction(CommonQueryParam commonQueryParam) {
+    DTO applyQuery(QUERY query, CommonQueryParam commonQueryParam) {
         
         commonQueryParam = Optional.ofNullable(commonQueryParam).orElse(new CommonQueryParam());
         
@@ -66,6 +68,11 @@ public abstract class BaseControllerImpl<ID, VO extends BaseVO<ID>, QUERY, DTO> 
             commonQueryParam.setCurrentPage(1);
         if (commonQueryParam.getPageSize() > pagingConfigure.getPageSizeLimit())
             commonQueryParam.setPageSize(pagingConfigure.getPageSizeLimit());
+        
+        DTO dto = convertQueryToDto(query);
+        dto.addMultiValues("dataState", commonQueryParam.getDataState());
+        
+        return dto;
         
     }
     

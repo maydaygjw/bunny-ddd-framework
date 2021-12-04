@@ -43,7 +43,7 @@ public class QueryComparator {
     String conjunctionGroup;
     
     public SearchOperation getSearchOperation() {
-        return ObjectUtils.defaultIfNull(searchOperation, SearchOperation.EQUALS);
+        return ObjectUtils.defaultIfNull(searchOperation, SearchOperation.EQUAL);
     }
     
     public SearchConjunction getSearchConjunction() {

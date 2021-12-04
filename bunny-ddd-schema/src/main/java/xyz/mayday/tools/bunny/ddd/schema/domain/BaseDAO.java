@@ -18,6 +18,8 @@ public interface BaseDAO<ID> {
     
     String getUpdatedBy();
     
+    DataStateEnum getDataState();
+    
     void setId(ID id);
     
     void setVersion(Integer version);
@@ -29,6 +31,8 @@ public interface BaseDAO<ID> {
     void setCreatedDate(Date createdDate);
     
     void setUpdatedDate(Date updatedDate);
+    
+    void setDataState(DataStateEnum dataStateEnum);
     
     @JsonIgnore
     String getDomainName();

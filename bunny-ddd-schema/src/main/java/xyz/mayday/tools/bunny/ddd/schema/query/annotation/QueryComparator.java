@@ -9,7 +9,7 @@ public @interface QueryComparator {
     
     String[] compareWith() default "";
     
-    SearchOperation operation() default SearchOperation.EQUALS;
+    SearchOperation operation() default SearchOperation.EQUAL;
     
     SearchConjunction conjunction() default SearchConjunction.AND;
     

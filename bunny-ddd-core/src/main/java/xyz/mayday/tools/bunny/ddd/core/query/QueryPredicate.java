@@ -6,20 +6,20 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.google.common.collect.ImmutableMap;
+
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
-
-import com.google.common.collect.ImmutableMap;
 
 public abstract class QueryPredicate {
     
     public static final Map<SearchOperation, QueryPredicate> presetPredicates;
     
     static {
-        presetPredicates = ImmutableMap.<SearchOperation, QueryPredicate> builder().put(SearchOperation.EQUALS, new EqualPredicate())
-                .put(SearchOperation.IN, new InPredicate()).put(SearchOperation.MATCH, new MatchPredicate())
-                .put(SearchOperation.GREATER_THAN_EQUAL, new GreaterThanEqualsPredicate()).put(SearchOperation.LESS_THAN_EQUAL, new LessThanEqualsPredicate())
-                .build();
+        presetPredicates = ImmutableMap.<SearchOperation, QueryPredicate> builder().put(SearchOperation.EQUAL, new EqualPredicate())
+                .put(SearchOperation.NOT_EQUAL, new NotEqualPredicate()).put(SearchOperation.IN, new InPredicate())
+                .put(SearchOperation.MATCH, new MatchPredicate()).put(SearchOperation.GREATER_THAN_EQUAL, new GreaterThanEqualsPredicate())
+                .put(SearchOperation.LESS_THAN_EQUAL, new LessThanEqualsPredicate()).build();
     }
     
     SearchOperation searchOperation;
@@ -33,12 +33,24 @@ public abstract class QueryPredicate {
     private static class EqualPredicate extends QueryPredicate {
         
         public EqualPredicate() {
-            super(SearchOperation.EQUALS);
+            super(SearchOperation.EQUAL);
         }
         
         @Override
         Predicate buildPredicate(SearchCriteria criteria, Root<?> root, CriteriaBuilder builder) {
             return builder.equal(root.get(criteria.getKey()), criteria.getValue());
+        }
+    }
+    
+    private static class NotEqualPredicate extends QueryPredicate {
+        
+        public NotEqualPredicate() {
+            super(SearchOperation.NOT_EQUAL);
+        }
+        
+        @Override
+        Predicate buildPredicate(SearchCriteria criteria, Root<?> root, CriteriaBuilder builder) {
+            return builder.notEqual(root.get(criteria.getKey()), criteria.getValue());
         }
     }
     

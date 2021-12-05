@@ -12,10 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.javers.core.Javers;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.history.Revisions;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +21,7 @@ import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDAO;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.query.QuerySpecification;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
+import xyz.mayday.tools.bunny.ddd.core.utils.BeanUtils;
 import xyz.mayday.tools.bunny.ddd.core.utils.QueryUtils;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
@@ -85,17 +84,6 @@ public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO exte
     }
     
     @Override
-    public List<DTO> findHistoriesById(ID id) {
-        Revisions<Integer, DAO> revisions = serviceFactory.getRevisionRepository(getDaoClass()).findRevisions(id);
-        return revisions.getContent().stream().map(revision -> {
-            DTO dto = convertToDto(revision.getEntity());
-            dto.setRevision(revision.getRevisionNumber().orElse(0));
-            dto.setOperationType(revision.getMetadata().getRevisionType().name());
-            return dto;
-        }).collect(Collectors.toList());
-    }
-    
-    @Override
     public Stream<DTO> findStream(DTO example) {
         return null;
     }
@@ -106,6 +94,7 @@ public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO exte
         DAO dao = convertToDao(dto);
         dao.setId(convertIdType(idGenerator.generate()));
         auditWhenInsert(dao);
+        dao.setVersion(1);
         DAO saved = getRepository().save(dao);
         javers.commit(saved.getCreatedBy(), saved);
         return convertToDto(saved);
@@ -126,8 +115,9 @@ public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO exte
         DAO dbOne = getRepository().findById(dto.getId()).orElseThrow(BusinessException::new);
         BeanUtils.copyProperties(inputOne, dbOne);
         auditWhenUpdate(dbOne);
+        dbOne.setVersion(dbOne.getVersion() + 1);
         DAO saved = getRepository().save(dbOne);
-        javers.commit(saved.getUpdatedBy(), saved);
+        historyService.commit(saved);
         return convertToDto(saved);
     }
     

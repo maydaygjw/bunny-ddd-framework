@@ -3,11 +3,12 @@ package xyz.mayday.tools.bunny.ddd.core.service;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import xyz.mayday.tools.bunny.ddd.core.constant.GenericTypeIndexConstant;
@@ -17,12 +18,14 @@ import xyz.mayday.tools.bunny.ddd.core.query.visit.BaseQuerySpecVisitor;
 import xyz.mayday.tools.bunny.ddd.core.query.visit.ExtraCriteriaVisitorImpl;
 import xyz.mayday.tools.bunny.ddd.core.query.visit.FieldCriteriaVisitorImpl;
 import xyz.mayday.tools.bunny.ddd.core.query.visit.MultipleValueCriteriaVisitorImpl;
+import xyz.mayday.tools.bunny.ddd.core.utils.BeanUtils;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
+import xyz.mayday.tools.bunny.ddd.schema.service.HistoryService;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
@@ -43,6 +46,9 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
     @Setter
     protected IdGenerator<String> idGenerator;
     
+    @Autowired(required = false)
+    protected HistoryService historyService;
+    
     public AbstractBaseService(GenericConverter converter, PrincipalService principalService, IdGenerator<String> idGenerator) {
         this.converter = converter;
         this.principalService = principalService;
@@ -52,6 +58,18 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
     @Override
     public final PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam) {
         return doFindItems(example, queryParam);
+    }
+    
+    @Override
+    public List<DTO> findHistoriesById(ID id) {
+        return historyService.findHistoriesById(id, getDaoClass()).stream().map(pair -> {
+            DTO dto = convertToDto(pair.getLeft());
+            dto.setRevision(pair.getRight().getRevision());
+            dto.setChangedProperties(pair.getRight().getChangedProperties());
+            dto.setOperationType(pair.getRight().getOperationType());
+            dto.setVersion(pair.getRight().getVersion());
+            return dto;
+        }).collect(Collectors.toList());
     }
     
     protected abstract PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam);
@@ -83,7 +101,6 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
     
     protected void auditWhenInsert(DAO dao) {
         Date now = new Date();
-        dao.setVersion(1);
         dao.setCreatedBy(principalService.getCurrentUserId());
         dao.setUpdatedBy(principalService.getCurrentUserId());
         dao.setCreatedDate(now);
@@ -100,7 +117,7 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
         return converter.convert(id, getIdType());
     }
     
-    protected void mergeProperties(DTO source, DTO target) {
+    protected <T> void mergeProperties(T source, T target) {
         BeanUtils.copyProperties(source, target);
     }
     

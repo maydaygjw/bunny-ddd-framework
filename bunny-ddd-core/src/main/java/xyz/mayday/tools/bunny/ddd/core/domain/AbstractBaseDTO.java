@@ -3,6 +3,7 @@ package xyz.mayday.tools.bunny.ddd.core.domain;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -19,9 +20,17 @@ import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator;
 @Data
 public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractBaseDAO<ID> implements BaseDomain<ID>, Visitable {
     
-    Integer revision;
+    @Transient
+    Long revision;
     
+    @Transient
+    String globalId;
+    
+    @Transient
     String operationType;
+    
+    @Transient
+    List<String> changedProperties;
     
     @Transient
     Map<String, QueryComparator> queryComparators;
@@ -59,4 +68,8 @@ public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractB
         return null;
     }
     
+    @Override
+    public String getGlobalId() {
+        return globalId;
+    }
 }

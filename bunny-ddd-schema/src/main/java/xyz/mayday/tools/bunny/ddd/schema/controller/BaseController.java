@@ -14,7 +14,7 @@ public interface BaseController<ID, VO extends BaseVO<ID>, QUERY, DOMAIN> {
     
     VO create(VO vo);
     
-    VO update(VO vo);
+    VO update(ID id, VO vo);
     
     VO delete(ID id);
     
@@ -24,7 +24,7 @@ public interface BaseController<ID, VO extends BaseVO<ID>, QUERY, DOMAIN> {
     
     List<VO> queryAll(CommonQueryParam commonQueryParam);
     
-    List<VO> findHistories(ID id);
+    List<VO> queryHistories(ID id);
     
     Long countItems(QUERY query);
     

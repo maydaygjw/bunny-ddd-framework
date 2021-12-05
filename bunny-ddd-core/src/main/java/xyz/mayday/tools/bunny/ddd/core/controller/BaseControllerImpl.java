@@ -110,7 +110,8 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
     
     @ApiOperationSupport(ignoreParameters = { "revision", "version", "operationType" })
     @Override
-    public VO update(VO vo) {
+    public VO update(ID id, VO vo) {
+        vo.setId(id);
         return convertDtoToVo(getService().update(convertVoToDto(vo)));
     }
     
@@ -130,7 +131,7 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
     }
     
     @Override
-    public List<VO> findHistories(ID id) {
+    public List<VO> queryHistories(ID id) {
         return getService().findHistoriesById(id).stream().map(this::convertDtoToVo).collect(Collectors.toList());
     }
     

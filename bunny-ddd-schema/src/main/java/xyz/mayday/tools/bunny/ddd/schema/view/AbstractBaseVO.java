@@ -1,7 +1,12 @@
 package xyz.mayday.tools.bunny.ddd.schema.view;
 
+import java.util.List;
+
 import lombok.Data;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -17,8 +22,13 @@ public abstract class AbstractBaseVO<ID> implements BaseVO<ID> {
     Integer version;
     
     @ApiModelProperty("版本号")
-    Integer revision;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    Long revision;
     
     @ApiModelProperty("操作类型")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     String operationType;
+    
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    List<String> changedProperties;
 }

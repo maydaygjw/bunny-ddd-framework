@@ -6,5 +6,7 @@ public interface BaseVO<ID> {
     
     Integer getVersion();
     
-    Integer getRevision();
+    Long getRevision();
+    
+    void setId(ID id);
 }

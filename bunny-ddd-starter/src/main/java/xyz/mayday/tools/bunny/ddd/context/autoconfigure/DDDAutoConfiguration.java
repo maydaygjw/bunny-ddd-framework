@@ -1,5 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.context.autoconfigure;
 
+import org.javers.core.Javers;
+import org.javers.core.JaversBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -11,11 +13,13 @@ import xyz.mayday.tools.bunny.ddd.context.ResponseAdvice;
 import xyz.mayday.tools.bunny.ddd.context.service.DefaultPrincipalService;
 import xyz.mayday.tools.bunny.ddd.core.converter.DefaultGenericConverter;
 import xyz.mayday.tools.bunny.ddd.core.service.DefaultDomainAggregator;
+import xyz.mayday.tools.bunny.ddd.core.service.DefaultHistoryService;
 import xyz.mayday.tools.bunny.ddd.core.service.LeafIdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters;
 import xyz.mayday.tools.bunny.ddd.schema.service.DomainAggregator;
+import xyz.mayday.tools.bunny.ddd.schema.service.HistoryService;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +50,11 @@ public class DDDAutoConfiguration {
     }
     
     @Bean
+    HistoryService historyService(Javers javers) {
+        return new DefaultHistoryService(javers);
+    }
+    
+    @Bean
     @ConditionalOnMissingBean(PagingParameters.class)
     PagingParameters pagingConfigure(PagingProperties pagingProperties) {
         return new PagingParameters() {
@@ -59,5 +68,11 @@ public class DDDAutoConfiguration {
                 return pagingProperties.getPageSizeLimit();
             }
         };
+    }
+    
+    @ConditionalOnMissingBean(Javers.class)
+    @Bean
+    Javers javers() {
+        return JaversBuilder.javers().build();
     }
 }

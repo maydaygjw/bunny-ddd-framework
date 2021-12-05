@@ -26,6 +26,7 @@ public abstract class AbstractBaseDAO<ID extends Serializable> implements BaseDA
     
     @DiffIgnore
     @Version
+    @org.springframework.data.annotation.Version
     Integer version;
     
     @DiffIgnore

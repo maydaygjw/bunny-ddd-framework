@@ -4,15 +4,18 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.javers.core.Javers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
+import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 
@@ -20,9 +23,6 @@ public class AbstractNoSqlService<ID extends Serializable, DTO extends AbstractB
     
     @Autowired
     MongoTemplate mongoTemplate;
-    
-    @Autowired
-    Javers javers;
     
     @Override
     public Optional<DTO> findItemById(ID id) {
@@ -35,13 +35,10 @@ public class AbstractNoSqlService<ID extends Serializable, DTO extends AbstractB
     }
     
     @Override
-    public List<DTO> findHistoriesById(ID id) {
-        return null;
-    }
-    
-    @Override
     protected PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam) {
-        return null;
+        List<DTO> collect = mongoTemplate.findAll(getDaoClass()).stream().map(this::convertToDto).collect(Collectors.toList());
+        return PageableData.<DTO> builder().records(collect).build();
+        
     }
     
     @Override
@@ -66,7 +63,7 @@ public class AbstractNoSqlService<ID extends Serializable, DTO extends AbstractB
         DAO tbSave = convertToDao(dto);
         auditWhenInsert(tbSave);
         DAO inserted = mongoTemplate.insert(tbSave);
-        javers.commit(tbSave.getCreatedBy(), inserted);
+        historyService.commit(inserted);
         return convertToDto(inserted);
     }
     
@@ -79,10 +76,17 @@ public class AbstractNoSqlService<ID extends Serializable, DTO extends AbstractB
     public DTO update(DTO dto) {
         Objects.requireNonNull(dto.getId());
         DAO tbUpdate = convertToDao(dto);
-        auditWhenUpdate(tbUpdate);
-        mongoTemplate.update(getDaoClass()).replaceWith(tbUpdate);
-        javers.commit(tbUpdate.getUpdatedBy(), tbUpdate);
-        return dto;
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(dto.getId()));
+        DAO dbObject = mongoTemplate.findOne(query, getDaoClass());
+        if (Objects.isNull(dbObject)) {
+            throw new BusinessException();
+        }
+        mergeProperties(tbUpdate, dbObject);
+        auditWhenUpdate(dbObject);
+        DAO saved = mongoTemplate.save(dbObject);
+        historyService.commit(saved);
+        return convertToDto(saved);
     }
     
     @Override
@@ -97,7 +101,9 @@ public class AbstractNoSqlService<ID extends Serializable, DTO extends AbstractB
     
     @Override
     public DTO delete(ID id) {
-        return null;
+        DAO dao = mongoTemplate.findAndRemove(new Query().addCriteria(Criteria.where("id").is(id)), getDaoClass());
+        historyService.delete(id, getDaoClass());
+        return convertToDto(dao);
     }
     
     @Override

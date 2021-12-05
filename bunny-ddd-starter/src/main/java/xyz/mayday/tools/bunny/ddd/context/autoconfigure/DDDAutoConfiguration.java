@@ -45,6 +45,7 @@ public class DDDAutoConfiguration {
     }
     
     @Bean
+    @ConditionalOnMissingBean(PrincipalService.class)
     PrincipalService principalService() {
         return new DefaultPrincipalService();
     }

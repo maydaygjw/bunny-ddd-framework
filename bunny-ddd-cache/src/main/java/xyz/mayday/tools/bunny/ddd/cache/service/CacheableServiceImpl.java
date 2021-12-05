@@ -10,8 +10,9 @@ import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
+import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 
-public class CacheableServiceImpl<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> {
+public class CacheableServiceImpl<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> implements CacheableService<ID, DTO> {
     @Override
     public Optional<DTO> findItemById(ID id) {
         return Optional.empty();
@@ -85,5 +86,20 @@ public class CacheableServiceImpl<ID extends Serializable, DTO extends AbstractB
     @Override
     public List<DTO> deleteAll() {
         return null;
+    }
+
+    @Override
+    public void createCache() {
+
+    }
+
+    @Override
+    public void destroyCache() {
+
+    }
+
+    @Override
+    public void initCacheData() {
+
     }
 }

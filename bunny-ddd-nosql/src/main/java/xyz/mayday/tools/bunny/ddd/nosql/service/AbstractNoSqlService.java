@@ -14,10 +14,12 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
+import xyz.mayday.tools.bunny.ddd.nosql.query.QueryPredicate;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
+import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 
 public class AbstractNoSqlService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> extends AbstractBaseService<ID, DTO, DAO> {
     
@@ -26,7 +28,7 @@ public class AbstractNoSqlService<ID extends Serializable, DTO extends AbstractB
     
     @Override
     public Optional<DTO> findItemById(ID id) {
-        return Optional.empty();
+        return Optional.ofNullable(mongoTemplate.findById(id, getDaoClass())).map(this::convertToDto);
     }
     
     @Override
@@ -36,7 +38,12 @@ public class AbstractNoSqlService<ID extends Serializable, DTO extends AbstractB
     
     @Override
     protected PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam) {
-        List<DTO> collect = mongoTemplate.findAll(getDaoClass()).stream().map(this::convertToDto).collect(Collectors.toList());
+        List<SearchCriteria> searchCriteriaList = buildQuerySpecification(example).getSearchCriteriaList();
+        Query query = new Query();
+        searchCriteriaList.forEach(searchCriteria -> {
+            query.addCriteria(QueryPredicate.presetPredicates.get(searchCriteria.getSearchOperation()).buildCriteria(searchCriteria));
+        });
+        List<DTO> collect = mongoTemplate.find(query, getDaoClass()).stream().map(this::convertToDto).collect(Collectors.toList());
         return PageableData.<DTO> builder().records(collect).build();
         
     }

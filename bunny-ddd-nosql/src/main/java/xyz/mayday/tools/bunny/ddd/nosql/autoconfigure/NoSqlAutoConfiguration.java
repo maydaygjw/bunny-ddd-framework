@@ -12,7 +12,7 @@ import com.mongodb.client.MongoDatabase;
 
 @Configuration
 public class NoSqlAutoConfiguration {
-
+    
     @Bean
     @Primary
     Javers javas(MongoTemplate mongoTemplate) {

@@ -99,7 +99,7 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
     protected ID convertIdType(String id) {
         return converter.convert(id, getIdType());
     }
-
+    
     protected void mergeProperties(DTO source, DTO target) {
         BeanUtils.copyProperties(source, target);
     }

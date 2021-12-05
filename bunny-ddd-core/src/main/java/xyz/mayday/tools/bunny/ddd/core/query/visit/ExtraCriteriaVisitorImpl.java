@@ -9,15 +9,15 @@ import javax.persistence.Transient;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 import org.apache.commons.collections.CollectionUtils;
+
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
+import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 import com.google.common.collect.Lists;
-import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 @Slf4j
 public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
@@ -28,8 +28,7 @@ public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
         List<String> illegibleFields = ReflectionUtils.getAllFields(dto.getClass(), field -> Objects.isNull(field.getAnnotation(Transient.class))).stream()
                 .map(Field::getName).collect(Collectors.toList());
         
-        List<SearchCriteria> collect = dto.getQueryComparators().values().stream()
-                .filter(comparator -> CollectionUtils.isNotEmpty(comparator.getValues()))
+        List<SearchCriteria> collect = dto.getQueryComparators().values().stream().filter(comparator -> CollectionUtils.isNotEmpty(comparator.getValues()))
                 .filter(comparator -> illegibleFields.containsAll(comparator.getCompareWith())).map(comparator -> {
                     
                     if (comparator.getValues().size() > 1) {

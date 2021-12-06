@@ -17,26 +17,33 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDomain;
 import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractBaseDAO<ID> implements BaseDomain<ID>, Visitable {
     
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Transient
     Long revision;
     
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Transient
     String globalId;
     
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Transient
     String operationType;
     
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Transient
     List<String> changedProperties;
     
     @Transient
+    @JsonIgnore
     Map<String, QueryComparator> queryComparators;
     
+    @JsonIgnore
     @Transient
     Map<String, Collection<?>> multipleValueAttributes;
     

@@ -3,6 +3,7 @@ package xyz.mayday.tools.bunny.ddd.cache.autoconfigure;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -11,8 +12,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -54,16 +53,18 @@ public class CacheAutoConfiguration {
         return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisProperties.getHost(), redisProperties.getPort()));
     }
     
-    @EventListener
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    @Bean
+    public CommandLineRunner commandLineRunner() {
+        return args -> {
+            if (cacheProperties.isInit()) {
+                log.info("Application about to init cache data");
+                context.getBeansOfType(CacheableService.class).values().forEach(bean -> {
+                    bean.createCache();
+                    bean.initCacheData();
+                });
+            }
+        };
         
-        if (cacheProperties.isInit()) {
-            log.info("Application about to init cache data");
-            context.getBeansOfType(CacheableService.class).values().forEach(bean -> {
-                bean.createCache();
-                bean.initCacheData();
-            });
-        }
     }
     
 }

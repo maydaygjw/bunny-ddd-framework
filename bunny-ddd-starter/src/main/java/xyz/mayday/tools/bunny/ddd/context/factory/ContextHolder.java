@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,9 @@ import xyz.mayday.tools.bunny.ddd.utils.reflect.TypeReference;
 public class ContextHolder implements ApplicationContextAware {
     
     private static ApplicationContext ctx;
+    
+    @Getter
+    private static String appName;
     
     @Getter
     private static GenericConverter genericConverter;
@@ -48,4 +52,10 @@ public class ContextHolder implements ApplicationContextAware {
     public void setGenericConverter(GenericConverter genericConverter) {
         ContextHolder.genericConverter = genericConverter;
     }
+    
+    @Autowired
+    public void setAppName(@Value("${application.name}") String appName) {
+        ContextHolder.appName = appName;
+    }
+    
 }

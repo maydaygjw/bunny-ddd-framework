@@ -4,3 +4,5 @@ bunny.ddd:
   enabled: true
   cache:
     enabled: true
+
+logging.level.xyz.mayday.tools.bunny.ddd: TRACE

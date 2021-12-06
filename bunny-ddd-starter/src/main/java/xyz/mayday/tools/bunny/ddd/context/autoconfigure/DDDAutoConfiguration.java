@@ -2,11 +2,13 @@ package xyz.mayday.tools.bunny.ddd.context.autoconfigure;
 
 import org.javers.core.Javers;
 import org.javers.core.JaversBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.GenericApplicationContext;
 
 import xyz.mayday.tools.bunny.ddd.context.PagingProperties;
 import xyz.mayday.tools.bunny.ddd.context.ResponseAdvice;
@@ -28,6 +30,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ConditionalOnProperty(value = "bunny.ddd.enabled", havingValue = "true")
 @Import({ DocumentConfiguration.class, PagingProperties.class, ResponseAdvice.class })
 public class DDDAutoConfiguration {
+    
+    @Autowired
+    GenericApplicationContext ctx;
     
     @Bean
     GenericConverter converter(ObjectMapper mapper) {

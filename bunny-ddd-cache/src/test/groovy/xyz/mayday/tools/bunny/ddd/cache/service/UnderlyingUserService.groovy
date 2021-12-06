@@ -3,6 +3,7 @@ package xyz.mayday.tools.bunny.ddd.cache.service
 import org.springframework.stereotype.Component
 import xyz.mayday.tools.bunny.ddd.cache.domain.UserDO
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService
+import xyz.mayday.tools.bunny.ddd.schema.domain.DataStateEnum
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam
 
@@ -45,6 +46,7 @@ class UnderlyingUserService extends AbstractBaseService<Long, UserDO, UserDO> {
     @Override
     UserDO insert(UserDO userDO) {
         userDO.setId(1L)
+        userDO.setDataState(DataStateEnum.VALID)
         return userDO
     }
 

@@ -11,15 +11,21 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
+import xyz.mayday.tools.bunny.ddd.schema.cache.CacheEntity;
 import xyz.mayday.tools.bunny.ddd.schema.cache.CacheQueryField;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
+import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
@@ -28,21 +34,26 @@ import xyz.mayday.tools.bunny.ddd.schema.service.HistoryService;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
+import com.google.common.collect.ImmutableMap;
+
 @Slf4j
-public abstract class CacheableServiceImpl<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>>
+public abstract class AbstractCacheableService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>>
         extends AbstractBaseService<ID, DTO, DAO> implements CacheableService<ID, DTO> {
     
     final AbstractBaseService<ID, DTO, DAO> underlyingService;
     
+    @Value("${application.name}")
+    String appName;
+    
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
     
-    public CacheableServiceImpl(AbstractBaseService<ID, DTO, DAO> underlyingService) {
+    public AbstractCacheableService(AbstractBaseService<ID, DTO, DAO> underlyingService) {
         this.underlyingService = underlyingService;
     }
     
-    public CacheableServiceImpl(GenericConverter converter, PrincipalService principalService, IdGenerator<String> idGenerator, HistoryService historyService,
-            AbstractBaseService<ID, DTO, DAO> underlyingService) {
+    public AbstractCacheableService(GenericConverter converter, PrincipalService principalService, IdGenerator<String> idGenerator,
+            HistoryService historyService, AbstractBaseService<ID, DTO, DAO> underlyingService) {
         super(converter, principalService, idGenerator, historyService);
         this.underlyingService = underlyingService;
     }
@@ -152,21 +163,39 @@ public abstract class CacheableServiceImpl<ID extends Serializable, DTO extends 
     public void initCacheData() {
         
         List<DAO> all = underlyingService.findAll(null).stream().map(this::convertToDao).collect(Collectors.toList());
-        
-        redisTemplate.opsForHash().putAll("main_" + getCacheEntityName(), all.stream().collect(Collectors.groupingBy(DAO::getId)));
+        Map<String, DAO> collect = all.stream().collect(Collectors.groupingBy(this::getCacheItemDataKey, Collectors.reducing((t1, t2) -> t1))).entrySet()
+                .stream().map(entry -> Pair.of(entry.getKey(), entry.getValue().orElseThrow(BusinessException::new)))
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+        redisTemplate.opsForValue().multiSet(collect);
         
         List<Field> fieldsListWithAnnotation = FieldUtils.getFieldsListWithAnnotation(getDaoClass(), CacheQueryField.class);
         fieldsListWithAnnotation.forEach(field -> {
-            Map<Object, List<DAO>> collect = all.stream().collect(Collectors.groupingBy(dao -> ReflectionUtils.getValue(field, dao)));
-            String indexCacheName = "idx_" + getCacheEntityName() + "_" + field.getName();
-            redisTemplate.opsForHash().putAll(indexCacheName, collect);
+            all.stream().map(dao -> {
+                String indexKey = getCacheItemIndexKey(field.getName(), ReflectionUtils.getValue(field, dao).toString());
+                return Pair.of(indexKey, dao.getId());
+            }).collect(Collectors.groupingBy(Pair::getLeft, Collectors.mapping(Pair::getRight, Collectors.toSet()))).forEach((key, idList) -> {
+                redisTemplate.opsForSet().add(key, idList.toArray());
+            });
         });
+        
+    }
+    
+    private String getCacheItemDataKey(DAO dao) {
+        String keyTemplate = "_data:${app.name}:${cache.name}:${data.id}:object";
+        return StringSubstitutor.replace(keyTemplate, ImmutableMap.of("app.name", appName, "cache.name", getCacheEntityName(), "data.id", dao.getId()));
+    }
+    
+    private String getCacheItemIndexKey(String property, String value) {
+        String indexKeyTemplate = "_idx:${app.name}:${cache.name}:${prop.name}:${prop.value}:list";
+        return StringSubstitutor.replace(indexKeyTemplate,
+                ImmutableMap.of("app.name", appName, "cache.name", getCacheEntityName(), "prop.name", property, "prop.value", value));
         
     }
     
     @Override
     public String getCacheEntityName() {
-        return getDaoClass().getCanonicalName();
+        return Optional.ofNullable(AnnotationUtils.findAnnotation(getDaoClass(), CacheEntity.class)).map(CacheEntity::name)
+                .orElse(getDaoClass().getSimpleName());
     }
     
     @Override

@@ -35,6 +35,11 @@ class ContextHolderTest extends Specification {
 
     }
 
+    def "GetAppName"() {
+        ContextHolder.getAppName() == "bunny-ddd-starter-test"
+    }
+
+
     @Bean
     TypedInterface<List<String>> typedInterface() {
         return new TypedImpl();

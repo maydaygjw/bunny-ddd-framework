@@ -8,9 +8,9 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="xyz.mayday.tools.bunny.ddd" level="trace">
+        <Root level="info">
             <AppenderRef ref="Console"/>
-        </Logger>
+        </Root>
     </Loggers>
 
 </Configuration>

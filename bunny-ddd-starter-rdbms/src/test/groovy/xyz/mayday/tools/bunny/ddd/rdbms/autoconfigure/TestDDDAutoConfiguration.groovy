@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Component
 import spock.lang.Shared
 import spock.lang.Specification
 import xyz.mayday.tools.bunny.ddd.rdbms.domain.Domain
 import xyz.mayday.tools.bunny.ddd.rdbms.service.AbstractBaseRDBMSService
+import xyz.mayday.tools.bunny.ddd.rdbms.service.UserService
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException
@@ -113,22 +115,6 @@ class TestDDDAutoConfiguration extends Specification {
         then:
 
         all.size() == 1
-    }
-
-
-    static class UserService extends AbstractBaseRDBMSService<Long, Domain.UserDTO, Domain.UserDAO> {
-        UserService(GenericConverter converter, PrincipalService principalService, PersistenceServiceFactory serviceFactory, IdGenerator<String> idGenerator, GenericConverter genericConverter) {
-            super(converter, principalService, serviceFactory, idGenerator, genericConverter)
-        }
-    }
-
-    @Bean
-    UserService userServiceBean(GenericConverter converter, PersistenceServiceFactory serviceFactory, IdGenerator<String> idGenerator, GenericConverter genericConverter) {
-
-        def principalService = Stub(PrincipalService)
-        principalService.getCurrentUserId() >> "MockId"
-
-        return new UserService(converter, principalService, serviceFactory, idGenerator, genericConverter)
     }
 
 }

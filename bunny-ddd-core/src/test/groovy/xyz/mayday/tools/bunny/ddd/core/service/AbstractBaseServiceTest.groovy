@@ -10,6 +10,7 @@ import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam
+import xyz.mayday.tools.bunny.ddd.schema.service.HistoryService
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator
 
 import java.util.stream.Stream
@@ -23,7 +24,8 @@ class AbstractBaseServiceTest extends Specification {
         PrincipalService principalService = Mock()
         principalService.getCurrentUserId() >> "ddd-user1"
         def idGenerator = Mock(IdGenerator.class)
-        userBaseService = new UserBaseService(new DefaultGenericConverter(new ObjectMapper()), principalService, idGenerator)
+        def historyService = Mock(HistoryService)
+        userBaseService = new UserBaseService(new DefaultGenericConverter(new ObjectMapper()), principalService, idGenerator, historyService)
     }
 
     def "test for auditWhenInsert"() {
@@ -76,8 +78,8 @@ class AbstractBaseServiceTest extends Specification {
     @Subject
     static class UserBaseService extends AbstractBaseService<Long, Domain.UserDTO, Domain.UserDAO> {
 
-        UserBaseService(GenericConverter converter, PrincipalService principalService, IdGenerator<String> idGenerator) {
-            super(converter, principalService, idGenerator)
+        UserBaseService(GenericConverter converter, PrincipalService principalService, IdGenerator<String> idGenerator, HistoryService historyService) {
+            super(converter, principalService, idGenerator, historyService)
         }
 
         @Override

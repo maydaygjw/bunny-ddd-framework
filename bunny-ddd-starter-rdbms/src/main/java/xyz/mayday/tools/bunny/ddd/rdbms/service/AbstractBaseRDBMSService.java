@@ -8,9 +8,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.javers.core.Javers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,34 +20,22 @@ import xyz.mayday.tools.bunny.ddd.core.query.QuerySpecification;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.core.utils.BeanUtils;
 import xyz.mayday.tools.bunny.ddd.core.utils.QueryUtils;
-import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
-import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageInfo;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 /** @author gejunwen */
-@NoArgsConstructor
-@Setter
 public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends AbstractBaseDAO<ID>>
         extends AbstractBaseService<ID, DTO, DAO> {
     
-    @Autowired(required = false)
+    @Autowired
     PersistenceServiceFactory serviceFactory;
     
     @Autowired
     Javers javers;
-    
-    public AbstractBaseRDBMSService(GenericConverter converter, PrincipalService principalService, PersistenceServiceFactory serviceFactory,
-            IdGenerator<String> idGenerator, GenericConverter genericConverter) {
-        super(converter, principalService, idGenerator);
-        this.serviceFactory = serviceFactory;
-        this.idGenerator = idGenerator;
-    }
     
     @Override
     public Optional<DTO> findItemById(ID id) {

@@ -3,3 +3,10 @@ spring.datasource.url: jdbc:postgresql://localhost:5432/bunny
 spring.datasource.username: postgres
 spring.datasource.password: example
 
+logging.level.org.hibernate.SQL: DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+logging.level.xyz.mayday.tools.bunny.ddd: TRACE
+
+spring.jpa.hibernate.ddl-auto: create-drop
+
+

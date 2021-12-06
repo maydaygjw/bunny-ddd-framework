@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,29 +31,21 @@ import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 import com.google.common.collect.Lists;
 
+@AllArgsConstructor
 @NoArgsConstructor
 public abstract class AbstractBaseService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>> implements BaseService<ID, DTO> {
     
-    @Autowired(required = false)
-    @Setter
+    @Autowired
     protected GenericConverter converter;
     
-    @Setter
-    @Autowired(required = false)
+    @Autowired
     protected PrincipalService principalService;
     
-    @Autowired(required = false)
-    @Setter
+    @Autowired
     protected IdGenerator<String> idGenerator;
     
-    @Autowired(required = false)
+    @Autowired
     protected HistoryService historyService;
-    
-    public AbstractBaseService(GenericConverter converter, PrincipalService principalService, IdGenerator<String> idGenerator) {
-        this.converter = converter;
-        this.principalService = principalService;
-        this.idGenerator = idGenerator;
-    }
     
     @Override
     public final PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam) {

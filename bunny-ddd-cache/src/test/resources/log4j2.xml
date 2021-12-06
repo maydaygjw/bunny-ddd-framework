@@ -8,6 +8,10 @@
     </Appenders>
 
     <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
         <Logger name="xyz.mayday.tools.bunny.ddd" level="trace">
             <AppenderRef ref="Console"/>
         </Logger>

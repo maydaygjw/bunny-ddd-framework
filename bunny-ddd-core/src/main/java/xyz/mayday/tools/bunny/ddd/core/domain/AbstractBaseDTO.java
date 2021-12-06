@@ -16,6 +16,8 @@ import org.springframework.data.annotation.Transient;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDomain;
 import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractBaseDAO<ID> implements BaseDomain<ID>, Visitable {
@@ -64,6 +66,7 @@ public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractB
         visitor.visit(this);
     }
     
+    @JsonIgnore
     public Class<? extends AbstractBaseDAO<?>> getDaoClass() {
         return null;
     }

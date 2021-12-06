@@ -3,12 +3,13 @@ package xyz.mayday.tools.bunny.ddd.schema.view;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Data;
+import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
 
 /** @author gejunwen */
 @Data
@@ -31,12 +32,12 @@ public abstract class AbstractBaseVO<ID> implements BaseVO<ID> {
     
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     List<String> changedProperties;
-
+    
     Date createdDate;
-
+    
     Date updatedDate;
-
+    
     String createdBy;
-
+    
     String updatedBy;
 }

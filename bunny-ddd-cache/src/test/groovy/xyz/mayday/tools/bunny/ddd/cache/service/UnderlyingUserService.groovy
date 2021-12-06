@@ -1,13 +1,21 @@
 package xyz.mayday.tools.bunny.ddd.cache.service
 
+import org.springframework.stereotype.Component
 import xyz.mayday.tools.bunny.ddd.cache.domain.UserDO
+import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam
-import xyz.mayday.tools.bunny.ddd.schema.service.BaseService
 
 import java.util.stream.Stream
 
-class UnderlyingUserService implements BaseService<Long, UserDO> {
+@Component
+class UnderlyingUserService extends AbstractBaseService<Long, UserDO, UserDO> {
+
+
+    @Override
+    PageableData<UserDO> doFindItems(UserDO example, CommonQueryParam queryParam) {
+        return null
+    }
 
     @Override
     Optional<UserDO> findItemById(Long aLong) {
@@ -16,16 +24,6 @@ class UnderlyingUserService implements BaseService<Long, UserDO> {
 
     @Override
     List<UserDO> findItemsByIds(List<Long> id) {
-        return null
-    }
-
-    @Override
-    List<UserDO> findHistoriesById(Long aLong) {
-        return null
-    }
-
-    @Override
-    PageableData<UserDO> findItems(UserDO example, CommonQueryParam queryParam) {
         return null
     }
 
@@ -45,28 +43,28 @@ class UnderlyingUserService implements BaseService<Long, UserDO> {
     }
 
     @Override
-    UserDO insert(UserDO userDo) {
-        userDo.setId(1L)
-        return userDo
+    UserDO insert(UserDO userDO) {
+        userDO.setId(1L)
+        return userDO
     }
 
     @Override
-    List<UserDO> bulkInsert(List<UserDO> userDos) {
+    List<UserDO> bulkInsert(List<UserDO> userDOS) {
         return null
     }
 
     @Override
-    UserDO update(UserDO userDo) {
+    UserDO update(UserDO userDO) {
         return null
     }
 
     @Override
-    List<UserDO> bulkUpdate(List<UserDO> userDos) {
+    List<UserDO> bulkUpdate(List<UserDO> userDOS) {
         return null
     }
 
     @Override
-    UserDO save(UserDO userDo) {
+    UserDO save(UserDO userDO) {
         return null
     }
 
@@ -82,11 +80,6 @@ class UnderlyingUserService implements BaseService<Long, UserDO> {
 
     @Override
     List<UserDO> deleteAll() {
-        return null
-    }
-
-    @Override
-    Class<UserDO> getDomainClass() {
         return null
     }
 }

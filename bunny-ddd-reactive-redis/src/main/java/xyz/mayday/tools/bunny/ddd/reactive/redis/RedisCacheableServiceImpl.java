@@ -41,7 +41,7 @@ public abstract class RedisCacheableServiceImpl<ID extends Serializable, DTO ext
     }
     
     @Override
-    protected PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam) {
+    public PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam) {
         return null;
     }
     

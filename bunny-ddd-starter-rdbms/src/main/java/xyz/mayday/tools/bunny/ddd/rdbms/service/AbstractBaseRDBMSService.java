@@ -20,6 +20,7 @@ import xyz.mayday.tools.bunny.ddd.core.query.QuerySpecification;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.core.utils.BeanUtils;
 import xyz.mayday.tools.bunny.ddd.core.utils.QueryUtils;
+import xyz.mayday.tools.bunny.ddd.schema.domain.DataStateEnum;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageInfo;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
@@ -80,6 +81,9 @@ public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO exte
         dao.setId(convertIdType(idGenerator.generate()));
         auditWhenInsert(dao);
         dao.setVersion(1);
+        if (Objects.isNull(dao.getDataState())) {
+            dao.setDataState(DataStateEnum.VALID);
+        }
         DAO saved = getRepository().save(dao);
         javers.commit(saved.getCreatedBy(), saved);
         return convertToDto(saved);

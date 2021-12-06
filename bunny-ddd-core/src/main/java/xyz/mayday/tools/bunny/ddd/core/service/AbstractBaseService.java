@@ -64,7 +64,7 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
         }).collect(Collectors.toList());
     }
     
-    protected abstract PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam);
+    public abstract PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam);
     
     public final Class<ID> getIdType() {
         return ReflectionUtils.getGenericTypeOfSuperClass(this, GenericTypeIndexConstant.ServiceTypeIndex.IDX_ID);

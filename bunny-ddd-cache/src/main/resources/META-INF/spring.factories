@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+xyz.mayday.tools.bunny.ddd.cache.autoconfigure.CacheAutoConfiguration

@@ -12,4 +12,6 @@ public interface CacheableService<ID, DOMAIN> extends BaseService<ID, DOMAIN> {
     void initCacheData();
     
     String getCacheEntityName();
+    
+    Integer getDaysOfCachedData();
 }

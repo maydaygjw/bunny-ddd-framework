@@ -126,8 +126,9 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
     }
     
     @Override
-    public List<VO> queryAll(CommonQueryParam commonQueryParam) {
-        return null;
+    public List<VO> queryAll(QUERY query) {
+        DTO dto = applyQuery(query, new CommonQueryParam().withPageSize(pagingConfigure.getPageSizeLimit()));
+        return getService().findAll(dto).stream().map(this::convertDtoToVo).collect(Collectors.toList());
     }
     
     @Override

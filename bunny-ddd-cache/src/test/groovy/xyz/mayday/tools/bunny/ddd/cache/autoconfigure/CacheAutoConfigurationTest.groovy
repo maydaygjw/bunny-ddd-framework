@@ -2,15 +2,12 @@ package xyz.mayday.tools.bunny.ddd.cache.autoconfigure
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import redis.embedded.RedisServer
 import spock.lang.Shared
 import spock.lang.Specification
 import xyz.mayday.tools.bunny.ddd.cache.domain.UserDO
-import xyz.mayday.tools.bunny.ddd.cache.service.UnderlyingUserService
 import xyz.mayday.tools.bunny.ddd.cache.service.UserService
-import xyz.mayday.tools.bunny.ddd.schema.service.BaseService
 
 @SpringBootTest
 @Configuration
@@ -45,9 +42,5 @@ class CacheAutoConfigurationTest extends Specification {
         redisServer.stop()
     }
 
-    @Bean
-    BaseService<Long, UserDO> userUnderlyingService() {
-        return new UnderlyingUserService();
-    }
 
 }

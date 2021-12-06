@@ -22,7 +22,7 @@ public interface BaseController<ID, VO extends BaseVO<ID>, QUERY, DOMAIN> {
     
     Optional<VO> queryById(ID id);
     
-    List<VO> queryAll(CommonQueryParam commonQueryParam);
+    List<VO> queryAll(QUERY query);
     
     List<VO> queryHistories(ID id);
     

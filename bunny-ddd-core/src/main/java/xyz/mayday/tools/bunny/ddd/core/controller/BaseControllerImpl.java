@@ -74,6 +74,13 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
             commonQueryParam.setPageSize(pagingConfigure.getPageSizeLimit());
         
         DTO dto = convertQueryToDto(query);
+        
+        Arrays.stream(FieldUtils.getAllFields(query.getClass())).filter(field -> TypeUtils.isAssignable(field.getType(), Collection.class)).forEach(field -> {
+            if (Objects.nonNull(ReflectionUtils.getValue(field, query))) {
+                dto.addMultiValues(field.getName(), ReflectionUtils.getValue(field, query));
+            }
+        });
+        
         dto.addMultiValues("dataState", commonQueryParam.getDataState());
         
         List<xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator> collect = FieldUtils.getFieldsListWithAnnotation(query.getClass(), QueryComparator.class)
@@ -135,15 +142,7 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
     }
     
     public DTO convertQueryToDto(QUERY query) {
-        
-        DTO dto = converter.convert(query, getDTOClass());
-        
-        Arrays.stream(FieldUtils.getAllFields(query.getClass())).filter(field -> TypeUtils.isAssignable(field.getType(), Collection.class)).forEach(field -> {
-            if (Objects.nonNull(ReflectionUtils.getValue(field, query))) {
-                dto.addMultiValues(field.getName(), ReflectionUtils.getValue(field, query));
-            }
-        });
-        return dto;
+        return converter.convert(query, getDTOClass());
     }
     
     public VO convertDtoToVo(DTO dto) {

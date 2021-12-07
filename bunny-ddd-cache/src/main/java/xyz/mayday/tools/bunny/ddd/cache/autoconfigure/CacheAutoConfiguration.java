@@ -3,6 +3,7 @@ package xyz.mayday.tools.bunny.ddd.cache.autoconfigure;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,6 +19,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import xyz.mayday.tools.bunny.ddd.cache.query.CharacterizeProcessor;
+import xyz.mayday.tools.bunny.ddd.cache.query.RangeAvailableProcessor;
 import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 
 @Configuration
@@ -51,6 +54,16 @@ public class CacheAutoConfiguration {
     public LettuceConnectionFactory redisConnectionFactory() {
         
         return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisProperties.getHost(), redisProperties.getPort()));
+    }
+    
+    @Bean
+    CharacterizeProcessor characterizeProcessor(@Value("${application.name}") String appName) {
+        return new CharacterizeProcessor(appName);
+    }
+    
+    @Bean
+    RangeAvailableProcessor rangeAvailableProcessor(@Value("${application.name}") String appName) {
+        return new RangeAvailableProcessor(appName);
     }
     
     @Bean

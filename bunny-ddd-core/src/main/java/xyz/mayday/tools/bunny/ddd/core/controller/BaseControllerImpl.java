@@ -2,10 +2,7 @@ package xyz.mayday.tools.bunny.ddd.core.controller;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -13,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -137,7 +135,15 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
     }
     
     public DTO convertQueryToDto(QUERY query) {
-        return converter.convert(query, getDTOClass());
+        
+        DTO dto = converter.convert(query, getDTOClass());
+        
+        Arrays.stream(FieldUtils.getAllFields(query.getClass())).filter(field -> TypeUtils.isAssignable(field.getType(), Collection.class)).forEach(field -> {
+            if (Objects.nonNull(ReflectionUtils.getValue(field, query))) {
+                dto.addMultiValues(field.getName(), ReflectionUtils.getValue(field, query));
+            }
+        });
+        return dto;
     }
     
     public VO convertDtoToVo(DTO dto) {

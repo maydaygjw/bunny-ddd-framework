@@ -18,6 +18,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import xyz.mayday.tools.bunny.ddd.cache.query.QueryPredicate;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService;
@@ -28,6 +29,9 @@ import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
+import xyz.mayday.tools.bunny.ddd.schema.query.SearchConjunction;
+import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
+import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 import xyz.mayday.tools.bunny.ddd.schema.service.HistoryService;
@@ -36,6 +40,8 @@ import xyz.mayday.tools.bunny.ddd.utils.CollectionUtils;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 @Slf4j
 public abstract class AbstractCacheableService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>>
@@ -87,13 +93,42 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
     @SuppressWarnings("unchecked")
     @Override
     public List<DTO> findAll(DTO example) {
-        if (hitCache(example)) {
-            Set<String> keys = redisTemplate.keys(getCacheItemDataKeyWildcard());
-            if (CollectionUtils.isNotEmpty(keys)) {
-                List<Object> daos = Objects.requireNonNull(redisTemplate.opsForValue().multiGet(keys));
-                return daos.stream().map(dao -> convertToDto((DAO) dao)).collect(Collectors.toList());
+        
+        List<SearchCriteria> searchCriteriaList = buildQuerySpecification(example).getSearchCriteriaList();
+        
+        if (hitCache(searchCriteriaList)) {
+            
+            Set<DAO> queryResult = new HashSet<>();
+            
+            for (int i = 0; i < searchCriteriaList.size(); i++) {
+                SearchCriteria criteria = searchCriteriaList.get(i);
+                String compareWith = criteria.getKey();
+                Collection<?> values = criteria.getValues();
+                Set<String> idList = new HashSet<>();
+                for (Object value : values) {
+                    String pattern = QueryPredicate.presetPredicates.get(criteria.getSearchOperation()).buildPattern(value.toString());
+                    Set<String> keys = Optional.ofNullable(redisTemplate.keys(getCacheItemIndexKey(compareWith, pattern))).orElse(Collections.emptySet());
+                    if (CollectionUtils.isNotEmpty(keys)) {
+                        Set<String> union = redisTemplate.opsForSet().union(keys).stream().map(objId -> (ID) objId).map(this::getCacheItemDataKey)
+                                .collect(Collectors.toSet());
+                        idList.addAll(union);
+                    }
+                }
+                Set<DAO> dataList = Objects.requireNonNull(redisTemplate.opsForValue().multiGet(idList)).stream().map(value -> (DAO) value)
+                        .collect(Collectors.toSet());
+                if (i == 0) {
+                    queryResult.addAll(dataList);
+                } else {
+                    queryResult = Sets.intersection(queryResult, dataList);
+                }
+                
+                if (CollectionUtils.isEmpty(queryResult)) {
+                    break;
+                }
             }
-            return Collections.emptyList();
+            
+            return queryResult.stream().map(this::convertToDto).collect(Collectors.toList());
+            
         } else {
             return underlyingService.findAll(example);
         }
@@ -177,8 +212,19 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
         }
     }
     
-    protected Boolean hitCache(DTO example) {
+    protected Boolean hitCache(List<SearchCriteria> searchCriteriaList) {
         
+        List<String> cacheIllegibleFields = getCacheIllegibleFields().stream().map(Field::getName).collect(Collectors.toList());
+        
+        for (SearchCriteria criteria : searchCriteriaList) {
+            if (criteria.getKeys().size() > 1
+                    || !Lists.newArrayList(SearchOperation.IN, SearchOperation.EQUAL, SearchOperation.MATCH).contains(criteria.getSearchOperation())
+                    || !SearchConjunction.AND.equals(criteria.getSearchConjunction()) || !cacheIllegibleFields.contains(criteria.getKey())) {
+                return false;
+            }
+        }
+        
+        log.debug("Hit cache policy, will query data in cache");
         return true;
     }
     
@@ -204,7 +250,7 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
     }
     
     private void operateIndex(List<DAO> daoList, BiFunction<String, Set<ID>, Long> operator) {
-        List<Field> fieldsListWithAnnotation = FieldUtils.getFieldsListWithAnnotation(getDaoClass(), CacheQueryField.class);
+        List<Field> fieldsListWithAnnotation = getCacheIllegibleFields();
         fieldsListWithAnnotation.forEach(field -> {
             daoList.stream().map(dao -> {
                 String indexKey = getCacheItemIndexKey(field.getName(), ReflectionUtils.getValue(field, dao).toString());
@@ -213,14 +259,17 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
         });
     }
     
+    private List<Field> getCacheIllegibleFields() {
+        return FieldUtils.getFieldsListWithAnnotation(getDaoClass(), CacheQueryField.class);
+    }
+    
     private String getCacheItemDataKeyWildcard() {
         String keyTemplate = "_data:${app.name}:${cache.name}:*:object";
         return StringSubstitutor.replace(keyTemplate, ImmutableMap.of("app.name", appName, "cache.name", getCacheEntityName()));
     }
     
     private String getCacheItemIndexKeyWildcard() {
-        String indexKeyTemplate = "_idx:${app.name}:${cache.name}:*:*:list";
-        return StringSubstitutor.replace(indexKeyTemplate, ImmutableMap.of("app.name", appName, "cache.name", getCacheEntityName()));
+        return getCacheItemIndexKey("*", "*");
     }
     
     private String getCacheItemDataKey(ID id) {
@@ -229,7 +278,7 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
     }
     
     private String getCacheItemIndexKey(String property, String value) {
-        String indexKeyTemplate = "_idx:${app.name}:${cache.name}:${prop.name}:${prop.value}:list";
+        String indexKeyTemplate = "_idx:${app.name}:${cache.name}:${prop.name}:${prop.value}:set";
         return StringSubstitutor.replace(indexKeyTemplate,
                 ImmutableMap.of("app.name", appName, "cache.name", getCacheEntityName(), "prop.name", property, "prop.value", value));
         

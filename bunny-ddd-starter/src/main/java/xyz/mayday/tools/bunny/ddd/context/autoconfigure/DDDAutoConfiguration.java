@@ -23,8 +23,7 @@ import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters;
 import xyz.mayday.tools.bunny.ddd.schema.service.DomainAggregator;
 import xyz.mayday.tools.bunny.ddd.schema.service.HistoryService;
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import xyz.mayday.tools.bunny.ddd.utils.jackson.ObjectMapperFactory;
 
 @Configuration
 @ConditionalOnProperty(value = "bunny.ddd.enabled", havingValue = "true")
@@ -35,8 +34,8 @@ public class DDDAutoConfiguration {
     GenericApplicationContext ctx;
     
     @Bean
-    GenericConverter converter(ObjectMapper mapper) {
-        return new DefaultGenericConverter(mapper);
+    GenericConverter converter() {
+        return new DefaultGenericConverter(ObjectMapperFactory.create());
     }
     
     @Bean

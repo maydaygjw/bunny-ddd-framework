@@ -10,6 +10,7 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.javers.core.metamodel.annotation.DiffIgnore;
 
+import xyz.mayday.tools.bunny.ddd.schema.cache.CacheQueryField;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.domain.DataStateEnum;
 
@@ -39,10 +40,12 @@ public abstract class AbstractBaseDAO<ID extends Serializable> implements BaseDA
     String createdBy;
     
     @DiffIgnore
+    @CacheQueryField
     String updatedBy;
     
     @DiffIgnore
     @Enumerated(EnumType.STRING)
+    @CacheQueryField
     DataStateEnum dataState;
     
     @Override

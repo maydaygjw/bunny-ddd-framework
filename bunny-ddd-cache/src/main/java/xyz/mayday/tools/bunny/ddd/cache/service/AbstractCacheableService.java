@@ -178,7 +178,11 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
     
     @Override
     public DTO delete(ID id) {
-        return null;
+        DTO deleted = underlyingService.delete(id);
+        DAO dao = convertToDao(deleted);
+        redisTemplate.delete(getCacheItemDataKey(id));
+        removeIndex(Collections.singletonList(dao));
+        return deleted;
     }
     
     @Override

@@ -125,6 +125,7 @@ public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO exte
     public DTO delete(ID id) {
         DAO dao = getRepository().findById(id).orElseThrow(BusinessException::new);
         getRepository().deleteById(id);
+        historyService.delete(id, getDaoClass());
         return convertToDto(dao);
     }
     

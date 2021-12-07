@@ -59,6 +59,7 @@ public class CacheAutoConfiguration {
             if (cacheProperties.isInit()) {
                 log.info("Application about to init cache data");
                 context.getBeansOfType(CacheableService.class).values().forEach(bean -> {
+                    bean.destroyCache();
                     bean.createCache();
                     bean.initCacheData();
                 });

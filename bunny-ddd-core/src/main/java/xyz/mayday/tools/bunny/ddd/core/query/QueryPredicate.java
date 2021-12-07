@@ -86,6 +86,7 @@ public abstract class QueryPredicate {
             super(SearchOperation.GREATER_THAN_EQUAL);
         }
         
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
         Predicate buildPredicate(SearchCriteria criteria, Root<?> root, CriteriaBuilder builder) {
             return builder.greaterThanOrEqualTo(root.get(criteria.getKey()), (Comparable) criteria.getValue());
@@ -98,6 +99,7 @@ public abstract class QueryPredicate {
             super(SearchOperation.LESS_THAN_EQUAL);
         }
         
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
         Predicate buildPredicate(SearchCriteria criteria, Root<?> root, CriteriaBuilder builder) {
             return builder.lessThanOrEqualTo(root.get(criteria.getKey()), (Comparable) criteria.getValue());

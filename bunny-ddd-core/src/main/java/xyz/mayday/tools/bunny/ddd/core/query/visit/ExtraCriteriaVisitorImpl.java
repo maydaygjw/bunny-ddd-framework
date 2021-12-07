@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
     
     @Override
+    @SuppressWarnings("unchecked")
     public void visit(AbstractBaseDTO<?> dto) {
         
         List<String> illegibleFields = ReflectionUtils.getAllFields(dto.getClass(), field -> Objects.isNull(field.getAnnotation(Transient.class))).stream()

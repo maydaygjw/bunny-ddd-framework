@@ -68,6 +68,7 @@ public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractB
         multipleValueAttributes.put(key, values);
     }
     
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

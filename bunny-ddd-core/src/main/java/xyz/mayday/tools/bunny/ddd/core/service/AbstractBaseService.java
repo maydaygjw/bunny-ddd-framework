@@ -79,7 +79,7 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
     }
     
     @Override
-    public final Class<DTO> getDomainClass() {
+    public Class<DTO> getDomainClass() {
         return getDtoClass();
     }
     

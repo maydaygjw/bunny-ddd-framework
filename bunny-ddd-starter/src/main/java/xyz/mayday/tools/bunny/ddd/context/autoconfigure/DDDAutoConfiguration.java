@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.GenericApplicationContext;
 
 import xyz.mayday.tools.bunny.ddd.context.PagingProperties;
 import xyz.mayday.tools.bunny.ddd.context.ResponseAdvice;
+import xyz.mayday.tools.bunny.ddd.context.factory.ContextHolder;
 import xyz.mayday.tools.bunny.ddd.context.service.DefaultPrincipalService;
 import xyz.mayday.tools.bunny.ddd.core.converter.DefaultGenericConverter;
 import xyz.mayday.tools.bunny.ddd.core.service.DefaultDomainAggregator;
@@ -28,6 +30,7 @@ import xyz.mayday.tools.bunny.ddd.utils.jackson.ObjectMapperFactory;
 @Configuration
 @ConditionalOnProperty(value = "bunny.ddd.enabled", havingValue = "true")
 @Import({ DocumentConfiguration.class, PagingProperties.class, ResponseAdvice.class })
+@ComponentScan(basePackageClasses = ContextHolder.class)
 public class DDDAutoConfiguration {
     
     @Autowired

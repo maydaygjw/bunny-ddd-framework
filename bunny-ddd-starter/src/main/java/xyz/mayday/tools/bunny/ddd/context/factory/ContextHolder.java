@@ -1,12 +1,13 @@
 package xyz.mayday.tools.bunny.ddd.context.factory;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -16,12 +17,12 @@ import xyz.mayday.tools.bunny.ddd.schema.service.DomainAggregator;
 import xyz.mayday.tools.bunny.ddd.utils.reflect.TypeReference;
 
 @Component
+@Slf4j
 public class ContextHolder implements ApplicationContextAware {
     
-    private static ApplicationContext ctx;
+    static final String fakeAppName = "bunny-fake-app";
     
-    @Getter
-    private static String appName;
+    private static ApplicationContext ctx;
     
     @Getter
     private static GenericConverter genericConverter;
@@ -38,6 +39,7 @@ public class ContextHolder implements ApplicationContextAware {
         return ctx.getBeansOfType(type).values().stream().findAny();
     }
     
+    @Autowired
     @Override
     public void setApplicationContext(ApplicationContext ctx) throws BeansException {
         ContextHolder.ctx = ctx;
@@ -53,9 +55,12 @@ public class ContextHolder implements ApplicationContextAware {
         ContextHolder.genericConverter = genericConverter;
     }
     
-    @Autowired
-    public void setAppName(@Value("${application.name}") String appName) {
-        ContextHolder.appName = appName;
+    public static String getAppName() {
+        if (Objects.isNull(ctx)) {
+            log.debug("No actual application context found, just return a fake app name: [{}]", fakeAppName);
+            return fakeAppName;
+        }
+        return ctx.getEnvironment().getProperty("application.name");
     }
     
 }

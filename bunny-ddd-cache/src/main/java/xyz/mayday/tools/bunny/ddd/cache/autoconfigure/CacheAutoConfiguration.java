@@ -19,8 +19,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import xyz.mayday.tools.bunny.ddd.cache.query.CharacterizeProcessor;
-import xyz.mayday.tools.bunny.ddd.cache.query.RangeAvailableProcessor;
+import xyz.mayday.tools.bunny.ddd.cache.query.CharacterIndexProcessor;
+import xyz.mayday.tools.bunny.ddd.cache.query.RangeAvailableIndexProcessor;
 import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 
 @Configuration
@@ -57,13 +57,13 @@ public class CacheAutoConfiguration {
     }
     
     @Bean
-    CharacterizeProcessor characterizeProcessor(@Value("${application.name}") String appName) {
-        return new CharacterizeProcessor(appName);
+    CharacterIndexProcessor characterizeProcessor() {
+        return new CharacterIndexProcessor(redisTemplate());
     }
     
     @Bean
-    RangeAvailableProcessor rangeAvailableProcessor(@Value("${application.name}") String appName) {
-        return new RangeAvailableProcessor(appName);
+    RangeAvailableIndexProcessor rangeAvailableProcessor() {
+        return new RangeAvailableIndexProcessor(redisTemplate());
     }
     
     @Bean

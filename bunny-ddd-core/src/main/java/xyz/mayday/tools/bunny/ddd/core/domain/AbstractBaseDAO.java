@@ -34,6 +34,7 @@ public abstract class AbstractBaseDAO<ID extends Serializable> implements BaseDA
     Date createdDate;
     
     @DiffIgnore
+    @CacheQueryField
     Date updatedDate;
     
     @DiffIgnore

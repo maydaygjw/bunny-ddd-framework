@@ -35,7 +35,7 @@ class UnderlyingUserService extends AbstractBaseService<Long, UserDO, UserDO> {
 
     @Override
     List<UserDO> findAll(UserDO example) {
-        return null
+        return Collections.emptyList()
     }
 
     @Override

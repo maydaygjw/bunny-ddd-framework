@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import lombok.SneakyThrows;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.reflections.Reflections;
 
 /** @author gejunwen */
@@ -22,6 +23,11 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
     public static <T> T getValue(Field f, Object instance) {
         f.setAccessible(true);
         return (T) f.get(instance);
+    }
+    
+    public static <T> T getValue(String fieldName, Object instance) {
+        Field f = FieldUtils.getField(instance.getClass(), fieldName, true);
+        return getValue(f, instance);
     }
     
     public static <T> Class<T> getGenericTypeOfSuperClass(Object instance, int index) {
@@ -40,9 +46,8 @@ public class ReflectionUtils extends org.reflections.ReflectionUtils {
     }
     
     public static Set<Class<?>> scanClassesByAnnotationType(List<String> basePaths, Class<? extends Annotation> annotationClass) {
-        return basePaths.stream().map(basePath -> {
-            return new Reflections(basePath).getTypesAnnotatedWith(annotationClass);
-        }).flatMap(Collection::stream).collect(Collectors.toSet());
+        return basePaths.stream().map(basePath -> new Reflections(basePath).getTypesAnnotatedWith(annotationClass)).flatMap(Collection::stream)
+                .collect(Collectors.toSet());
         
     }
 }

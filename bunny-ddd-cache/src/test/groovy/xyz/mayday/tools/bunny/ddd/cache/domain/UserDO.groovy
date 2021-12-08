@@ -12,4 +12,5 @@ class UserDO extends AbstractBaseDTO<Long>{
 
     @CacheQueryField
     Integer age;
+
 }

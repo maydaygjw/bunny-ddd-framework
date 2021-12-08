@@ -1,6 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.core.query.visit;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -27,8 +28,12 @@ public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
         List<String> illegibleFields = ReflectionUtils.getAllFields(dto.getClass(), field -> Objects.isNull(field.getAnnotation(Transient.class))).stream()
                 .map(Field::getName).collect(Collectors.toList());
         
-        List<SearchCriteria> collect = dto.getQueryComparators().values().stream().filter(comparator -> CollectionUtils.isNotEmptyExt(comparator.getValues()))
-                .filter(comparator -> illegibleFields.containsAll(comparator.getCompareWith())).map(comparator -> {
+        List<SearchCriteria> collect = dto.getQueryComparators().values().stream()
+                .filter(comparator -> illegibleFields.containsAll(comparator.getCompareWith())).peek(comparator -> {
+                    if (CollectionUtils.isEmptyExt(comparator.getValues())) {
+                        comparator.setValues(Collections.singletonList(ReflectionUtils.getValue(comparator.getKey(), dto)));
+                    }
+                }).filter(comparator -> CollectionUtils.isNotEmptyExt(comparator.getValues())).map(comparator -> {
                     
                     if (comparator.getValues().size() > 1) {
                         

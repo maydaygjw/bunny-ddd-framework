@@ -39,6 +39,11 @@ public class QueryComparator {
         this(Collections.singletonList(compareWith), Collections.singleton(value));
     }
     
+    public QueryComparator(String compareWith, Object value, SearchOperation searchOperation) {
+        this(compareWith, value);
+        this.searchOperation = searchOperation;
+    }
+    
     public QueryComparator(List<String> compareWith, Collection<?> values) {
         this.key = compareWith.get(0);
         this.compareWith = compareWith;

@@ -17,23 +17,28 @@ import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
+import com.google.common.collect.Lists;
+
 @Slf4j
 public class FieldCriteriaVisitorImpl extends BaseQuerySpecVisitor {
     
+    List<String> defaultExcludeFields = Lists.newArrayList("metaClass");
+    
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void visit(AbstractBaseDTO<?> dto) {
         
         List<SearchCriteria> collect = Arrays.stream(FieldUtils.getAllFields(dto.getClass()))
                 .filter(field -> !FieldUtils.getFieldsListWithAnnotation(dto.getClass(), Transient.class).contains(field))
                 .filter(field -> !TypeUtils.isArrayType(field.getType())).filter(field -> !TypeUtils.isAssignable(field.getType(), Collection.class))
                 .filter(field -> !TypeUtils.isAssignable(field.getType(), Map.class)).filter(field -> Objects.nonNull(ReflectionUtils.getValue(field, dto)))
-                .filter(field -> !Modifier.isStatic(field.getModifiers())).filter(field -> Objects.isNull(dto.getQueryComparators().get(field.getName())))
+                .filter(field -> !Modifier.isStatic(field.getModifiers())).filter(field -> !defaultExcludeFields.contains(field.getName()))
+                .filter(field -> Objects.isNull(dto.getQueryComparators().get(field.getName())))
+                
                 .map(field -> Pair.of(field.getName(), ReflectionUtils.getValue(field, dto))).map(pair -> {
                     String key = pair.getLeft();
                     Object value = processValue(pair.getRight());
                     return new xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator().withKey(key).withCompareWith(Collections.singletonList(key))
-                            .withSearchOperation(SearchOperation.IN).withValues(Collections.singleton(value));
+                            .withSearchOperation(SearchOperation.EQUAL).withValues(Collections.singleton(value));
                 }).map(this::toCriteria).collect(Collectors.toList());
         
         log.trace("Field criteria: {}", collect);

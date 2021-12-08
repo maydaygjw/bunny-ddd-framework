@@ -27,25 +27,31 @@ public abstract class AbstractBaseDAO<ID extends Serializable> implements BaseDA
     
     @DiffIgnore
     @Version
+    @Column(nullable = false)
     @org.springframework.data.annotation.Version
     Integer version;
     
     @DiffIgnore
+    @Column(nullable = false)
     Date createdDate;
     
     @DiffIgnore
+    @Column(nullable = false)
     @CacheQueryField
     Date updatedDate;
     
     @DiffIgnore
+    @Column(nullable = false)
     String createdBy;
     
     @DiffIgnore
+    @Column(nullable = false)
     @CacheQueryField
     String updatedBy;
     
     @DiffIgnore
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     @CacheQueryField
     DataStateEnum dataState;
     

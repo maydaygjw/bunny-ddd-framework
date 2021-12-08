@@ -27,7 +27,7 @@ class CacheAutoConfigurationTest extends Specification {
         redisServer.start()
     }
 
-    def "auto configuration"() {
+    def "cache integration test"() {
 
         when:
 
@@ -46,18 +46,74 @@ class CacheAutoConfigurationTest extends Specification {
 
         user.id != null
 
-//        then:
-//
-//        userService.findAll(new UserDO("Peter")).size() == 1
-//
-//        when:
-//
-//        def query = new UserDO("Pe")
-//        query.addQueryComparator(new QueryComparator("name", SearchOperation.MATCH))
-//
-//        then:
-//
-//        userService.findAll(query).size() == 1
+        when:
+
+        def users = userService.findAll(new UserDO("Peter"))
+
+        then:
+
+        users.size() == 1
+
+        when:
+
+        def query = new UserDO("Pe")
+        query.addQueryComparator(new QueryComparator("name", SearchOperation.MATCH))
+        users = userService.findAll(query)
+
+        then:
+
+        users.size() == 1
+
+        when:
+
+        query = new UserDO("Pe")
+        query.addQueryComparator(new QueryComparator("name", SearchOperation.EQUAL))
+        users = userService.findAll(query)
+
+        then:
+
+        users.size() == 0
+
+        when:
+
+        query = new UserDO()
+        query.addQueryComparator(new QueryComparator("age", 10, SearchOperation.GREATER_THAN_EQUAL))
+        users = userService.findAll(query)
+
+        then:
+
+        users.size() == 1
+
+        when:
+
+        query = new UserDO()
+        query.addQueryComparator(new QueryComparator("age", 20, SearchOperation.GREATER_THAN_EQUAL))
+        users = userService.findAll(query)
+
+        then:
+
+        users.size() == 0
+
+        when:
+
+        query = new UserDO()
+        query.addQueryComparator(new QueryComparator("age", 20, SearchOperation.LESS_THAN_EQUAL))
+        users = userService.findAll(query)
+
+        then:
+
+        users.size() == 1
+
+        when:
+
+        query = new UserDO()
+        query.addQueryComparator(new QueryComparator("age", 10, SearchOperation.LESS_THAN_EQUAL))
+        users = userService.findAll(query)
+
+        then:
+
+        users.size() == 0
+
 
     }
 

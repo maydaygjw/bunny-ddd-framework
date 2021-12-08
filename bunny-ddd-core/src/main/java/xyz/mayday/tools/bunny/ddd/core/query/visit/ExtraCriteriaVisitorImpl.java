@@ -30,7 +30,7 @@ public class ExtraCriteriaVisitorImpl extends BaseQuerySpecVisitor {
         
         List<SearchCriteria> collect = dto.getQueryComparators().values().stream()
                 .filter(comparator -> illegibleFields.containsAll(comparator.getCompareWith())).peek(comparator -> {
-                    if (CollectionUtils.isEmptyExt(comparator.getValues())) {
+                    if (CollectionUtils.isEmptyExt(comparator.getValues()) && illegibleFields.contains(comparator.getKey())) {
                         comparator.setValues(Collections.singletonList(ReflectionUtils.getValue(comparator.getKey(), dto)));
                     }
                 }).filter(comparator -> CollectionUtils.isNotEmptyExt(comparator.getValues())).map(comparator -> {

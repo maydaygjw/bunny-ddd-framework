@@ -114,6 +114,16 @@ class CacheAutoConfigurationTest extends Specification {
 
         users.size() == 0
 
+        when:
+
+        query = new UserDO()
+        query.addQueryComparator(new QueryComparator("age", 18))
+        users = userService.findAll(query)
+
+        then:
+
+        users.size() == 1
+
 
     }
 

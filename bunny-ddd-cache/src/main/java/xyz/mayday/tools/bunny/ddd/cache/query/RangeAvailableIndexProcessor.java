@@ -32,7 +32,8 @@ public class RangeAvailableIndexProcessor implements IndexProcessor {
             criteria.getValues().forEach(value -> {
                 Set<Object> ids = redisTemplate.opsForZSet().rangeByScore(RedisUtils.getCacheItemIndexKeyOfZSet(criteria.getKey(), cacheName), score, score);
                 if (CollectionUtils.isNotEmpty(ids)) {
-                    resultIdList.addAll(ids.stream().map(Object::toString).collect(Collectors.toSet()));
+                    resultIdList
+                            .addAll(ids.stream().map(Object::toString).map(id -> RedisUtils.getCacheItemDataKey(id, cacheName)).collect(Collectors.toSet()));
                 }
             });
             

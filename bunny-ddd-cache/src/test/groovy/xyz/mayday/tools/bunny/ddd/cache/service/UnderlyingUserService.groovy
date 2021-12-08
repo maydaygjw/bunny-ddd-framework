@@ -47,6 +47,7 @@ class UnderlyingUserService extends AbstractBaseService<Long, UserDO, UserDO> {
     UserDO insert(UserDO userDO) {
         userDO.setId(1L)
         userDO.setDataState(DataStateEnum.VALID)
+        super.auditWhenInsert(userDO)
         return userDO
     }
 

@@ -15,7 +15,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 import xyz.mayday.tools.bunny.ddd.cache.query.CharacterIndexProcessor;
 import xyz.mayday.tools.bunny.ddd.cache.query.IndexProcessor;
@@ -133,7 +132,6 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
         return null;
     }
     
-    @Transactional
     @Override
     public DTO insert(DTO dto) {
         DTO insert = underlyingService.insert(dto);
@@ -148,7 +146,6 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
         return null;
     }
     
-    @Transactional
     @SuppressWarnings("unchecked")
     @Override
     public DTO update(DTO dto) {
@@ -256,7 +253,7 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
                     .collect(Collectors.groupingBy(Pair::getLeft, Collectors.mapping(Pair::getRight, Collectors.toSet())));
             collect.forEach((pair, idSet) -> {
                 if (Objects.isNull(pair.getRight())) {
-                    throw new BusinessException("NULL_POINTER_EXCEPTION", "索引字段不允许为空值");
+                    throw new BusinessException("NULL_POINTER_EXCEPTION", String.format("索引字段[%s]不允许为空值", pair.getLeft()));
                 }
                 consumer.accept(pair.getLeft(), pair.getRight(), idSet);
             });

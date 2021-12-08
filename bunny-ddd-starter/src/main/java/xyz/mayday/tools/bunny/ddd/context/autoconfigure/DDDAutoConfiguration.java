@@ -16,6 +16,7 @@ import xyz.mayday.tools.bunny.ddd.context.ResponseAdvice;
 import xyz.mayday.tools.bunny.ddd.context.factory.ContextHolder;
 import xyz.mayday.tools.bunny.ddd.context.service.DefaultPrincipalService;
 import xyz.mayday.tools.bunny.ddd.core.converter.DefaultGenericConverter;
+import xyz.mayday.tools.bunny.ddd.core.converter.StringToDateConverter;
 import xyz.mayday.tools.bunny.ddd.core.service.DefaultDomainAggregator;
 import xyz.mayday.tools.bunny.ddd.core.service.DefaultHistoryService;
 import xyz.mayday.tools.bunny.ddd.core.service.LeafIdGenerator;
@@ -60,6 +61,11 @@ public class DDDAutoConfiguration {
     @Bean
     HistoryService historyService(Javers javers) {
         return new DefaultHistoryService(javers);
+    }
+    
+    @Bean
+    StringToDateConverter stringToDateConverter() {
+        return new StringToDateConverter();
     }
     
     @Bean

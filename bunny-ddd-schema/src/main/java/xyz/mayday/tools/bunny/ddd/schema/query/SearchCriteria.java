@@ -44,4 +44,5 @@ public class SearchCriteria {
         }
         return values.iterator().next();
     }
+    
 }

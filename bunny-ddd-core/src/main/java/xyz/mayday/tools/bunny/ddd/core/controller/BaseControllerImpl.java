@@ -27,6 +27,7 @@ import xyz.mayday.tools.bunny.ddd.schema.query.annotation.QueryComparator;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.google.common.collect.Lists;
 
 /** @author gejunwen */
 @RequiredArgsConstructor
@@ -88,7 +89,7 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
                     QueryComparator comparatorAnnotation = pair.getRight();
                     xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator convert = new xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator()
                             .withSearchOperation(comparatorAnnotation.operation()).withConjunctionGroup(comparatorAnnotation.conjunctionGroup())
-                            .withSearchConjunction(comparatorAnnotation.conjunction());
+                            .withSearchConjunction(comparatorAnnotation.conjunction()).withCompareWith(Lists.newArrayList(comparatorAnnotation.compareWith()));
                     Field field = pair.getLeft();
                     convert.setKey(StringUtils.defaultIfBlank(comparatorAnnotation.key(), field.getName()));
                     if (StringUtils.isAllBlank(comparatorAnnotation.compareWith())) {

@@ -104,6 +104,9 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
             // find data by id
             Set<DAO> dataList = Objects.requireNonNull(redisTemplate.opsForValue().multiGet(idList)).stream().map(value -> (DAO) value)
                     .collect(Collectors.toSet());
+            
+            log.trace("Query by {}, the result size is: {}", criteria, dataList.size());
+            
             if (i == 0) {
                 queryResult.addAll(dataList);
             } else {
@@ -216,7 +219,7 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
             }
         }
         
-        log.debug("Hit cache policy, will query data in cache");
+        log.trace("Criteria {} hit cache policy, will query data in cache", searchCriteriaList);
         return true;
     }
     
@@ -252,6 +255,9 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
                     .map(dao -> Pair.of(Pair.of(field.getName(), ReflectionUtils.getValue(field, dao)), dao.getId()))
                     .collect(Collectors.groupingBy(Pair::getLeft, Collectors.mapping(Pair::getRight, Collectors.toSet())));
             collect.forEach((pair, idSet) -> {
+                if (Objects.isNull(pair.getRight())) {
+                    throw new BusinessException("NULL_POINTER_EXCEPTION", "索引字段不允许为空值");
+                }
                 consumer.accept(pair.getLeft(), pair.getRight(), idSet);
             });
         });

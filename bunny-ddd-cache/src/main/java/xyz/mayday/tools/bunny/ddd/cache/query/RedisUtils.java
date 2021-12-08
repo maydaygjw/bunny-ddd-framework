@@ -14,8 +14,7 @@ import com.google.common.collect.ImmutableMap;
 public class RedisUtils {
     
     public static String getCacheItemDataKeyWildcard(String cacheName) {
-        String keyTemplate = "_data:${app.name}:${cache.name}:*:object";
-        return StringSubstitutor.replace(keyTemplate, ImmutableMap.of("app.name", ContextHolder.getAppName(), "cache.name", cacheName));
+        return getCacheItemDataKey("*", cacheName);
     }
     
     public static String getCacheItemIndexKeyWildcard(String cacheName) {

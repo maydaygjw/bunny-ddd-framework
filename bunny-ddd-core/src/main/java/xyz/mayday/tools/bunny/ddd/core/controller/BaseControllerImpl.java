@@ -20,6 +20,7 @@ import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.schema.controller.BaseController;
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
+import xyz.mayday.tools.bunny.ddd.schema.http.Response;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.page.PagingParameters;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
@@ -46,11 +47,11 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
     }
     
     @Override
-    public PageableData<VO> queryItems(QUERY query, CommonQueryParam commonQueryParam) {
+    public Response<PageableData<VO>> queryItems(QUERY query, CommonQueryParam commonQueryParam) {
         DTO dto = applyQuery(query, commonQueryParam);
         PageableData<DTO> items = getService().findItems(dto, commonQueryParam);
-        return PageableData.<VO> builder().records(items.getRecords().stream().map(this::convertDtoToVo).collect(Collectors.toList()))
-                .pageInfo(items.getPageInfo()).build();
+        return Response.success(PageableData.<VO> builder().records(items.getRecords().stream().map(this::convertDtoToVo).collect(Collectors.toList()))
+                .pageInfo(items.getPageInfo()).build());
     }
     
     @Override
@@ -132,9 +133,9 @@ public abstract class BaseControllerImpl<ID extends Serializable, VO extends Bas
     }
     
     @Override
-    public List<VO> queryAll(QUERY query) {
+    public Response<List<VO>> queryAll(QUERY query) {
         DTO dto = applyQuery(query, new CommonQueryParam().withPageSize(pagingConfigure.getPageSizeLimit()));
-        return getService().findAll(dto).stream().map(this::convertDtoToVo).collect(Collectors.toList());
+        return Response.success(getService().findAll(dto).stream().map(this::convertDtoToVo).collect(Collectors.toList()));
     }
     
     @Override

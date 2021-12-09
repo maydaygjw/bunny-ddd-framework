@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException;
 import xyz.mayday.tools.bunny.ddd.schema.exception.FrameworkExceptionEnum;
 import xyz.mayday.tools.bunny.ddd.schema.http.Response;
-import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 
 @ControllerAdvice
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
@@ -30,8 +29,6 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
             Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if (TypeUtils.isAssignable(Objects.requireNonNull(body).getClass(), Optional.class)) {
             return Response.success(((Optional<?>) body).orElseThrow(() -> new BusinessException(FrameworkExceptionEnum.NO_SUCH_ELEMENT)));
-        } else if (TypeUtils.isAssignable(returnType.getParameterType(), PageableData.class)) {
-            return Response.success(body);
         }
         
         return body;

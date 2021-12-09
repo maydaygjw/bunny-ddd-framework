@@ -15,8 +15,7 @@ import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
-import xyz.mayday.tools.bunny.ddd.schema.domain.BaseVO;
-import xyz.mayday.tools.bunny.ddd.schema.rpc.BaseRpcClient;
+import xyz.mayday.tools.bunny.ddd.schema.rpc.RpcClientSpec;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
@@ -79,7 +78,7 @@ public class ApplicationContextServiceFactory implements PersistenceServiceFacto
     }
     
     @Override
-    public <DOMAIN> BaseRpcClient<? extends BaseVO<?>, ?> getRpcClient(Class<DOMAIN> domainClass) {
+    public <DOMAIN> RpcClientSpec getRpcClient(Class<DOMAIN> domainClass) {
         return null;
     }
 }

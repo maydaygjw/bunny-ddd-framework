@@ -36,6 +36,8 @@ class ContextHolderTest extends Specification {
     }
 
     def "GetAppName"() {
+        expect:
+
         ContextHolder.getAppName() == "bunny-ddd-starter-test"
     }
 

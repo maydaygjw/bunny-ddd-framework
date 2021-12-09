@@ -1,5 +1,5 @@
 server.port: 8083
-application.name: bunny-ddd-starter-rdbms-test
+spring.application.name: bunny-ddd-starter-rdbms-test
 
 bunny.ddd.enabled: true
 

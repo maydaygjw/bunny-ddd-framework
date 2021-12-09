@@ -22,7 +22,7 @@ class CacheAutoConfigurationTest extends Specification {
     @Shared
     RedisServer redisServer;
 
-    def setup() {
+    def setupSpec() {
         redisServer = new RedisServer();
         redisServer.start()
     }
@@ -127,7 +127,7 @@ class CacheAutoConfigurationTest extends Specification {
 
     }
 
-    def cleanup() {
+    def cleanupSpec() {
         redisServer.stop()
     }
 

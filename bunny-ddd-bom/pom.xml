@@ -47,7 +47,7 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-kubernetes-discoveryclient</artifactId>
+                <artifactId>spring-cloud-starter-kubernetes-fabric8</artifactId>
                 <version>2.1.0</version>
             </dependency>
 

@@ -106,7 +106,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.12.4</version>
                 <configuration>
-                    <argLine>-Dspring.profiles.active=ddd,test</argLine>
+                    <argLine>-Dspring.profiles.active=test</argLine>
                 </configuration>
             </plugin>
             <plugin>

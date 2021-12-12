@@ -1,2 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 xyz.mayday.tools.bunny.ddd.context.autoconfigure.DDDAutoConfiguration
+org.springframework.boot.env.EnvironmentPostProcessor=\
+xyz.mayday.tools.bunny.ddd.context.autoconfigure.DDDEnvironmentPostProcessor

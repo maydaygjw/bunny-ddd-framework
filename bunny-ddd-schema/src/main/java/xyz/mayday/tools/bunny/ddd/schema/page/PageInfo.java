@@ -3,8 +3,8 @@ package xyz.mayday.tools.bunny.ddd.schema.page;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
 import lombok.NoArgsConstructor;
+
 import org.springframework.data.domain.Page;
 
 import io.swagger.annotations.ApiModel;

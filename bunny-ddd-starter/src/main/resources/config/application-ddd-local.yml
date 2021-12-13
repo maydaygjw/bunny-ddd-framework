@@ -2,3 +2,5 @@ spring.cloud.kubernetes.enabled: false
 logging.level:
   org.springframework.web.servlet.DispatcherServlet: DEBUG
   xyz.mayday.tools.bunny: TRACE
+
+feign.client.config.default.loggerLevel: full

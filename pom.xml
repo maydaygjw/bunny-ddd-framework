@@ -141,30 +141,6 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>Maven Central</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </repository>
-        <repository>
-            <id>spring-libs-snapshot</id>
-            <url>https://maven.aliyun.com/repository/spring</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>central</id>
-            <name>Maven Central</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-libs-snapshot</id>
-            <url>https://maven.aliyun.com/repository/spring</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <scm>
         <connection>scm:git:https://gitee.com/maydaygjw/bunny-ddd-framework</connection>
         <tag>HEAD</tag>

@@ -1,7 +1,7 @@
 spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-spring.datasource.url: jdbc:postgresql://192.168.50.250:5432/postgres
-spring.datasource.username: postgres
-spring.datasource.password: example
+spring.datasource.url: jdbc:postgresql://rm-uf66wvxgm74gry3m6ho.pg.rds.aliyuncs.com:3432/runner-dev
+spring.datasource.username: runner
+spring.datasource.password: ENC(u+vYwXUMgLrBGNBribA9euWlti6CfiM9)
 
 logging.level.org.hibernate.SQL: DEBUG
 logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE

@@ -11,8 +11,8 @@
     <name>Bunny DDD - BOM</name>
 
     <properties>
-        <spring.boot.version>2.4.3</spring.boot.version>
-        <spring.cloud.version>2020.0.0</spring.cloud.version>
+        <spring.boot.version>2.4.13</spring.boot.version>
+        <spring.cloud.version>2020.0.4</spring.cloud.version>
         <spotless.verson>2.13.0</spotless.verson>
         <javers.version>6.5.2</javers.version>
     </properties>

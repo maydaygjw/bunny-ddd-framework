@@ -7,7 +7,7 @@ import spock.lang.Specification
 import xyz.mayday.tools.bunny.ddd.core.controller.BaseControllerImpl
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TestMvc extends Specification {
 
     @Autowired

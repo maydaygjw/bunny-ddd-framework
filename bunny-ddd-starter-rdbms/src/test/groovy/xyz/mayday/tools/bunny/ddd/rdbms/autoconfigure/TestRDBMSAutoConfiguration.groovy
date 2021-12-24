@@ -1,28 +1,24 @@
 package xyz.mayday.tools.bunny.ddd.rdbms.autoconfigure
 
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.stereotype.Component
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Subject
 import xyz.mayday.tools.bunny.ddd.rdbms.domain.Domain
-import xyz.mayday.tools.bunny.ddd.rdbms.service.AbstractBaseRDBMSService
 import xyz.mayday.tools.bunny.ddd.rdbms.service.UserService
-import xyz.mayday.tools.bunny.ddd.schema.auth.PrincipalService
 import xyz.mayday.tools.bunny.ddd.schema.converter.GenericConverter
 import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException
 import xyz.mayday.tools.bunny.ddd.schema.query.QueryComparator
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchConjunction
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchOperation
 import xyz.mayday.tools.bunny.ddd.schema.service.IdGenerator
-import xyz.mayday.tools.bunny.ddd.schema.service.PersistenceServiceFactory
 
 @SpringBootTest
 @Configuration
-class TestDDDAutoConfiguration extends Specification {
+@Subject(DDDRdbmsAutoConfiguration.class)
+class TestRDBMSAutoConfiguration extends Specification {
 
     @Autowired
     IdGenerator<String> idGenerator

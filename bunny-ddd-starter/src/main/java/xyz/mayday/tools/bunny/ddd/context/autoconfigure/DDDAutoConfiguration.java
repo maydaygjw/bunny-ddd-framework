@@ -1,5 +1,7 @@
 package xyz.mayday.tools.bunny.ddd.context.autoconfigure;
 
+import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
+
 import org.javers.core.Javers;
 import org.javers.core.JaversBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ import xyz.mayday.tools.bunny.ddd.utils.jackson.ObjectMapperFactory;
 @ConditionalOnProperty(value = "bunny.ddd.enabled", havingValue = "true")
 @Import({ DocumentConfiguration.class, PagingProperties.class, ResponseAdvice.class })
 @ComponentScan(basePackageClasses = ContextHolder.class)
+@EnableSchedulerLock(defaultLockAtMostFor = "10m")
 public class DDDAutoConfiguration {
     
     @Autowired

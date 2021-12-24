@@ -1,4 +1,3 @@
-server.port: 8083
 spring.application.name: bunny-ddd-starter-test
 
 bunny.ddd.enabled: true

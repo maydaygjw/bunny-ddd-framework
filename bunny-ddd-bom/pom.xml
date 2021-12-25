@@ -16,6 +16,7 @@
         <spotless.verson>2.13.0</spotless.verson>
         <javers.version>6.5.2</javers.version>
         <shedLock.version>4.30.0</shedLock.version>
+        <micrometer.version>1.8.1</micrometer.version>
     </properties>
 
     <dependencyManagement>
@@ -136,6 +137,11 @@
                 <groupId>net.javacrumbs.shedlock</groupId>
                 <artifactId>shedlock-spring</artifactId>
                 <version>${shedLock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer.version}</version>
             </dependency>
 
 

@@ -14,3 +14,9 @@ knife4j:
       locations: classpath:markdown/*
 
 jasypt.encryptor.password: Password@1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,env,health,prometheus

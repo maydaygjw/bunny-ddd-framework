@@ -63,8 +63,8 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
         <dependency>
-            <groupId>it.ozimov</groupId>
-            <artifactId>embedded-redis</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>spock</artifactId>
         </dependency>
 
 

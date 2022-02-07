@@ -178,6 +178,7 @@
                 </exclusions>
             </dependency>
 
+            <!-- test -->
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
@@ -188,6 +189,12 @@
                 <groupId>net.javacrumbs.shedlock</groupId>
                 <artifactId>shedlock-provider-inmemory</artifactId>
                 <version>${shedLock.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>spock</artifactId>
+                <version>1.15.3</version>
                 <scope>test</scope>
             </dependency>
 

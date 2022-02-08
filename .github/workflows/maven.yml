@@ -23,12 +23,6 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Set up Docker
-      uses: docker-practice/actions-setup-docker@master
-      run: |
-        set -x
-
-        docker version
-
-        docker run --rm hello-world
+      uses: docker-practice/actions-setup-docker@1.0.8
     - name: Build with Maven
       run: mvn -B clean test --file pom.xml

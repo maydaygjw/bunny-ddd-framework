@@ -47,7 +47,7 @@ public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractB
     @Transient
     Map<String, Collection<?>> multipleValueAttributes;
     
-    public AbstractBaseDTO() {
+    protected AbstractBaseDTO() {
         queryComparators = new ConcurrentHashMap<>();
         multipleValueAttributes = new ConcurrentHashMap<>();
     }
@@ -75,7 +75,7 @@ public abstract class AbstractBaseDTO<ID extends Serializable> extends AbstractB
     }
     
     @JsonIgnore
-    public Class<? extends AbstractBaseDAO<?>> getDaoClass() {
+    public <C extends Serializable> Class<C> getDaoClass() {
         return null;
     }
     

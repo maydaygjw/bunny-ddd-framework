@@ -24,7 +24,7 @@ import xyz.mayday.tools.bunny.batch.controller.BatchController;
 public class BatchAutoConfiguration {
     
     @Autowired
-    BatchTemplate batchTemplate;
+    BatchTemplate<? super Object, ? super Object> batchTemplate;
     
     @Autowired
     StepBuilderFactory stepBuilderFactory;

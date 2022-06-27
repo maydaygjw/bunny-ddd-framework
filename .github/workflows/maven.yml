@@ -19,6 +19,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
+        distribution: 'adopt'
     - name: Set up Docker
       uses: docker-practice/actions-setup-docker@1.0.8
     - name: Cache SonarCloud packages

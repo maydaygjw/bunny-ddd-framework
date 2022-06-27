@@ -35,6 +35,9 @@
         <spring.boot.version>2.4.3</spring.boot.version>
         <maven.release.plugin.version>3.0.0-M4</maven.release.plugin.version>
         <spotless.verson>2.13.0</spotless.verson>
+
+        <sonar.organization>maydaygjw</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencyManagement>

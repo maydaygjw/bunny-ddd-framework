@@ -1,6 +1,6 @@
 # bunny-ddd-framework
 
-[![Build Status](https://app.travis-ci.com/maydaygjw/bunny-ddd-framework.svg?branch=main)](https://app.travis-ci.com/maydaygjw/bunny-ddd-framework)
+[![Java CI with Maven](https://github.com/maydaygjw/bunny-ddd-framework/actions/workflows/maven.yml/badge.svg)](https://github.com/maydaygjw/bunny-ddd-framework/actions/workflows/maven.yml)
 
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=maydaygjw_bunny-ddd-framework&metric=coverage)](https://sonarcloud.io/summary/new_code?id=maydaygjw_bunny-ddd-framework)
 

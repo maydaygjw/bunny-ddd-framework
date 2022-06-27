@@ -17,3 +17,4 @@ target/
 #Geode Stuff
 *.log
 *.dat
+.DS_Store

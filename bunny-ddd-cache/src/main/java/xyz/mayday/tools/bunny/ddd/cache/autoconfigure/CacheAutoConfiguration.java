@@ -19,8 +19,10 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import xyz.mayday.tools.bunny.ddd.cache.query.CharacterIndexProcessor;
-import xyz.mayday.tools.bunny.ddd.cache.query.RangeAvailableIndexProcessor;
+import xyz.mayday.tools.bunny.ddd.cache.query.SequenceIndexProcessor;
 import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableConfigurationProperties({ RedisProperties.class, CacheProperties.class })
@@ -30,13 +32,14 @@ import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 public class CacheAutoConfiguration {
     
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+    public RedisTemplate<String, Object> redisTemplate(ObjectMapper objectMapper) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory());
-        template.setDefaultSerializer(new GenericJackson2JsonRedisSerializer());
+        GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(objectMapper);
+        template.setDefaultSerializer(serializer);
         template.setKeySerializer(new StringRedisSerializer());
-        template.setHashKeySerializer(new GenericJackson2JsonRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setHashKeySerializer(serializer);
+        template.setValueSerializer(serializer);
         return template;
     }
     
@@ -56,13 +59,13 @@ public class CacheAutoConfiguration {
     }
     
     @Bean
-    CharacterIndexProcessor characterizeProcessor() {
-        return new CharacterIndexProcessor(redisTemplate());
+    CharacterIndexProcessor characterProcessor(RedisTemplate<String, Object> redisTemplate) {
+        return new CharacterIndexProcessor(redisTemplate);
     }
     
     @Bean
-    RangeAvailableIndexProcessor rangeAvailableProcessor() {
-        return new RangeAvailableIndexProcessor(redisTemplate());
+    SequenceIndexProcessor sequenceProcessor(RedisTemplate<String, Object> redisTemplate) {
+        return new SequenceIndexProcessor(redisTemplate);
     }
     
     @Bean

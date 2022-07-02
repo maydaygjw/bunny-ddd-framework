@@ -52,6 +52,26 @@ class CacheAutoConfigurationTest extends Specification {
 
         when:
 
+        def updateUserParam = new UserDO();
+        updateUserParam.id = user.id
+        updateUserParam.age = 19;
+        def updatedUserResult = userService.update(updateUserParam)
+
+        then:
+
+        updatedUserResult.age == 19
+
+        when:
+
+        def opt = userService.findItemById(user.id)
+
+        then:
+
+        opt.isPresent()
+        opt.get().age == 19
+
+        when:
+
         def users = userService.findAll(new UserDO("Peter"))
 
         then:
@@ -121,7 +141,7 @@ class CacheAutoConfigurationTest extends Specification {
         when:
 
         query = new UserDO()
-        query.addQueryComparator(new QueryComparator("age", 18))
+        query.addQueryComparator(new QueryComparator("age", 19))
         users = userService.findAll(query)
 
         then:

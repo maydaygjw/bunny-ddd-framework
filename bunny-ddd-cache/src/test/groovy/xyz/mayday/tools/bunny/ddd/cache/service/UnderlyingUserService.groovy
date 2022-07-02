@@ -3,7 +3,9 @@ package xyz.mayday.tools.bunny.ddd.cache.service
 import org.springframework.stereotype.Component
 import xyz.mayday.tools.bunny.ddd.cache.domain.UserDO
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService
+import xyz.mayday.tools.bunny.ddd.core.utils.BeanUtils
 import xyz.mayday.tools.bunny.ddd.schema.domain.DataStateEnum
+import xyz.mayday.tools.bunny.ddd.schema.exception.BusinessException
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam
 
@@ -11,6 +13,8 @@ import java.util.stream.Stream
 
 @Component
 class UnderlyingUserService extends AbstractBaseService<Long, UserDO, UserDO> {
+
+    Map<Long, UserDO> storage = new HashMap<>();
 
 
     @Override
@@ -48,6 +52,7 @@ class UnderlyingUserService extends AbstractBaseService<Long, UserDO, UserDO> {
         userDO.setId(1L)
         userDO.setDataState(DataStateEnum.VALID)
         super.auditWhenInsert(userDO)
+        storage.put(userDO.id, userDO)
         return userDO
     }
 
@@ -58,7 +63,14 @@ class UnderlyingUserService extends AbstractBaseService<Long, UserDO, UserDO> {
 
     @Override
     UserDO update(UserDO userDO) {
-        return null
+        if (Objects.isNull(userDO.getId())) {
+            throw new BusinessException();
+        }
+        def dbOne = storage.get(userDO.getId())
+        BeanUtils.copyProperties(userDO, dbOne);
+        auditWhenUpdate(dbOne);
+        dbOne.setVersion(dbOne.getVersion() + 1);
+        return dbOne;
     }
 
     @Override

@@ -97,6 +97,7 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
         dao.setUpdatedBy(principalService.getCurrentUserId());
         dao.setCreatedDate(now);
         dao.setUpdatedDate(now);
+        dao.setVersion(1);
     }
     
     protected void auditWhenUpdate(DAO dao) {

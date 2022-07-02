@@ -18,8 +18,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import xyz.mayday.tools.bunny.ddd.cache.query.CharacterIndexProcessor;
 import xyz.mayday.tools.bunny.ddd.cache.query.IndexProcessor;
-import xyz.mayday.tools.bunny.ddd.cache.query.RangeAvailableIndexProcessor;
 import xyz.mayday.tools.bunny.ddd.cache.query.RedisUtils;
+import xyz.mayday.tools.bunny.ddd.cache.query.SequenceIndexProcessor;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.schema.cache.CacheEntity;
@@ -33,6 +33,7 @@ import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 import xyz.mayday.tools.bunny.ddd.utils.CollectionUtils;
 import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
+import xyz.mayday.tools.bunny.ddd.utils.convert.SimpleConverter;
 import xyz.mayday.tools.bunny.ddd.utils.functional.TriConsumer;
 
 import com.google.common.collect.Sets;
@@ -47,7 +48,7 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
     RedisTemplate<String, Object> redisTemplate;
     
     @Autowired
-    RangeAvailableIndexProcessor rangeAvailableProcessor;
+    SequenceIndexProcessor sequenceProcessor;
     
     @Autowired
     CharacterIndexProcessor characterProcessor;
@@ -59,7 +60,7 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
     @Override
     public Optional<DTO> findItemById(ID id) {
         return Optional.ofNullable(redisTemplate.opsForValue().get(RedisUtils.getCacheItemDataKey(id.toString(), getCacheEntityName())))
-                .map(dao -> convertToDto((DAO) dao));
+                .map(dao -> convertToDto(SimpleConverter.convert(dao, getDaoClass())));
     }
     
     @Override
@@ -93,7 +94,6 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
         }
     }
     
-    @SuppressWarnings("unchecked")
     Set<DAO> doQueryInCache(List<SearchCriteria> criteriaList) {
         Set<DAO> queryResult = new HashSet<>();
         
@@ -101,8 +101,8 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
             SearchCriteria criteria = criteriaList.get(i);
             Set<String> idList = getIndexProcessor(criteria.getValue()).lookupIds(criteria, getCacheEntityName());
             // find data by id
-            Set<DAO> dataList = Objects.requireNonNull(redisTemplate.opsForValue().multiGet(idList)).stream().map(value -> (DAO) value)
-                    .collect(Collectors.toSet());
+            Set<DAO> dataList = Objects.requireNonNull(redisTemplate.opsForValue().multiGet(idList)).stream()
+                    .map(value -> SimpleConverter.convert(value, getDaoClass())).collect(Collectors.toSet());
             
             log.trace("Query by {}, the result size is: {}", criteria, dataList.size());
             
@@ -121,7 +121,7 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
     
     private IndexProcessor getIndexProcessor(Object value) {
         if (NumberUtils.isCreatable(value.toString()) || TypeUtils.isInstance(value, Date.class)) {
-            return rangeAvailableProcessor;
+            return sequenceProcessor;
         } else {
             return characterProcessor;
         }
@@ -146,12 +146,12 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
         return null;
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public DTO update(DTO dto) {
         DTO update = underlyingService.update(dto);
         DAO dao = convertToDao(update);
-        DAO oldOne = (DAO) redisTemplate.opsForValue().getAndSet(RedisUtils.getCacheItemDataKey(dao.getId().toString(), getCacheEntityName()), dao);
+        Object result = redisTemplate.opsForValue().getAndSet(RedisUtils.getCacheItemDataKey(dao.getId().toString(), getCacheEntityName()), dao);
+        DAO oldOne = SimpleConverter.convert(result, getDaoClass());
         removeIndex(Collections.singletonList(oldOne));
         buildIndex(Collections.singletonList(dao));
         return update;
@@ -201,7 +201,7 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
         if (CollectionUtils.isNotEmpty(keys)) {
             redisTemplate.delete(keys);
         }
-        rangeAvailableProcessor.removeAllIndex(getCacheEntityName());
+        sequenceProcessor.removeAllIndex(getCacheEntityName());
         characterProcessor.removeAllIndex(getCacheEntityName());
         
     }

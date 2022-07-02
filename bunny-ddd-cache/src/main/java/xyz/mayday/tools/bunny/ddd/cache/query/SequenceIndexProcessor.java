@@ -18,7 +18,7 @@ import xyz.mayday.tools.bunny.ddd.utils.CollectionUtils;
 import com.google.common.collect.Lists;
 
 @RequiredArgsConstructor
-public class RangeAvailableIndexProcessor implements IndexProcessor {
+public class SequenceIndexProcessor implements IndexProcessor {
     
     final RedisTemplate<String, Object> redisTemplate;
     

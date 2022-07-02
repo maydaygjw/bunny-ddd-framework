@@ -41,6 +41,7 @@ public class ForkJoinTaskExecutor {
             try {
                 return future.get(EXEC_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                future.cancel(true);
                 throw new BusinessException(e);
             }
         }).collect(Collectors.toList());

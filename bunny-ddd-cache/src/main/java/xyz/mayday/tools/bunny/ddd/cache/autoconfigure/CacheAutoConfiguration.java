@@ -19,7 +19,7 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import xyz.mayday.tools.bunny.ddd.cache.query.CharacterIndexProcessor;
-import xyz.mayday.tools.bunny.ddd.cache.query.SequenceIndexProcessor;
+import xyz.mayday.tools.bunny.ddd.cache.query.SequentialIndexProcessor;
 import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,8 +64,8 @@ public class CacheAutoConfiguration {
     }
     
     @Bean
-    SequenceIndexProcessor sequenceProcessor(RedisTemplate<String, Object> redisTemplate) {
-        return new SequenceIndexProcessor(redisTemplate);
+    SequentialIndexProcessor sequenceProcessor(RedisTemplate<String, Object> redisTemplate) {
+        return new SequentialIndexProcessor(redisTemplate);
     }
     
     @Bean

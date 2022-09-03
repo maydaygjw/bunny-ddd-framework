@@ -48,9 +48,7 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
     protected HistoryService historyService;
     
     @Override
-    public final PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam) {
-        return doFindItems(example, queryParam);
-    }
+    public abstract PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam);
     
     @Override
     public List<DTO> findHistoriesById(ID id) {
@@ -63,8 +61,6 @@ public abstract class AbstractBaseService<ID extends Serializable, DTO extends A
             return dto;
         }).collect(Collectors.toList());
     }
-    
-    public abstract PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam);
     
     public final Class<ID> getIdType() {
         return ReflectionUtils.getGenericTypeOfSuperClass(this, GenericTypeIndexConstant.ServiceTypeIndex.IDX_ID);

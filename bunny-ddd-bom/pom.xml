@@ -17,6 +17,7 @@
         <javers.version>6.5.2</javers.version>
         <shedLock.version>4.30.0</shedLock.version>
         <micrometer.version>1.8.1</micrometer.version>
+        <querydsl.version>4.4.0</querydsl.version>
     </properties>
 
     <dependencyManagement>
@@ -142,6 +143,17 @@
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-registry-prometheus</artifactId>
                 <version>${micrometer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-jpa</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-apt</artifactId>
+                <version>${querydsl.version}</version>
+                <scope>provided</scope>
             </dependency>
 
 

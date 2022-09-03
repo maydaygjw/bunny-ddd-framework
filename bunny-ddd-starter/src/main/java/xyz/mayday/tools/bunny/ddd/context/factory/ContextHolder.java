@@ -57,7 +57,7 @@ public class ContextHolder implements ApplicationContextAware {
     
     public static String getAppName() {
         if (Objects.isNull(ctx)) {
-            log.debug("No actual application context found, just return a fake app name: [{}]", fakeAppName);
+            log.warn("No actual application context found, just return a fake app name: [{}]", fakeAppName);
             return fakeAppName;
         }
         return ctx.getEnvironment().getProperty("spring.application.name");

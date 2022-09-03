@@ -39,7 +39,7 @@ public abstract class AbstractNoSqlService<ID extends Serializable, DTO extends 
     }
     
     @Override
-    public PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam) {
+    public PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam) {
         List<SearchCriteria> searchCriteriaList = buildQuerySpecification(example).getSearchCriteriaList();
         Query query = new Query();
         searchCriteriaList.forEach(searchCriteria -> {

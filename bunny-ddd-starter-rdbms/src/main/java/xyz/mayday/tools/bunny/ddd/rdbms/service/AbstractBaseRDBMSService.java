@@ -49,7 +49,7 @@ public abstract class AbstractBaseRDBMSService<ID extends Serializable, DTO exte
     }
     
     @Override
-    public PageableData<DTO> doFindItems(DTO dto, CommonQueryParam queryParam) {
+    public PageableData<DTO> findItems(DTO dto, CommonQueryParam queryParam) {
         dto = Optional.ofNullable(dto).orElse(ReflectionUtils.newInstance(getDtoClass()));
         
         QuerySpecification<DAO> querySpecification = buildQuerySpecification(dto);

@@ -19,7 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import xyz.mayday.tools.bunny.ddd.cache.query.CharacterIndexProcessor;
 import xyz.mayday.tools.bunny.ddd.cache.query.IndexProcessor;
 import xyz.mayday.tools.bunny.ddd.cache.query.RedisUtils;
-import xyz.mayday.tools.bunny.ddd.cache.query.SequenceIndexProcessor;
+import xyz.mayday.tools.bunny.ddd.cache.query.SequentialIndexProcessor;
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.schema.cache.CacheEntity;
@@ -42,18 +42,18 @@ import com.google.common.collect.Sets;
 public abstract class AbstractCacheableService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>>
         extends AbstractBaseService<ID, DTO, DAO> implements CacheableService<ID, DTO> {
     
-    final AbstractBaseService<ID, DTO, DAO> underlyingService;
+    final BaseService<ID, DTO> underlyingService;
     
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
     
     @Autowired
-    SequenceIndexProcessor sequenceProcessor;
+    SequentialIndexProcessor sequenceProcessor;
     
     @Autowired
     CharacterIndexProcessor characterProcessor;
     
-    public AbstractCacheableService(AbstractBaseService<ID, DTO, DAO> underlyingService) {
+    public AbstractCacheableService(BaseService<ID, DTO> underlyingService) {
         this.underlyingService = underlyingService;
     }
     
@@ -74,8 +74,8 @@ public abstract class AbstractCacheableService<ID extends Serializable, DTO exte
     }
     
     @Override
-    public PageableData<DTO> doFindItems(DTO example, CommonQueryParam queryParam) {
-        return underlyingService.doFindItems(example, queryParam);
+    public PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam) {
+        return underlyingService.findItems(example, queryParam);
     }
     
     @Override

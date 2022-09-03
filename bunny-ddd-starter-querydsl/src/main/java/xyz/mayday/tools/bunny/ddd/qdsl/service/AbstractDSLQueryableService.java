@@ -1,48 +1,46 @@
-package xyz.mayday.tools.bunny.ddd.reactive.redis;
+package xyz.mayday.tools.bunny.ddd.qdsl.service;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import javax.inject.Inject;
-
-import lombok.NoArgsConstructor;
-
-import org.springframework.data.redis.core.ReactiveRedisOperations;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
 import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
 import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-import xyz.mayday.tools.bunny.ddd.schema.service.CacheableService;
 
-@NoArgsConstructor
-public abstract class RedisCacheableServiceImpl<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>>
-        extends AbstractBaseService<ID, DTO, DAO> implements CacheableService<ID, DTO> {
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+public abstract class AbstractDSLQueryableService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>>
+        implements BaseDSLQueryableService<ID, DTO> {
     
-    @Inject
-    ReactiveRedisOperations<String, DAO> redisOperations;
+    @Autowired
+    JPAQueryFactory jpaQueryFactory;
+    
+    protected abstract AbstractBaseService<ID, DTO, DAO> getService();
     
     @Override
     public Optional<DTO> findItemById(ID id) {
-        return redisOperations.opsForValue().get(String.valueOf(id)).blockOptional().map(this::convertToDto);
+        return getService().findItemById(id);
     }
     
     @Override
     public List<DTO> findItemsByIds(List<ID> id) {
-        return null;
+        return getService().findItemsByIds(id);
     }
     
     @Override
     public List<DTO> findHistoriesById(ID id) {
-        return null;
+        return getService().findHistoriesById(id);
     }
     
     @Override
     public PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam) {
-        return null;
+        return getService().findItems(example, queryParam);
     }
     
     @Override
@@ -66,7 +64,17 @@ public abstract class RedisCacheableServiceImpl<ID extends Serializable, DTO ext
     }
     
     @Override
+    public List<DTO> bulkInsert(List<DTO> dtos) {
+        return null;
+    }
+    
+    @Override
     public DTO update(DTO dto) {
+        return null;
+    }
+    
+    @Override
+    public List<DTO> bulkUpdate(List<DTO> dtos) {
         return null;
     }
     
@@ -91,14 +99,12 @@ public abstract class RedisCacheableServiceImpl<ID extends Serializable, DTO ext
     }
     
     @Override
-    public void createCache() {
+    public Class<DTO> getDomainClass() {
+        return getService().getDomainClass();
     }
     
     @Override
-    public void destroyCache() {
-    }
-    
-    @Override
-    public void initCacheData() {
+    public JPAQueryFactory getJpaQueryFactory() {
+        return jpaQueryFactory;
     }
 }

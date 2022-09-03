@@ -98,7 +98,7 @@ class AbstractBaseServiceTest extends Specification {
         }
 
         @Override
-        PageableData<Domain.UserDTO> doFindItems(Domain.UserDTO example, CommonQueryParam queryParam) {
+        PageableData<Domain.UserDTO> findItems(Domain.UserDTO example, CommonQueryParam queryParam) {
             return null
         }
 

@@ -18,7 +18,7 @@ class UnderlyingUserService extends AbstractBaseService<Long, UserDO, UserDO> {
 
 
     @Override
-    PageableData<UserDO> doFindItems(UserDO example, CommonQueryParam queryParam) {
+    PageableData<UserDO> findItems(UserDO example, CommonQueryParam queryParam) {
         return null
     }
 

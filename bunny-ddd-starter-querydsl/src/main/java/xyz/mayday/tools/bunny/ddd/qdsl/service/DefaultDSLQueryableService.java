@@ -7,21 +7,29 @@ import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import xyz.mayday.tools.bunny.ddd.core.domain.AbstractBaseDTO;
-import xyz.mayday.tools.bunny.ddd.core.service.AbstractBaseService;
-import xyz.mayday.tools.bunny.ddd.schema.domain.BaseDAO;
-import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
-import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
-
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-public abstract class AbstractDSLQueryableService<ID extends Serializable, DTO extends AbstractBaseDTO<ID>, DAO extends BaseDAO<ID>>
+import xyz.mayday.tools.bunny.ddd.qdsl.domain.BaseQueryableDTO;
+import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
+import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
+import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
+
+public class DefaultDSLQueryableService<ID extends Serializable, DTO extends BaseQueryableDTO<ID>>
         implements BaseDSLQueryableService<ID, DTO> {
     
     @Autowired
     JPAQueryFactory jpaQueryFactory;
-    
-    protected abstract AbstractBaseService<ID, DTO, DAO> getService();
+
+    BaseService<ID, DTO> baseService;
+
+    public DefaultDSLQueryableService(BaseService<ID, DTO> baseService) {
+        this.baseService = baseService;
+    }
+
+    protected BaseService<ID, DTO> getService() {
+        return baseService;
+    }
     
     @Override
     public Optional<DTO> findItemById(ID id) {
@@ -106,5 +114,11 @@ public abstract class AbstractDSLQueryableService<ID extends Serializable, DTO e
     @Override
     public JPAQueryFactory getJpaQueryFactory() {
         return jpaQueryFactory;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public JPAQuery<DTO> selectFrom(DTO dQuery) {
+        return (JPAQuery<DTO>) jpaQueryFactory.selectFrom(dQuery.getQuery());
     }
 }

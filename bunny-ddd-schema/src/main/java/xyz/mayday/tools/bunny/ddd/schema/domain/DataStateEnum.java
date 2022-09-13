@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum DataStateEnum {
     
     VALID("VALID", "有效"),
-    DRAFT("FAILED", "草稿"),
+    DRAFTED("DRAFTED", "草稿"),
     INVALID("INVALID", "失效"),;
     
     String code;

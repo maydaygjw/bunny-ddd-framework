@@ -10,5 +10,5 @@ import com.querydsl.core.types.dsl.EntityPathBase;
 public abstract class BaseQueryableDTO<ID extends Serializable> extends AbstractBaseDTO<ID> {
     
     @JsonIgnore
-    public abstract EntityPathBase<? extends BaseQueryableDTO<ID>> getQuery();
+    public abstract EntityPathBase<? extends BaseQueryableDTO<ID>> query();
 }

@@ -118,6 +118,6 @@ public class DefaultDSLQueryableService<ID extends Serializable, DTO extends Bas
     @SuppressWarnings("unchecked")
     @Override
     public JPAQuery<DTO> selectFrom(DTO dQuery) {
-        return (JPAQuery<DTO>) jpaQueryFactory.selectFrom(dQuery.getQuery());
+        return (JPAQuery<DTO>) jpaQueryFactory.selectFrom(dQuery.query());
     }
 }

@@ -5,10 +5,10 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import xyz.mayday.tools.bunny.ddd.schema.query.SearchCriteria;
-import xyz.mayday.tools.bunny.ddd.utils.CollectionUtils;
 
 @RequiredArgsConstructor
 public class CharacterIndexProcessor implements IndexProcessor {

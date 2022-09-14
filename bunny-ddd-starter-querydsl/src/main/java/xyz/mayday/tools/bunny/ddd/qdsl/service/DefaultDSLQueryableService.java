@@ -7,26 +7,25 @@ import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import xyz.mayday.tools.bunny.ddd.qdsl.domain.BaseQueryableDTO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
 
-public class DefaultDSLQueryableService<ID extends Serializable, DTO extends BaseQueryableDTO<ID>>
-        implements BaseDSLQueryableService<ID, DTO> {
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+public class DefaultDSLQueryableService<ID extends Serializable, DTO extends BaseQueryableDTO<ID>> implements BaseDSLQueryableService<ID, DTO> {
     
     @Autowired
     JPAQueryFactory jpaQueryFactory;
-
+    
     BaseService<ID, DTO> baseService;
-
+    
     public DefaultDSLQueryableService(BaseService<ID, DTO> baseService) {
         this.baseService = baseService;
     }
-
+    
     protected BaseService<ID, DTO> getService() {
         return baseService;
     }
@@ -115,7 +114,7 @@ public class DefaultDSLQueryableService<ID extends Serializable, DTO extends Bas
     public JPAQueryFactory getJpaQueryFactory() {
         return jpaQueryFactory;
     }
-
+    
     @SuppressWarnings("unchecked")
     @Override
     public JPAQuery<DTO> selectFrom(DTO dQuery) {

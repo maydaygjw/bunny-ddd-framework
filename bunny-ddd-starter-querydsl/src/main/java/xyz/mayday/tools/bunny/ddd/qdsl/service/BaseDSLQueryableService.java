@@ -13,4 +13,6 @@ public interface BaseDSLQueryableService<ID extends Serializable, DOMAIN extends
     
     JPAQuery<DOMAIN> selectFrom(DOMAIN dQuery);
     
+    JPAQuery<DOMAIN> select();
+    
 }

@@ -25,7 +25,6 @@
         <module>bunny-ddd-starter</module>
         <module>bunny-ddd-starter-querydsl</module>
         <module>bunny-ddd-starter-rdbms</module>
-        <module>bunny-ddd-starter-workflow</module>
     </modules>
 
     <properties>

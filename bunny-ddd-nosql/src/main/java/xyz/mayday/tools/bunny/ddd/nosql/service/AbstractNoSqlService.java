@@ -40,14 +40,19 @@ public abstract class AbstractNoSqlService<ID extends Serializable, DTO extends 
     
     @Override
     public PageableData<DTO> findItems(DTO example, CommonQueryParam queryParam) {
+        Query query = buildQuery(example);
+        List<DTO> collect = mongoTemplate.find(query, getDaoClass()).stream().map(this::convertToDto).collect(Collectors.toList());
+        return PageableData.<DTO> builder().records(collect).build();
+        
+    }
+    
+    private Query buildQuery(DTO example) {
         List<SearchCriteria> searchCriteriaList = buildQuerySpecification(example).getSearchCriteriaList();
         Query query = new Query();
         searchCriteriaList.forEach(searchCriteria -> {
             query.addCriteria(QueryPredicate.presetPredicates.get(searchCriteria.getSearchOperation()).buildCriteria(searchCriteria));
         });
-        List<DTO> collect = mongoTemplate.find(query, getDaoClass()).stream().map(this::convertToDto).collect(Collectors.toList());
-        return PageableData.<DTO> builder().records(collect).build();
-        
+        return query;
     }
     
     @Override
@@ -62,7 +67,8 @@ public abstract class AbstractNoSqlService<ID extends Serializable, DTO extends 
     
     @Override
     public Stream<DTO> findStream(DTO example) {
-        return null;
+        Query query = buildQuery(example);
+        return mongoTemplate.stream(query, getDomainClass()).stream();
     }
     
     @Override

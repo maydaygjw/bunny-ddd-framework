@@ -11,6 +11,7 @@ import xyz.mayday.tools.bunny.ddd.qdsl.domain.BaseQueryableDTO;
 import xyz.mayday.tools.bunny.ddd.schema.page.PageableData;
 import xyz.mayday.tools.bunny.ddd.schema.query.CommonQueryParam;
 import xyz.mayday.tools.bunny.ddd.schema.service.BaseService;
+import xyz.mayday.tools.bunny.ddd.utils.ReflectionUtils;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -119,5 +120,10 @@ public class DefaultDSLQueryableService<ID extends Serializable, DTO extends Bas
     @Override
     public JPAQuery<DTO> selectFrom(DTO dQuery) {
         return (JPAQuery<DTO>) jpaQueryFactory.selectFrom(dQuery.query());
+    }
+    
+    @Override
+    public JPAQuery<DTO> select() {
+        return selectFrom(ReflectionUtils.newInstance(getDomainClass()));
     }
 }

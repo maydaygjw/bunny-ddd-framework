@@ -1,0 +1,496 @@
+# Instincts generated from https://github.com/maydaygjw/bunny-ddd-framework
+# Generated: 2026-03-02T03:14:29.309Z
+# Version: 2.0
+
+---
+id: bunny-ddd-framework-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Commit Length
+
+## Action
+
+Keep commit messages concise (under 50 characters)
+
+## Evidence
+
+- Average commit message length: 20 chars
+- Based on 114 commits
+
+---
+id: bunny-ddd-framework-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Naming Files
+
+## Action
+
+Use PascalCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: PascalCase
+
+---
+id: bunny-ddd-framework-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Export Style
+
+## Action
+
+Prefer mixed exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: mixed
+
+---
+id: bunny-ddd-framework-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: bunny-ddd-framework-workflow-database-migration
+trigger: "when modifying the database schema or adding tables"
+confidence: 0.8
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Workflow Database Migration
+
+## Action
+
+Follow the database-migration workflow:
+1. Create migration file
+2. Update schema definitions
+3. Generate/update types
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~6x per month
+- Files: **/schema.*
+
+---
+id: bunny-ddd-framework-workflow-test-driven-development
+trigger: "when adding new functionality"
+confidence: 0.65
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Workflow Test Driven Development
+
+## Action
+
+Follow the test-driven-development workflow:
+1. Write failing test
+2. Implement code to pass test
+3. Refactor if needed
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~3x per month
+- Files: **/*.test.*, **/*.spec.*, src/**/*
+
+---
+id: bunny-ddd-framework-workflow-initial-commit-fixes
+trigger: "when doing initial commit fixes"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Workflow Initial Commit Fixes
+
+## Action
+
+Follow the initial-commit-fixes workflow:
+1. Identify problematic files
+2. Apply targeted fixes
+3. Update dependencies if needed
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~8x per month
+- Files: pom.xml, */src/main/java/**/*.java, */src/main/java/**/service/*.java
+
+---
+id: bunny-ddd-framework-workflow-add-new-service-module
+trigger: "when doing add new service module"
+confidence: 0.7
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Workflow Add New Service Module
+
+## Action
+
+Follow the add-new-service-module workflow:
+1. Create service implementation classes
+2. Add auto-configuration
+3. Register in spring.factories
+4. Update BOM dependencies
+5. Add test configuration
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~4x per month
+- Files: */src/main/java/**/service/Abstract*Service.java, */src/main/java/**/autoconfigure/*AutoConfiguration.java, */src/main/resources/META-INF/spring.factories
+
+---
+id: bunny-ddd-framework-workflow-github-workflow-setup
+trigger: "when doing github workflow setup"
+confidence: 0.8
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Workflow Github Workflow Setup
+
+## Action
+
+Follow the github-workflow-setup workflow:
+1. Create or update maven workflow
+2. Configure Java version
+3. Add code quality tools like Sonar
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~6x per month
+- Files: .github/workflows/maven.yml, pom.xml
+
+---
+id: bunny-ddd-framework-workflow-update-project-configuration
+trigger: "when doing update project configuration"
+confidence: 0.75
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Workflow Update Project Configuration
+
+## Action
+
+Follow the update-project-configuration workflow:
+1. Update main pom.xml
+2. Modify application configuration files
+3. Update BOM dependencies
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~5x per month
+- Files: pom.xml, bunny-ddd-bom/pom.xml, */src/main/resources/config/application*.yml
+
+---
+id: bunny-ddd-framework-workflow-add-test-infrastructure
+trigger: "when doing add test infrastructure"
+confidence: 0.7
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Workflow Add Test Infrastructure
+
+## Action
+
+Follow the add-test-infrastructure workflow:
+1. Create test configuration classes
+2. Add test application properties
+3. Setup test dependencies
+4. Add logging configuration for tests
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~4x per month
+- Files: */src/test/groovy/**/*Test.groovy, */src/test/resources/application*.yml, */src/test/resources/log4j2.xml
+
+---
+id: bunny-ddd-framework-java-naming
+trigger: "When creating new Java classes or methods"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Java Naming
+
+## Action
+
+Use PascalCase for classes, camelCase for methods, SCREAMING_SNAKE_CASE for constants
+
+## Evidence
+
+- Pattern in files like CacheAutoConfiguration.java
+- Consistent across all Java files in modules
+
+---
+id: bunny-ddd-framework-package-structure
+trigger: "When creating new service modules"
+confidence: 0.9
+domain: architecture
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Package Structure
+
+## Action
+
+Use xyz.mayday.tools.bunny.ddd.[module] package structure with autoconfigure subpackage
+
+## Evidence
+
+- CacheAutoConfiguration.java in autoconfigure package
+- Consistent pattern across bunny-ddd-cache, bunny-ddd-core modules
+
+---
+id: bunny-ddd-framework-informal-commits
+trigger: "When making any commit"
+confidence: 0.8
+domain: git
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Informal Commits
+
+## Action
+
+Use lowercase, informal commit messages without conventional prefixes
+
+## Evidence
+
+- Initial Commit
+- initial commit - Add query dsl support
+- Add jacoco test coverage
+
+---
+id: bunny-ddd-framework-groovy-tests
+trigger: "When writing tests for Spring Boot components"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Groovy Tests
+
+## Action
+
+Use Groovy with *Test.groovy naming pattern in src/test/groovy
+
+## Evidence
+
+- CacheAutoConfigurationTest.groovy
+- Pattern across test files in modules
+
+---
+id: bunny-ddd-framework-spring-factories
+trigger: "When adding auto-configuration classes"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Spring Factories
+
+## Action
+
+Register in META-INF/spring.factories file
+
+## Evidence
+
+- spring.factories in bunny-ddd-cache module
+- Standard Spring Boot auto-configuration pattern
+
+---
+id: bunny-ddd-framework-initial-fixes
+trigger: "When encountering bugs after initial implementation"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Initial Fixes
+
+## Action
+
+Apply targeted fixes to problematic Java files and update pom.xml dependencies
+
+## Evidence
+
+- Initial Commit - Fix
+- initial commit - Fix
+- Frequency of 8x per project
+
+---
+id: bunny-ddd-framework-service-abstraction
+trigger: "When creating new service modules"
+confidence: 0.88
+domain: architecture
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Service Abstraction
+
+## Action
+
+Create Abstract*Service base classes in service package
+
+## Evidence
+
+- CacheableServiceImpl.java pattern
+- Abstract service pattern in workflow
+
+---
+id: bunny-ddd-framework-maven-ci
+trigger: "When setting up continuous integration"
+confidence: 0.92
+domain: workflow
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Maven Ci
+
+## Action
+
+Create .github/workflows/maven.yml with Java build configuration
+
+## Evidence
+
+- .github/workflows/maven.yml in config files
+- Maven-based build system
+
+---
+id: bunny-ddd-framework-bom-management
+trigger: "When adding new modules or updating dependencies"
+confidence: 0.87
+domain: workflow
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Bom Management
+
+## Action
+
+Update bunny-ddd-bom/pom.xml for dependency management
+
+## Evidence
+
+- bunny-ddd-bom in folder structure
+- BOM pattern in add-new-service-module workflow
+
+---
+id: bunny-ddd-framework-test-resources
+trigger: "When setting up tests for new modules"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Test Resources
+
+## Action
+
+Add application*.yml and log4j2.xml in src/test/resources
+
+## Evidence
+
+- Test configuration pattern in workflows
+- Spring Boot test resource structure
+
+---
+id: bunny-ddd-framework-readme-updates
+trigger: "When making significant project changes"
+confidence: 0.7
+domain: workflow
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Readme Updates
+
+## Action
+
+Update README.md with project information
+
+## Evidence
+
+- Update README.md in commit examples
+
+---
+id: bunny-ddd-framework-modular-structure
+trigger: "When organizing project code"
+confidence: 0.9
+domain: architecture
+source: repo-analysis
+source_repo: maydaygjw/bunny-ddd-framework
+---
+
+# Bunny Ddd Framework Modular Structure
+
+## Action
+
+Use separate modules with bunny-ddd- prefix for different concerns (core, cache, fsm, etc.)
+
+## Evidence
+
+- bunny-ddd-core, bunny-ddd-cache, bunny-ddd-fsm in folder structure
+- Modular DDD approach
+
